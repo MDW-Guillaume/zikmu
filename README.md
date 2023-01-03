@@ -2,7 +2,7 @@
 
 ## Fonctionnalités
 
-- Authentification ->
+- Authentification -> Breeze
 - Lecture de musique en arrière plan
 - Like de musique (AJAX ?)
 - File d'attente ( Stockage de la liste en session ? )
