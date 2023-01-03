@@ -2,6 +2,12 @@
 
 https://www.figma.com/file/OU0s4ABT3h2eyCGnVSllfB/Ziq%26MU?node-id=159%3A499&t=FW4WJ5TuTycasjw2-0
 
+<iframe
+        height="450"
+        width="100%"
+        src="https://www.figma.com/embed?embed_host=astra&url=https://www.figma.com/file/OU0s4ABT3h2eyCGnVSllfB/Ziq%26MU?node-id=159%3A499&t=FW4WJ5TuTycasjw2-0"
+        allowfullscreen
+        />
 
 | Page dans Figma | Route prévues |
 | :- | :- |
