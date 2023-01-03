@@ -45,3 +45,34 @@ La version mobile peut se transformer en WebApp
 ## Inspirations
 
 https://koel.dev/
+
+## Installation
+
+```
+git clone git@github.com:MDW-Guillaume/zikmu.git
+cd zikmu
+composer install
+nom install
+cp .env.example .env
+nano .env
+```
+
+Edit the Database configuration
+
+```
+php artisan migrate
+php artisan db:seed
+```
+
+Generate the key
+
+```
+php artisan key:generate
+```
+
+Launch server
+
+```
+npm run dev
+php artisan serve
+```
