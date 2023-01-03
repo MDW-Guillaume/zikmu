@@ -28,9 +28,9 @@ https://www.figma.com/file/OU0s4ABT3h2eyCGnVSllfB/Ziq%26MU?node-id=159%3A499&t=F
 | Recherche | /recherche | SearchController |
 | File d'attente | /a-suivre | WaitingController |
 | Mon compte | /mon-compte | ProfileController |
-| Mes artistes | /mes-artistes | ArtistController::show avec paramètre|
-| Mes albums | /mes-albums | AlbumController::show avec paramètre|
-| Mes titres | /mes-titres | SongController::show avec paramètre|
+| Mes artistes | /mes-artistes | ArtistController::show <br>avec paramètre|
+| Mes albums | /mes-albums | AlbumController::show <br>avec paramètre|
+| Mes titres | /mes-titres | SongController::show <br>avec paramètre|
 | Contact | /contact | ContactController |
 | Mentions légales | /mentions-legales | Pas de controller |
 | Conditions générales <br> de vente| /cgv | Pas de controller |

@@ -20,10 +20,6 @@
 - Peut avoir 1 artiste
 - Peut avoir 1 album
 
-## Newsletters
-
-- Peut avoir 1 user
-
 ## Artist_user
 
 - Peut avoir 1 artiste
