@@ -19,14 +19,17 @@ class SongSeeder extends Seeder
         // Copie du dossier musical vers un autre chemin
 
         // File::copyDirectory(storage_path() . '/app/files', storage_path() . '/app/original');
-        dd(storage_path() . '/app/files');
+        // dd(storage_path() . '/app/files');
 
 
         // Récupération des artistes, albums, longueur et année de sortie
         $musical_path = scandir(public_path('music') . '/music');
         
         $zikmu = array();
+        File::makeDirectory(storage_path() . '/app/files', );
         for($i = 2; $i < count($musical_path) - 1; $i++){
+            $folder_snake_name = Str::slug(str_replace(' - ', '_', $musical_path[$i]));
+            File::makeDirectory(storage_path() . '/app/files/' . $folder_snake_name );
             $musical_explode = explode(' - ', $musical_path[$i]);
             $zikmu[$musical_explode[2]][$musical_explode[3]]["release"] = $musical_explode[0];
             $zikmu[$musical_explode[2]][$musical_explode[3]]["length"] = $musical_explode[1];
