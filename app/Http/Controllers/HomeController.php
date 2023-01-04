@@ -9,4 +9,8 @@ class HomeController extends Controller
     public function show(){
         return view('landing');
     }
+
+    public function index(){
+        
+    }
 }

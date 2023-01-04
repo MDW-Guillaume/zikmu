@@ -1,4 +1,75 @@
-.container.login{
-    width : 800px; 
-    margin : auto;
+html {
+    background: linear-gradient(0deg, hsla(259, 69%, 44%, 1) 0%, hsla(323, 86%, 37%, 1) 100%), url('/public/img/vinyle.png');
+    background-repeat: no-repeat, no-repeat;
+    background-size: cover;
+    height    : 100%;
+    font-family: 'Roboto', sans-serif;
+    font-size  : 20px;
+}
+
+.container {
+    color: white;
+
+    &.login {
+        width : 800px;
+        margin: auto;
+
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        h2 {
+            font-family   : 'Righteous', cursive;
+            text-transform: uppercase;
+            text-align    : center;
+            font-size     : 24px;
+            margin        : 50px 0 100px 0;
+        }
+
+        .description-text {
+            font-size : 20px;
+            text-align: center;
+            width: 630px;
+            margin : 0 auto;
+        }
+    }
+
+    .login-method {
+        display        : flex;
+        flex-direction : row;
+        justify-content: space-between;
+        margin-bottom  : 100px;
+
+        .signin-method,
+        .signup-method {
+            width: 50%;
+
+            display        : flex;
+            flex-direction : column;
+            justify-content: space-between;
+            align-items    : center;
+
+            font-family: 'Roboto', sans-serif;
+            font-size  : 20px;
+            text-align : center;
+
+            span {
+                margin-bottom: 30px;
+            }
+
+            a {
+                background-color: #B00D70;
+                padding         : 12px 40px;
+                color           : white;
+                border-radius   : 40px;
+                text-decoration : none;
+                font-weight     : 700;
+                font-size       : 14px;
+                line-height     : 16px;
+                text-align      : center;
+                text-transform  : uppercase;
+            }
+        }
+    }
 }

@@ -4,16 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    @googlefonts('righteous')
     @vite(['resources/scss/app.scss'])
     <title>@yield('title')</title>
 </head>
-<body
-style="
-background: linear-gradient(0deg, hsla(259, 69%, 44%, 1) 0%, hsla(323, 86%, 37%, 1) 100%);
-"
->
+<body>
     @yield('content')
 
-    @yield('include.footer')
+    {{-- @include('include.footer') --}}
 </body>
 </html>

@@ -1,2 +1,4 @@
-@extends('layout.app')
+<footer>
+    <p>ok</p>
+</footer>
 
