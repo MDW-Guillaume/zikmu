@@ -10,3 +10,21 @@
 4. Aller dans le dossier
 5. Boucler sur les titres pour récupérer les noms
 6. Explode sur le tiret pour insérer les titres en base de données
+
+
+[
+  id
+  artist[ 
+      albums[
+        name
+        release
+        length
+        cover
+        title[
+          name
+          length
+          position
+        ]
+    ]
+  ]
+]

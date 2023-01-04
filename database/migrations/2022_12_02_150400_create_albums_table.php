@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('cover');
+            $table->integer('length');
             $table->integer('style_id');
             $table->integer('artist_id');
             $table->timestamps();

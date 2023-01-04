@@ -15,6 +15,7 @@ use App\Http\Controllers\HomeController;
 */
 
 Route::get('/', [HomeController::class, 'show'])->name('landing');
+Route::get('/test', [HomeController::class, 'index'])->name('landing');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
