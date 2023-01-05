@@ -28,3 +28,8 @@
     ]
   ]
 ]
+
+Manque : 
+- Cover Artist
+- Cover Album
+- Slug  Album

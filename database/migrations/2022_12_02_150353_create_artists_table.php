@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('artists', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('slug');
             $table->integer('follow');
             $table->string('cover');
             $table->integer('style_id');
