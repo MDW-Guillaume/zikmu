@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug');
-            $table->integer('follow');
-            $table->string('cover');
-            $table->integer('style_id');
+            $table->integer('follow')->default(0);
+            $table->string('cover')->nullable();
+            $table->integer('style_id')->nullable();
             $table->timestamps();
         });
     }
