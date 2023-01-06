@@ -29,5 +29,7 @@
             Explorez tout un monde de musique sans publicité, hors connexion et même avec l’écran verrouillé. Disponible sur
             mobile et ordinateur. Ziq&mu propose des albums officiels, des playlists, des singles et plus encore.
         </p>
-    </div>
-@endsection
+    </div> 
+@endsection 
+
+
