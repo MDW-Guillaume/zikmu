@@ -6,8 +6,8 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         @googlefonts('righteous')
         @vite(['resources/scss/app.scss'])
-        <?php dd('toto'); ?>
-        <title>@yield('title')</title>
+        @vite(['resources/scss/mixin.scss'])
+        <title>Zik&Mu - @yield('title')</title>
     </head>
     <body>
         <div class="container login">

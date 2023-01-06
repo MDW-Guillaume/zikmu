@@ -58,18 +58,30 @@ html {
                 margin-bottom: 30px;
             }
 
-            a {
-                background-color: #B00D70;
-                padding         : 12px 40px;
-                color           : white;
-                border-radius   : 40px;
-                text-decoration : none;
-                font-weight     : 700;
-                font-size       : 14px;
-                line-height     : 16px;
-                text-align      : center;
-                text-transform  : uppercase;
+           
+        }
+    }
+    .login-form {
+        width : 500px;
+        margin : 0 auto;
+        .input-field{
+            display : flex;
+            flex-direction : column;
+            .input-element{
+                margin : 10px 0 30px 0;
+                padding : 25px 10px;
+                border-radius : 8px;
+                outline : 0;
+                border : 1px solid black;
+                font-size: 16px;
+                line-height : 19px;
+                font-family: 'Roboto', sans-serif;
+                color : #8c8490;
             }
+        } 
+        
+        .connect-button{
+            width : 500px;
         }
     }
 }

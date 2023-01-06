@@ -1,0 +1,36 @@
+.btn-primary {
+    background-color: #B00D70;
+    padding         : 12px 40px;
+    color           : white;
+    border-radius   : 40px;
+    text-decoration : none;
+    font-weight     : 700;
+    font-size       : 14px;
+    line-height     : 16px;
+    text-align      : center;
+    text-transform  : uppercase;
+}
+
+.border-none {
+    border : 0;
+}
+
+.m-auto{
+    margin : 0 auto;
+}
+
+.center{
+    text-align : center;
+}
+
+.item-center{
+    align-items : center;
+}
+
+.d-flex{
+    display : flex;
+}
+
+.flex-column {
+    flex-direction : column;
+}
