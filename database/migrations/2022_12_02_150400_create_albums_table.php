@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('cover')->nullable();
             $table->integer('length');
             $table->integer('release');
-            $table->integer('style_id')->nullable();
             $table->integer('artist_id')->nullable();
             $table->timestamps();
         });

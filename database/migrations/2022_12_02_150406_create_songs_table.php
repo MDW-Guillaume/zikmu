@@ -18,10 +18,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug');
             $table->integer('length');
-            $table->integer('listened');
+            $table->integer('listened')->default(0);
             $table->integer('position');
             $table->integer('album_id');
-            $table->integer('artist_id');
             $table->timestamps();
         });
     }
