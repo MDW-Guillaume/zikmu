@@ -1,4 +1,48 @@
-<x-guest-layout>
+@extends('layout.app')
+
+@section('title')
+    Inscription
+@endsection
+
+@section('content')
+
+    <h2 class="connect-text">Créer un compte</h2>
+
+    <form method="POST" action="{{ route('login') }}" class="login-form">
+        @csrf
+
+        <!-- Email Address -->
+        <div class="input-field">
+            <x-input-label for="email" :value="__('Votre email')" />
+            <x-text-input id="email" class="block mt-1 w-full input-element" type="email" name="email" :value="old('email')" required
+                autofocus />
+            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        </div>
+
+        <!-- Password -->
+        <div class="mt-4 input-field">
+            <x-input-label for="password" :value="__('Votre mot de passe')" />
+
+            <x-text-input id="password" class="block mt-1 w-full input-element" type="password" name="password" required
+                autocomplete="current-password" />
+
+            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        </div>
+
+        <div class="d-flex flex-column connect-button center">
+            <p><input type="checkbox" name="newsletter"> <span>m’envoyer des suggestions</span></p><br>
+            <p><input type="checkbox" name="cgv"> <span>m’envoyer des suggestions</span></p><br>
+
+            <x-primary-button class="m-auto btn-primary border-none ">
+                {{ __('Se connecter') }}
+            </x-primary-button>
+        </div>
+
+
+    </form>
+@endsection
+
+{{-- <x-guest-layout>
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
@@ -49,4 +93,4 @@
             </x-primary-button>
         </div>
     </form>
-</x-guest-layout>
+</x-guest-layout> --}}

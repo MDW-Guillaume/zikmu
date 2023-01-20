@@ -6,8 +6,8 @@
 
 @section('content')
 
-    <h2>Se connecter</h2>
-    
+    <h2 class="connect-text">Se connecter</h2>
+
     <form method="POST" action="{{ route('login') }}" class="login-form">
         @csrf
 
@@ -31,7 +31,7 @@
 
         <div class="d-flex flex-column connect-button center">
             @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 top-text-button"
                     href="{{ route('password.request') }}">
                     {{ __('Mot de passe oublié ?') }}
                 </a>
@@ -41,6 +41,16 @@
                 {{ __('Se connecter') }}
             </x-primary-button>
         </div>
+        <div class="d-flex flex-column register-button center">
+            @if (Route::has('password.request'))
+                <p class="register-text ">Vous n'avez pas encore de compte ?</p>
+            @endif
+
+            <a href="/register" class="m-auto btn-primary border-none ">
+                {{ __('S\'inscrire') }}
+            </a>
+        </div>
+
     </form>
 @endsection
 
