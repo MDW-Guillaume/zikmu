@@ -30,15 +30,17 @@
         </div>
 
         <div class="d-flex flex-column connect-button center">
-            <p><input type="checkbox" name="newsletter"> <span>m’envoyer des suggestions</span></p><br>
-            <p><input type="checkbox" name="cgv"> <span>m’envoyer des suggestions</span></p><br>
+            <p class="register-checkbox"><input type="checkbox" name="newsletter"> <span>m’envoyer des suggestions</span></p>
+            <p class="register-checkbox"><input type="checkbox" name="cgv"> <span>J'accepte les <span class="underline">CGV</span></span></p>
 
             <x-primary-button class="m-auto btn-primary border-none ">
-                {{ __('Se connecter') }}
+                {{ __('S\'inscrire') }}
             </x-primary-button>
         </div>
 
-
+        <div class="register-bottom-information">
+            <p class="register-bottom-information-text">Nous pouvons utiliser votre e-mail et vos appareils pour vous envoyer des actualités et des conseils sur les produits et services Ziq&Mu. </p>
+        </div>
     </form>
 @endsection
 

@@ -2,16 +2,16 @@ html {
     background: linear-gradient(0deg, hsla(259, 69%, 44%, 0.6) 0%, hsla(323, 86%, 37%, 1) 100%), url('/public/img/vinyle.png');
     background-repeat: no-repeat, no-repeat;
     background-size: cover;
-    height    : 100%;
+    height: 100%;
     font-family: 'Roboto', sans-serif;
-    font-size  : 20px;
+    font-size: 20px;
 }
 
 .container {
     color: white;
 
     &.login {
-        width : 800px;
+        width: 800px;
         margin: auto;
 
         h1 {
@@ -20,42 +20,43 @@ html {
         }
 
         h2 {
-            font-family   : 'Righteous', cursive;
+            font-family: 'Righteous', cursive;
             text-transform: uppercase;
-            text-align    : center;
-            font-size     : 24px;
-            margin        : 50px 0 110px 0;
-            &.connect-text{
-                margin-bottom : 70px;
+            text-align: center;
+            font-size: 24px;
+            margin: 50px 0 110px 0;
+
+            &.connect-text {
+                margin-bottom: 70px;
             }
         }
 
         .description-text {
-            font-size : 20px;
+            font-size: 20px;
             text-align: center;
             width: 630px;
-            margin : 0 auto;
+            margin: 0 auto;
         }
     }
 
     .login-method {
-        display        : flex;
-        flex-direction : row;
+        display: flex;
+        flex-direction: row;
         justify-content: space-between;
-        margin-bottom  : 100px;
+        margin-bottom: 100px;
 
         .signin-method,
         .signup-method {
             width: 50%;
 
-            display        : flex;
-            flex-direction : column;
+            display: flex;
+            flex-direction: column;
             justify-content: space-between;
-            align-items    : center;
+            align-items: center;
 
             font-family: 'Roboto', sans-serif;
-            font-size  : 20px;
-            text-align : center;
+            font-size: 20px;
+            text-align: center;
 
             span {
                 margin-bottom: 30px;
@@ -64,40 +65,68 @@ html {
 
         }
     }
+
     .login-form {
-        width : 500px;
-        margin : 0 auto;
-        .input-field{
-            display : flex;
-            flex-direction : column;
-            .input-element{
-                margin : 10px 0 30px 0;
-                padding : 25px 10px;
-                border-radius : 8px;
-                outline : 0;
-                border : 1px solid black;
+        width: 500px;
+        margin: 0 auto;
+
+        .input-field {
+            display: flex;
+            flex-direction: column;
+
+            .input-element {
+                margin: 10px 0 30px 0;
+                padding: 25px 10px;
+                border-radius: 8px;
+                outline: 0;
+                border: 1px solid black;
                 font-size: 16px;
-                line-height : 19px;
+                line-height: 19px;
                 font-family: 'Roboto', sans-serif;
-                color : #8c8490;
+                color: #8c8490;
             }
         }
 
-        .connect-button, .register-button{
-            width : 500px;
+        .connect-button,
+        .register-button {
+            width: 500px;
             margin-bottom: 50px;
-            .top-text-button{
-                margin-bottom : 30px;
-                color : white;
-                font-size : 18px;
+
+            .top-text-button {
+                margin-bottom: 30px;
+                color: white;
+                font-size: 18px;
                 font-weight: 400;
                 line-height: 19px;
             }
-            .register-text{
-                margin-bottom : 15px;
+
+            .register-checkbox {
+                text-align: left;
+                display : flex;
+                align-items : center;
+                margin: 0 0 30px 50px;
+
+                input[type=checkbox] {
+                    width: 20px;
+                    height: 20px;
+                    margin-right : 12px;
+                }
+
+                span {
+                    font-size: 16px;
+                }
+            }
+
+            .register-text {
+                margin-bottom: 15px;
             }
         }
 
-
+        .register-bottom-information{
+            margin-top : 10px;
+            .register-bottom-information-text{
+                text-align : center;
+            }
+        }
     }
 }
