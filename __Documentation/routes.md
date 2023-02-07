@@ -14,7 +14,7 @@ https://www.figma.com/file/OU0s4ABT3h2eyCGnVSllfB/Ziq%26MU?node-id=159%3A499&t=F
 | :- | :- | :- |
 | Landing page | / | HomeController::show |
 | Connexion | /connect | ProfileController |
-| Inscription | /register | ProfileController |
+| Inscription | /register | RegisteredUserController |
 | Accueil | /home | HomeController::index |
 | Genres | /genres | StyleController::index |
 | Genres/{slug}| /genres/{slug} | StyleController::show |

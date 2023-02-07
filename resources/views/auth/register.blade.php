@@ -5,17 +5,16 @@
 @endsection
 
 @section('content')
-
     <h2 class="connect-text">Créer un compte</h2>
 
-    <form method="POST" action="{{ route('login') }}" class="login-form">
+    <form method="POST" action="{{ route('register') }}" class="login-form">
         @csrf
 
         <!-- Email Address -->
         <div class="input-field">
             <x-input-label for="email" :value="__('Votre email')" />
-            <x-text-input id="email" class="block mt-1 w-full input-element" type="email" name="email" :value="old('email')" required
-                autofocus />
+            <x-text-input id="email" class="block mt-1 w-full input-element" type="email" name="email" :value="old('email')"
+                required autofocus />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
@@ -30,17 +29,22 @@
         </div>
 
         <div class="d-flex flex-column connect-button center">
-            <p class="register-checkbox"><input type="checkbox" name="newsletter"> <span>m’envoyer des suggestions</span></p>
-            <p class="register-checkbox"><input type="checkbox" name="cgv"> <span>J'accepte les <span class="underline">CGV</span></span></p>
+            <p class="register-checkbox"><input type="checkbox" name="newsletter"> <span>m’envoyer des suggestions</span>
+            </p>
+            <p class="register-checkbox"><input type="checkbox" name="cgv"> <span>J'accepte les <a class="c-white"
+                        href="/cgv">CGV</a></span></p>
+
+            <div class="register-bottom-information">
+                <p class="register-bottom-information-text">Nous pouvons utiliser votre e-mail et vos appareils pour vous
+                    envoyer des actualités et des conseils sur les produits et services Ziq&Mu. </p>
+            </div>
 
             <x-primary-button class="m-auto btn-primary border-none ">
                 {{ __('S\'inscrire') }}
             </x-primary-button>
         </div>
 
-        <div class="register-bottom-information">
-            <p class="register-bottom-information-text">Nous pouvons utiliser votre e-mail et vos appareils pour vous envoyer des actualités et des conseils sur les produits et services Ziq&Mu. </p>
-        </div>
+
     </form>
 @endsection
 

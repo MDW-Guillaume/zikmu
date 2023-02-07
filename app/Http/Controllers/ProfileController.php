@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Redirect;
 
 class ProfileController extends Controller
 {
+    public function index(){
+        return view('profile.index');
+    }
     /**
      * Display the user's profile form.
      *
