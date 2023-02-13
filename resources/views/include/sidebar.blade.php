@@ -26,7 +26,7 @@
 
             <div class="music-player">
                 <div class="music-player-cover-container">
-                    <img src="{{-- Variable album.cover --}}" class="profile-icon" alt="">
+                    <img src="{{ URL::to('/img/Frame 37.png') }}{{-- Variable album.cover --}}" class="profile-icon" alt="">
                 </div>
 
                 <div class="music-player-command-container c-white">
@@ -35,11 +35,11 @@
                             <div class="music-player-command-slide-time-direct">
                                 {{-- JS pour ajouter 1 seconde / package de lecture de musique? --}}
                                 <span class="music-player-command-slide-time-direct-minute">00</span>
-                                :
+                                <span class="music-player-command-slide-time-direct-divider">:</span>
                                 <span class="music-player-command-slide-time-direct-second">00</span>
                             </div>
                             <div class="music-player-command-slide-time-total">
-                                <span class="">{{-- Variable song.length --}}</span>
+                                <span class="">00:00{{-- Variable song.length --}}</span>
                             </div>
                         </div>
                         <div class="music-player-command-slide-controller">
@@ -47,9 +47,9 @@
                         </div>
                     </div>
                     <div class="music-player-command-title">
-                        <span class="music-player-command-title-song">{{-- Variable song.name --}}</span><br>
-                        <span class="music-player-command-title-album">{{-- Variable album.name --}} •</span>
-                        <span class="music-player-command-title-artist">{{-- Variable artist.name --}}</span>
+                        <span class="music-player-command-title-song">Space Oddity (2015 Remaster){{-- Variable song.name --}}</span><br>
+                        <span class="music-player-command-title-album">ChangesOneBowie{{-- Variable album.name --}} •</span>
+                        <span class="music-player-command-title-artist">David Bowie{{-- Variable artist.name --}}</span>
                     </div>
                     <div class="music-player-command-controllers">
                         <div class="music-player-command-controllers-rewind">
@@ -77,6 +77,13 @@
                                 alt="">
                         </div>
                     </div>
+                </div>
+                <div class="music-player-waiting-list">
+                    <a href="{{-- route('waiting.index')--}}" class="c-white">
+                        <span class="waiting-icon-span"><img src="{{ URL::to('/img/queue.svg') }}" class="waiting-icon"
+                                alt=""></span>
+                        <span class="waiting-text-span">File d'attente</span>
+                    </a>
                 </div>
             </div>
         </div>
