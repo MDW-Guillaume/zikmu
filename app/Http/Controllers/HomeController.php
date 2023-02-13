@@ -50,7 +50,7 @@ class HomeController extends Controller
         $styles = DB::table('styles')->select('name', 'id', 'slug')->get();
 
         // On récupère une liste d'artistes les plus aimés
-        $db_artists = DB::table('artists')->orderByDesc('follow')->get();
+        $db_artists = DB::table('artists')->orderByDesc('follow')->take(10)->get();
 
         for ($i = 0; $i < count($db_artists); $i++) {
             $artists[$i]['id'] = $db_artists[$i]->id;
@@ -62,7 +62,7 @@ class HomeController extends Controller
 
             if (!is_null($style_name)) {
                 if (!is_null($db_artists[$i]->cover)) {
-                    if (file_exists(storage_path() . '/app/files/artistes/' . $style_name->slug . '/' . $db_artists[$i]->cover)) {
+                    if (file_exists(storage_path() . '/app/public/files/artistes/' . $style_name->slug . '/' . $db_artists[$i]->cover)) {
                         $artists[$i]['cover'] = $db_artists[$i]->cover;
                         $artists[$i]['style_slug'] = $style_name->slug;
                     } else {

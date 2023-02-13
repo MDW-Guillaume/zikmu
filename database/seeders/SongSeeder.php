@@ -23,13 +23,13 @@ class SongSeeder extends Seeder
      */
     public function run()
     {
-
         # Récupération des artistes, albums, longueur et année de sortie
         $musical_path = scandir(public_path('music') . '/music');
-
+        
         # Création d'un répertoire pour stocker les dossiers de chaque albums
-        File::makeDirectory(storage_path() . '/app/files/');
-        File::makeDirectory(storage_path() . '/app/files/music/');
+        File::makeDirectory(storage_path() . '/app/public/files/');
+        // dd('ok');
+        File::makeDirectory(storage_path() . '/app/public/files/music/');
         # Pour chaque album du répertoire original/music
         for ($i = 0; $i < count($musical_path); $i++) {
             # Si le fichier/dossier n'est pas un chemin
@@ -45,7 +45,7 @@ class SongSeeder extends Seeder
                 $album_length = $musical_explode[1];
                 $album_release = $musical_explode[0];
                 # Création du dossier de l'album nommé par un slug 
-                File::makeDirectory(storage_path() . '/app/files/music/' . $folder_slug_name);
+                File::makeDirectory(storage_path() . '/app/public/files/music/' . $folder_slug_name);
                 # Récupération des éléments compris dans le dossier de l'album $i 
                 $album_content = scandir(public_path('music') . '/music/' . $musical_path[$i]);
 
@@ -96,8 +96,8 @@ class SongSeeder extends Seeder
                         $title_length = intval($audio->duration);
 
                         # On copie le fichier original dans le répertoire crée précedement en le renommant par son slug
-                        copy(storage_path() . '/app/original/music/' . $musical_path[$i] . '/' . $album_content[$j], storage_path() . '/app/files/music/' . $folder_slug_name . '/' . $album_content[$j]);
-                        rename(storage_path() . '/app/files/music/' . $folder_slug_name . '/' . $album_content[$j], storage_path() . '/app/files/music/' . $folder_slug_name . '/' . $slug_filename);
+                        copy(storage_path() . '/app/original/music/' . $musical_path[$i] . '/' . $album_content[$j], storage_path() . '/app/public/files/music/' . $folder_slug_name . '/' . $album_content[$j]);
+                        rename(storage_path() . '/app/public/files/music/' . $folder_slug_name . '/' . $album_content[$j], storage_path() . '/app/public/files/music/' . $folder_slug_name . '/' . $slug_filename);
 
                         # On insère les informations récupérées en base de données dans la table Song
                         Song::firstOrCreate(
@@ -113,14 +113,14 @@ class SongSeeder extends Seeder
                 }
             }
         }
-
+        
         # Récupération des genres par artistes
 
         $style_path = scandir(public_path('music') . '/artistes');
 
         # On crée le dossier si celui ci n'existe pas déjà 
-        if (!file_exists(storage_path() . '/app/files/artistes')) {
-            File::makeDirectory(storage_path() . '/app/files/artistes/');
+        if (!file_exists(storage_path() . '/app/public/files/artistes')) {
+            File::makeDirectory(storage_path() . '/app/public/files/artistes/');
         }
         for ($i = 0; $i < count($style_path); $i++) {
             if ($style_path[$i] != "." && $style_path[$i] != '..') {
@@ -130,8 +130,8 @@ class SongSeeder extends Seeder
                 $style_slug = Str::slug($style_path[$i]);
 
                 # Création du dossier du genre actuel
-                if (!file_exists(storage_path() . '/app/files/artistes/' . $style_slug)) {
-                    File::makeDirectory(storage_path() . '/app/files/artistes/' . $style_slug);
+                if (!file_exists(storage_path() . '/app/public/files/artistes/' . $style_slug)) {
+                    File::makeDirectory(storage_path() . '/app/public/files/artistes/' . $style_slug);
                 }
 
                 # Ajout du style en base de données
@@ -160,9 +160,9 @@ class SongSeeder extends Seeder
                         $slug_filename = Str::substrReplace(Str::slug($style_artist_path[$j]), '.', -$pathinfo_extention_length, 0);
 
                         # Copie du fichier du dossier original vers le dossier crée par nos soins
-                        if (!file_exists(storage_path() . '/app/files/artistes/' . $style_slug . '/' . $style_artist_path[$j])) {
-                            copy(storage_path() . '/app/original/artistes/' . $style_path[$i] . '/' . $style_artist_path[$j], storage_path() . '/app/files/artistes/' . $style_slug . '/' . $style_artist_path[$j]);
-                            rename(storage_path() . '/app/files/artistes/' . $style_slug . '/' . $style_artist_path[$j], storage_path() . '/app/files/artistes/' . $style_slug . '/' . $slug_filename);
+                        if (!file_exists(storage_path() . '/app/public/files/artistes/' . $style_slug . '/' . $style_artist_path[$j])) {
+                            copy(storage_path() . '/app/original/artistes/' . $style_path[$i] . '/' . $style_artist_path[$j], storage_path() . '/app/public/files/artistes/' . $style_slug . '/' . $style_artist_path[$j]);
+                            rename(storage_path() . '/app/public/files/artistes/' . $style_slug . '/' . $style_artist_path[$j], storage_path() . '/app/public/files/artistes/' . $style_slug . '/' . $slug_filename);
                         }
 
                         # Update du style de chaque artiste ainsi que du nom du fichier de leur cover 
@@ -176,8 +176,8 @@ class SongSeeder extends Seeder
         $album_path = scandir(public_path('music') . '/albums');
 
         # Création du dossier de cover d'albums
-        if (!file_exists(storage_path() . '/app/files/albums')) {
-            File::makeDirectory(storage_path() . '/app/files/albums/');
+        if (!file_exists(storage_path() . '/app/public/files/albums')) {
+            File::makeDirectory(storage_path() . '/app/public/files/albums/');
         }
         for ($i = 0; $i < count($album_path); $i++) {
             if ($album_path[$i] != "." && $album_path[$i] != '..') {
@@ -185,8 +185,8 @@ class SongSeeder extends Seeder
                 $artist_slug_form_album_path = Str::slug($album_path[$i]);
 
                 # Création du dossier du genre actuel
-                if (!file_exists(storage_path() . '/app/files/albums/' . $artist_slug_form_album_path)) {
-                    File::makeDirectory(storage_path() . '/app/files/albums/' . $artist_slug_form_album_path);
+                if (!file_exists(storage_path() . '/app/public/files/albums/' . $artist_slug_form_album_path)) {
+                    File::makeDirectory(storage_path() . '/app/public/files/albums/' . $artist_slug_form_album_path);
                 }
 
                 $artist_album_path = scandir(public_path('music') . '/albums/' . $artist_form_album_path);
@@ -200,9 +200,9 @@ class SongSeeder extends Seeder
                         $slug_filename = Str::substrReplace(Str::slug($album_cover), '.', -$pathinfo_extention_length, 0);
 
                         # Copie et renommage du fichier dans un format slug
-                        if (!file_exists(storage_path() . '/app/files/albums/' . $artist_slug_form_album_path . '/' . $slug_filename)) {
-                            copy(storage_path() . '/app/original/albums/' . $artist_form_album_path . '/' . $album_cover, storage_path() . '/app/files/albums/' . $artist_slug_form_album_path . '/' . $album_cover);
-                            rename(storage_path() . '/app/files/albums/' . $artist_slug_form_album_path . '/' . $album_cover, storage_path() . '/app/files/albums/' . $artist_slug_form_album_path . '/' . $slug_filename);
+                        if (!file_exists(storage_path() . '/app/public/files/albums/' . $artist_slug_form_album_path . '/' . $slug_filename)) {
+                            copy(storage_path() . '/app/original/albums/' . $artist_form_album_path . '/' . $album_cover, storage_path() . '/app/public/files/albums/' . $artist_slug_form_album_path . '/' . $album_cover);
+                            rename(storage_path() . '/app/public/files/albums/' . $artist_slug_form_album_path . '/' . $album_cover, storage_path() . '/app/public/files/albums/' . $artist_slug_form_album_path . '/' . $slug_filename);
                         }
 
 

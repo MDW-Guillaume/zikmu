@@ -2,6 +2,7 @@ body,
 .container {
     margin: 0;
     height: 100%;
+    overflow-x : hidden;
 }
 
 .container {
@@ -59,6 +60,39 @@ body,
                 font-size     : 12px;
                 line-height   : 15px;
                 text-transform: uppercase;
+            }
+        }
+    }
+}
+
+.artists-container {
+    display       : flex;
+    flex-direction: column;
+    flex-wrap     : nowrap;
+    margin        : 30px 0;
+    overflow-x : scroll;
+
+    .artists-list {
+        flex-direction : row;
+        justify-content: flex-start;
+        flex-wrap      : nowrap;
+        width          : 300vh;
+        max-width      : fit-content;
+
+        .artist-element {
+            width          : 200px;
+            display        : flex;
+            flex-direction : column;
+            justify-content: flex-start;
+
+            .artist-cover {
+                height: 180px;
+                width : 100%;
+                border-radius : 500px;
+                img {
+                    max-width: 100%;
+
+                }
             }
         }
     }
