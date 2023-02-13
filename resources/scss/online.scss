@@ -1,4 +1,65 @@
-body, .container{
-    margin : 0;
-    height : 100%;
+body,
+.container {
+    margin: 0;
+    height: 100%;
+}
+
+.container {
+    display        : flex;
+    flex-direction : row;
+    flex-wrap      : nowrap;
+    justify-content: flex-start;
+}
+
+.page-content {
+    width : calc(100% - 300px);
+    margin: 0 15px;
+
+    h2 {
+        font-family   : 'Righteous';
+        font-style    : normal;
+        font-weight   : 400;
+        font-size     : 18px;
+        line-height   : 22px;
+        display       : flex;
+        align-items   : center;
+        text-align    : center;
+        text-transform: capitalize;
+
+        color: #FFFFFF;
+    }
+}
+
+.styles-container {
+    display       : flex;
+    flex-direction: column;
+    flex-wrap     : nowrap;
+    margin        : 30px 0;
+
+    .styles-list {
+        flex-direction : row;
+        justify-content: flex-start;
+        flex-wrap      : wrap;
+
+        .styles-element {
+            position        : relative;
+            width           : 245px;
+            height          : 102px;
+            background-image: url('/public/img/style-bg.png');
+            margin          : 0 12px 8px 0;
+
+            h3 {
+                position: absolute;
+                top     : 0;
+                margin  : 5px;
+
+                font-family   : 'Righteous';
+                font-style    : normal;
+                font-weight   : 400;
+                font-size     : 12px;
+                line-height   : 15px;
+                text-transform: uppercase;
+            }
+        }
+    }
 }

@@ -30,7 +30,6 @@ class SongSeeder extends Seeder
         # Création d'un répertoire pour stocker les dossiers de chaque albums
         File::makeDirectory(storage_path() . '/app/files/');
         File::makeDirectory(storage_path() . '/app/files/music/');
-
         # Pour chaque album du répertoire original/music
         for ($i = 0; $i < count($musical_path); $i++) {
             # Si le fichier/dossier n'est pas un chemin

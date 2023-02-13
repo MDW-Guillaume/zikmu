@@ -47,7 +47,7 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return view('test')->with('message', 'Bienvenue whez Zik&Mu !');
+        return view('test')->with('message', 'Bienvenue chez Zik&Mu !');
         // return redirect(RouteServiceProvider::HOME);
     }
 }

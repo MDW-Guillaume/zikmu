@@ -13,11 +13,12 @@
     </head>
     <body>
         <div class="container">
-        @include('include.sidebar')
+            @include('include.sidebar')
 
-        @yield('content')
-
-    {{-- @include('include.footer') --}}
-    </div>
-</body>
+            <div class="page-content">
+            @yield('content')
+            </div>
+        {{-- @include('include.footer') --}}
+        </div>
+    </body>
 </html>

@@ -23,7 +23,7 @@
             </div>
         </div>
         <div class="style_music">
-            <h2>Genres &rt</h2>
+            <h2>Genres</h2>
             <div class="all_style_music">
                 {{-- @foreach ($recents as $recent) --}}
                 <div class="element_style_music">
