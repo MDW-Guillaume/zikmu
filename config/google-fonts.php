@@ -6,10 +6,7 @@ return [
      * Here you can register fonts to call from the @googlefonts Blade directive.
      * The google-fonts:fetch command will prefetch these fonts.
      */
-    'fonts' => [
-        'default' => 'https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,700;1,400;1,700',
-        'righteous' => 'https://fonts.googleapis.com/css2?family=Righteous&display=swap',
-    ],
+    'fonts' => [],
 
     /*
      * This disk will be used to store local Google Fonts. The public disk

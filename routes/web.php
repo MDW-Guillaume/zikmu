@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/artist/{slug}', [ArtistController::class, 'show'])->name('artist.show');
     
+    Route::get('/album/{slug}', [AlbumController::class, 'show'])->name('album.show');
 });
 
 
