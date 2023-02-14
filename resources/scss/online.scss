@@ -1,9 +1,27 @@
+html {
+    background: linear-gradient(16.12deg, rgba(85, 35, 191, 0.7) 9.16%, rgba(176, 13, 114, 0.7) 75.86%), #000000 !important;
+}
+
+*::-webkit-scrollbar {
+    height: 5px;
+}
+
+*::-webkit-scrollbar-track {
+    background: #ffffff00;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: #414244;
+    border-radius   : 10px;
+}
+
 body,
 .container {
-    margin: 0;
-    height: 100%;
-    overflow-x : hidden;
+    margin    : 0;
+    height    : 100%;
+    overflow-x: hidden;
 }
+
 
 .container {
     display        : flex;
@@ -70,30 +88,101 @@ body,
     flex-direction: column;
     flex-wrap     : nowrap;
     margin        : 30px 0;
-    overflow-x : scroll;
+    overflow-x    : scroll;
+    padding-bottom: 20px;
+
+    &::-webkit-scrollbar {
+        height: 0px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: #ffffff00;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #41424400;
+        border-radius   : 10px;
+    }
+
+    &:hover {
+        &::-webkit-scrollbar {
+            height: 5px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: #ffffff00;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: #414244;
+            border-radius   : 10px;
+        }
+    }
 
     .artists-list {
         flex-direction : row;
         justify-content: flex-start;
         flex-wrap      : nowrap;
-        width          : 300vh;
+        width          : 400vh;
         max-width      : fit-content;
+
+        scrollbar-width: auto;
+        scrollbar-color: #414244 #ffffff;
 
         .artist-element {
             width          : 200px;
             display        : flex;
             flex-direction : column;
             justify-content: flex-start;
+            margin-right   : 40px;
+            color          : #fff;
+            text-decoration: none;
 
             .artist-cover {
-                height: 180px;
-                width : 100%;
-                border-radius : 500px;
+                height             : 200px;
+                width              : 100%;
+                border-radius      : 500px;
+                background-size    : cover;
+                background-position: center;
+
                 img {
                     max-width: 100%;
 
                 }
             }
+
+            .artist-name {
+                margin-top: 5px;
+
+                h3 {
+                    font-family: 'Roboto';
+                    font-style : normal;
+                    font-weight: 500;
+                    font-size  : 14px;
+                    line-height: 16px;
+                    text-align : center;
+                    margin     : 0;
+                }
+            }
+
+            .artist-follow {
+                font-family: 'Roboto';
+                font-style : normal;
+                font-weight: 300;
+                font-size  : 12px;
+                line-height: 14px;
+                text-align : center;
+
+                p {
+                    margin    : 0;
+                    margin-top: 5px;
+                }
+
+                img {
+                    margin-right: 10px;
+                }
+            }
         }
     }
 }
+

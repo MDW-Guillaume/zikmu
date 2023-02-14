@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\Auth\RegisteredUserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ArtistController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 /*
@@ -33,6 +34,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/disconnect', [AuthenticatedSessionController::class, 'destroy']);
     Route::get('/logout', [AuthenticatedSessionController::class, 'destroy']);
 
+    Route::get('/artist/{slug}', [ArtistController::class, 'show'])->name('artist.show');
+    
 });
 
 

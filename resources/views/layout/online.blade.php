@@ -6,6 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         @googlefonts('righteous')
         @vite(['resources/scss/online.scss'])
+        @vite(['resources/scss/artist.scss'])
         @vite(['resources/scss/sidebar.scss'])
         @vite(['resources/scss/app.scss'])
         @vite(['resources/scss/mixin.scss'])

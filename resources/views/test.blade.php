@@ -12,36 +12,26 @@
         </div>
     </div>
 
+    <h2>Artistes ></h2>
     <div class="artists-container">
-        <h2>Artistes ></h2>
         <div class="artists-list d-flex">
             @foreach ($artists as $artist)
-                {{--<div class="artist-element">  Link to artist page with slug --}}
-                    {{-- <div class="artist-cover">
-                        @if ($artist['cover'] == 'unfinded.jpg')
-                        <img src="{{ URL::to('/img') }}/unknow.png" alt="">
-                        @else
-                        <img src="{{ URL::to('storage/files/artistes') }}/{{ $artist['style_slug'] }}/{{ $artist['cover'] }}"
-                            alt="">
-                        @endif
-                    </div> --}}
-
-                    <div class="artist-element">
-                        <div class="artist-cover" style="background-image : 
-                    @if ($artist['cover'] == 'unfinded.jpg')
-                    url('{{ URL::to('/img') }}/unknow.png')
+                <a href="{{ route('artist.show', $artist['slug']) }}" class="artist-element">
+                    <div class="artist-cover"
+                        style="background-image : 
+                    @if ($artist['cover'] == 'unfinded.jpg') url('{{ URL::to('/img') }}/unknow.png')
                     @else
-                    url('{{ URL::to('storage/files/artistes') }}/{{ $artist['style_slug'] }}/{{ $artist['cover'] }}')
-                    @endif
-                    "></div>
+                    url('{{ URL::to('storage/files/artistes') }}/{{ $artist['style_slug'] }}/{{ $artist['cover'] }}') @endif
+                    ">
+                    </div>
 
                     <div class="artist-name">
                         <h3>{{ $artist['name'] }}</h3>
                     </div>
                     <div class="artist-follow">
-                        <p><img src="{{URL::to('/img')}}fav-fill.svg" alt="">{{$artist['follow']}}</p>
+                        <p><img src="{{ URL::to('/img') }}/fav-fill.svg" alt="">{{ $artist['follow'] }}</p>
                     </div>
-                </div>
+                </a>
             @endforeach
         </div>
     </div>
