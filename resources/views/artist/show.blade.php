@@ -24,22 +24,22 @@
             <div class="albums-container">
                 @foreach ($albums as $album)
                     {{-- {{ dd($album) }} --}}
-                    <a href="{{-- route('album.show', $album->id)--}}" class="album-element">
+                    <div  class="album-element">
                         <div class="album-cover" style="border : 2px solid black;">
                             @if (is_null($album->cover))
-                                <img src="{{ URL::to('/img') }}/unknown_cover.png" alt="">
+                                <a href="{{-- route('album.show', $album->id)--}}"><img src="{{ URL::to('/img') }}/unknown_cover.png" alt=""></a>
                             @else
-                                <img src="{{ URL::to('storage/files/albums') }}/{{ $artist->slug }}/{{ $album->cover }}"
-                                    alt="">
+                                <a href="{{-- route('album.show', $album->id)--}}"><img src="{{ URL::to('storage/files/albums') }}/{{ $artist->slug }}/{{ $album->cover }}"
+                                    alt=""></a>
                             @endif
                             <button style="background-color : transparent; border : 0; cursor : pointer; border-radius : 50%;"><img src="{{URL::to('/img')}}/play_song_btn.png" alt=""></button>
                         </div>
-                        <div class="album-details">
+                        <a href="{{-- route('album.show', $album->id)--}}" class="album-details">
                             <h3 class="album-name">{{$album->name}}</h3>
                             <span>par {{$artist->name}}</span>
                             <span>{{$album->release}}</span>
-                        </div>
-                    </a>
+                        </a>
+                    </div>
                 @endforeach
             </div>
         </div>

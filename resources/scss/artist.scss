@@ -92,13 +92,14 @@
                 flex-direction : column;
                 justify-content: flex-start;
                 margin-right   : 30px;
+                z-index : 3;
 
                 .album-cover {
                     width   : 180px;
                     height  : 180px;
                     position: relative;
 
-                    img {
+                    a > img {
                         max-width: 100%;
                         height : 100%;
                     }
@@ -107,6 +108,7 @@
                         position: absolute;
                         bottom  : 5px;
                         left    : 5px;
+                        z-index : 2;
                     }
                 }
 
@@ -114,6 +116,8 @@
                     margin-top    : 5px;
                     display       : flex;
                     flex-direction: column;
+                    text-decoration: none;
+                    color: #FFFFFF;
 
                     h3 {
                         margin     : 0;
