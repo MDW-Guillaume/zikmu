@@ -17,8 +17,8 @@
 
             <div class="page-content">
             @yield('content')
+            @include('include.footer')
             </div>
-        {{-- @include('include.footer') --}}
         </div>
     </body>
 </html>
