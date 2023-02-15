@@ -5,9 +5,9 @@
         <h2>Genres ></h2>
         <div class="styles-list d-flex">
             @foreach ($styles as $style)
-                <div class="styles-element">
+                <a href="{{ route('style.show', $style->slug)}}" class="styles-element">
                     <h3>{{ $style->name }}</h3>
-                </div>
+                </a>
             @endforeach
         </div>
     </div>

@@ -85,11 +85,14 @@ class SongSeeder extends Seeder
                         # On récupère les informations comprises dans le nom du fichier
                         $title_explode = explode(' - ', $album_content[$j]);
                         $title_position = $title_explode[0];
-                        $title_name = $title_explode[1];
+                        $title_info = pathinfo($title_explode[1]);
+                        $title_name = $title_info['filename'];
                         
+                        // dd($title_explode,$title_info);
+
                         # On transforme le nom du fichier en slug
-                        $pathinfo_extention_length = strlen(pathinfo($title_name, PATHINFO_EXTENSION));
-                        $slug_filename = Str::substrReplace(Str::slug($title_name), '.', -$pathinfo_extention_length, 0);
+                        $pathinfo_extention_length = strlen(pathinfo($title_explode[1], PATHINFO_EXTENSION));
+                        $slug_filename = Str::substrReplace(Str::slug($title_explode[1]), '.', -$pathinfo_extention_length, 0);
 
                         # Avec le composant Mp3Info, on récupère la longueur du titre
                         $audio = new Mp3Info(storage_path() . '/app/original/music/' . $musical_path[$i] . '/' . $album_content[$j], true);

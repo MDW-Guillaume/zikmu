@@ -16,7 +16,7 @@ class ArtistController extends Controller
 
         $artist_style= DB::table('styles')->select('slug')->where('id', $artist_info->style_id)->first();
 
-        $albums = DB::table('albums')->where('artist_id', $artist_info->id)->get();
+        $albums = DB::table('albums')->where('artist_id', $artist_info->id)->orderByDesc('release')->get();
         
         // dd($artist_info, $artist_style, $albums)
 

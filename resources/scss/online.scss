@@ -32,7 +32,7 @@ body,
 
 .page-content {
     width : calc(100% - 300px);
-    margin: 0 285px;
+    margin: 0 15px 0 285px;
 
     h2 {
         font-family   : 'Righteous';
@@ -59,13 +59,15 @@ body,
         flex-direction : row;
         justify-content: flex-start;
         flex-wrap      : wrap;
-
+        
         .styles-element {
             position        : relative;
             width           : 245px;
             height          : 102px;
             background-image: url('/public/img/style-bg.png');
             margin          : 0 12px 8px 0;
+            color: white;
+            text-decoration: none;
 
             h3 {
                 position: absolute;
