@@ -40,6 +40,7 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/album/{slug}', [AlbumController::class, 'show'])->name('album.show');
 
+    Route::get('/style', [StyleController::class, 'index'])->name('style.index');
     Route::get('/style/{slug}', [StyleController::class, 'show'])->name('style.show');
 });
 

@@ -32,8 +32,12 @@ body,
 
 .page-content {
     width : calc(100% - 300px);
-    margin: 0 15px 0 285px;
-
+    margin: 0 15px 90px 285px;
+    
+    position : relative;
+    a{
+        text-decoration: none;
+    }
     h2 {
         font-family   : 'Righteous';
         font-style    : normal;
@@ -46,6 +50,12 @@ body,
         text-transform: capitalize;
 
         color: #FFFFFF;
+        display : flex;
+        align-items: center;
+        span{
+            margin-right : 5px;
+
+        }
     }
 }
 

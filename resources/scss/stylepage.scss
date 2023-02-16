@@ -12,6 +12,8 @@
         margin-bottom : 40px;
     }
 
+    
+
     .albums-list {
         display       : flex;
         flex-direction: row;
@@ -71,6 +73,38 @@
                     font-weight: 300;
                     font-size  : 14px;
                     line-height: 16px;
+                }
+            }
+        }
+    }
+
+    &.page-index{
+        margin : 60px 0 0 0 ;
+        .styles-list {
+            flex-direction : row;
+            justify-content: flex-start;
+            flex-wrap      : wrap;
+            
+            .styles-element {
+                position        : relative;
+                width           : calc(25% - 30px);
+                height          : 102px;
+                background-image: url('/public/img/style-bg.png');
+                margin          : 0 12px 8px 0;
+                color: white;
+                text-decoration: none;
+    
+                h3 {
+                    position: absolute;
+                    top     : 0;
+                    margin  : 5px;
+    
+                    font-family   : 'Righteous';
+                    font-style    : normal;
+                    font-weight   : 400;
+                    font-size     : 12px;
+                    line-height   : 15px;
+                    text-transform: uppercase;
                 }
             }
         }

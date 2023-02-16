@@ -8,7 +8,11 @@ use Illuminate\Support\Facades\DB;
 class StyleController extends Controller
 {
     public function index(){
-        //
+        $styles = DB::table('styles')->get();
+
+        return view('style.index')->with([
+            'styles' => $styles
+        ]);
     }
 
     public function show($slug){

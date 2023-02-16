@@ -20,7 +20,7 @@
             </div>
             <div class="album-details">
                 <h2 class="album-name">{{ $album->name }}</h2>
-                <p>par {{$artist->name}}</p>
+                <p>par <a href="{{route('artist.show', $artist->slug)}}">{{$artist->name}}</a></p>
                 <a href="{{ route('style.show', $style->slug); }}" class="album-style">{{ $style->name }} <span>&rsaquo;</span></a>
                 <div class="album-specs">
                     <span>{{ count($titles); }} titres • {{ $length }} • {{ $album->release }}</span>
