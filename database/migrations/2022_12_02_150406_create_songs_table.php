@@ -13,6 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::create('songs', function (Blueprint $table) {
             $table->id();
             $table->string('name');
@@ -20,8 +21,20 @@ return new class extends Migration
             $table->integer('length');
             $table->integer('listened')->default(0);
             $table->integer('position');
-            $table->integer('album_id');
+            $table->unsignedBigInteger('album_id');
             $table->timestamps();
+
+            $table->foreign('album_id')
+                ->references('id')
+                ->on('albums')
+                ->onUpdate('restrict')
+                ->onDelete('restrict');
+
+            $table->foreign('id')
+                ->references('song_id')
+                ->on('song_user')
+                ->onUpdate('restrict')
+                ->onDelete('restrict');
         });
     }
 

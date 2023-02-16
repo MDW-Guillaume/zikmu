@@ -13,9 +13,24 @@ return new class extends Migration
      */
     public function up()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::create('album_user', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('album_id');
             $table->timestamps();
+
+            $table->foreign('user_id')
+                  ->references('id')
+                  ->on('users')
+                  ->onUpdate('restrict')
+                  ->onDelete('restrict');
+
+            $table->foreign('album_id')
+                  ->references('id')
+                  ->on('albums')
+                  ->onUpdate('restrict')
+                  ->onDelete('restrict');
         });
     }
 

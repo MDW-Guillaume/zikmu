@@ -13,8 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->string('firstname')->default(null);
+            $table->string('lastname')->default(null);
+
             $table->string('email')->unique();
             $table->string('password');
             $table->string('remember_token', 100)->default('');
