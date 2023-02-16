@@ -16,7 +16,14 @@
             <div class="favorite-details">
                 <div class="favorite-specs">
                     <h2 class="favorite-name">Coups de coeur</h2>
-                    <p>par {{-- Nom prénom / ou / nom d'utilisateur --}}</p>
+                    <p>par 
+                        @if (!is_null($user->firstname))
+                            {{$user->firstname}} {{$user->lastname}}
+                        @else
+                            {{$user->username}}
+                        @endif
+                        
+                        {{-- Nom prénom / ou / nom d'utilisateur --}}</p>
                     <span>Durée : {{-- $length --}}</span>
                 </div>
                 <div class="favorite-actions">

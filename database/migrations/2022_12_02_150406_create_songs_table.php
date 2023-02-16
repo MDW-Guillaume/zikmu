@@ -30,11 +30,11 @@ return new class extends Migration
                 ->onUpdate('restrict')
                 ->onDelete('restrict');
 
-            $table->foreign('id')
-                ->references('song_id')
-                ->on('song_user')
-                ->onUpdate('restrict')
-                ->onDelete('restrict');
+            // $table->foreign('id')
+            //     ->references('song_id')
+            //     ->on('song_user')
+            //     ->onUpdate('restrict')
+            //     ->onDelete('restrict');
         });
     }
 
