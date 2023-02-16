@@ -146,4 +146,82 @@
             }
         }
     }
+
+    &.page-index {
+        margin: 60px 0 0 60px;
+
+        h2 {
+            text-transform: uppercase;
+            font-family   : 'Righteous';
+            font-style    : normal;
+            font-weight   : 400;
+            font-size     : 32px;
+            line-height   : 40px;
+            text-transform: uppercase;
+            margin-bottom : 40px;
+        }
+
+        .artists-list {
+            flex-direction : row;
+            justify-content: flex-start;
+            flex-wrap      : wrap;
+
+            .artist-element {
+                width             : 200px;
+                // width          : calc(25% - 40px);
+                display           : flex;
+                flex-direction    : column;
+                justify-content   : flex-start;
+                margin-right      : 40px;
+                margin-bottom     : 40px;
+                color             : #fff;
+                text-decoration   : none;
+
+                .artist-cover {
+                    height             : 200px;
+                    width              : 100%;
+                    border-radius      : 500px;
+                    background-size    : cover;
+                    background-position: center;
+
+                    img {
+                        max-width: 100%;
+
+                    }
+                }
+
+                .artist-name {
+                    margin-top: 5px;
+
+                    h3 {
+                        font-family: 'Roboto';
+                        font-style : normal;
+                        font-weight: 500;
+                        font-size  : 14px;
+                        line-height: 16px;
+                        text-align : center;
+                        margin     : 0;
+                    }
+                }
+
+                .artist-follow {
+                    font-family: 'Roboto';
+                    font-style : normal;
+                    font-weight: 300;
+                    font-size  : 12px;
+                    line-height: 14px;
+                    text-align : center;
+
+                    p {
+                        margin    : 0;
+                        margin-top: 5px;
+                    }
+
+                    img {
+                        margin-right: 10px;
+                    }
+                }
+            }
+        }
+    }
 }

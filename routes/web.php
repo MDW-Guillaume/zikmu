@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/disconnect', [AuthenticatedSessionController::class, 'destroy']);
     Route::get('/logout', [AuthenticatedSessionController::class, 'destroy']);
 
+    Route::get('/artist', [ArtistController::class, 'index'])->name('artist.index');
     Route::get('/artist/{slug}', [ArtistController::class, 'show'])->name('artist.show');
     
     Route::get('/album/{slug}', [AlbumController::class, 'show'])->name('album.show');

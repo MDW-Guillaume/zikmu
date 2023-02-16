@@ -8,7 +8,18 @@ use Illuminate\Support\Facades\DB;
 class ArtistController extends Controller
 {
     public function index(){
-        //
+        $artists= DB::table('artists')->get();
+
+        foreach($artists as $artist){
+            if(!is_null($artist->style_id)){
+            $artist_style = DB::table('styles')->where('id', $artist->style_id)->first();
+            $artist->style = $artist_style->slug;
+        }}
+        // dd($artists);
+
+        return view('artist.index')->with([
+            'artists' => $artists
+        ]);
     }
 
     public function show($slug){

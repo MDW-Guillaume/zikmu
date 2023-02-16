@@ -1,5 +1,9 @@
 @extends('layout.online')
 
+@section('title')
+    Accueil
+@endsection
+
 @section('content')
     <div class="styles-container">
         <a href="{{route('style.index')}}"><h2 class="home-title"><span>Genres</span><span> > </span></h2></a>
@@ -12,7 +16,7 @@
         </div>
     </div>
 
-    <h2 class="home-title"><span>Artistes</span><span> > </span></h2>
+    <a href="{{route('artist.index')}}"><h2 class="home-title"><span>Artistes</span><span> > </span></h2></a>
     <div class="artists-container">
         <div class="artists-list d-flex">
             @foreach ($artists as $artist)
