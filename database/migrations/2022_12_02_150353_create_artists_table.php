@@ -24,16 +24,16 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('style_id')
-                ->references('id')
-                ->on('styles')
-                ->onUpdate('restrict')
-                ->onDelete('restrict');
+                    ->references('id')
+                    ->on('styles')
+                    ->onUpdate('restrict')
+                    ->onDelete('restrict');
 
-            $table->foreign('id')
-                ->references('artist_id')
-                ->on('artist_user')
-                ->onUpdate('restrict')
-                ->onDelete('restrict');
+            // $table->foreign('id')
+            //         ->references('artist_id')
+            //         ->on('artist_user')
+            //         ->onUpdate('restrict')
+            //         ->onDelete('restrict');
         });
     }
 
