@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AlbumController;
 use App\Http\Controllers\StyleController;
 use App\Http\Controllers\ArtistController;
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
@@ -43,6 +44,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/style', [StyleController::class, 'index'])->name('style.index');
     Route::get('/style/{slug}', [StyleController::class, 'show'])->name('style.show');
+
+    Route::get('/favorite', [FavoriteController::class, 'index'])->name('favorite.index');
 });
 
 

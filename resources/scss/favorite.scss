@@ -1,0 +1,111 @@
+.page-favorite {
+    margin-top : 60px;
+    margin-left: 60px;
+
+    .favorite-card {
+        display       : flex;
+        flex-direction: row;
+        align-items   : start;
+
+        .favorite-cover {
+            width              : 160px;
+            height             : 160px;
+            background-position: center;
+            background-size    : cover;
+        }
+
+        .favorite-details {
+            margin-left    : 30px;
+            height         : 160px;
+            display        : flex;
+            flex-direction : column;
+            justify-content: space-between;
+            align-items    : flex-start;
+
+            h2 {
+                margin        : 0 0 15px 0;
+                font-family   : 'Roboto';
+                font-style    : normal;
+                font-weight   : 500;
+                font-size     : 24px;
+                line-height   : 28px;
+                text-transform: none;
+            }
+
+            p {
+                margin     : 0 0 15px 0;
+                font-family: 'Roboto';
+                font-style : normal;
+                font-weight: 300;
+                font-size  : 18px;
+                line-height: 21px;
+
+                a {
+                    display: inline;
+                }
+            }
+        }
+
+        .favorite-actions {
+            display: flex;
+
+            .play-playlist {
+                background   : linear-gradient(16.12deg, #5523BF 9.64%, #B00D72 75.1%);
+                border-radius: 40px;
+                border : 0;
+
+                padding       : 12px 30px;
+                border-radius : 50px;
+                font-family   : "Roboto";
+                font-style    : normal;
+                font-size     : 14px;
+                line-height   : 16px;
+                text-transform: uppercase;
+                color         : #fff;
+                display       : flex;
+                align-items   : center;
+                cursor        : pointer;
+
+                margin-right: 20px;
+
+                display       : flex;
+                flex-direction: row;
+                align-items   : center;
+                padding       : 12px 40px;
+                gap           : 10px;
+
+                img {
+                    width : 10px;
+                    height: 14px;
+                }
+            }
+
+            .play-playlist-random {
+                border-radius : 50px;
+                font-family   : "Roboto";
+                font-style    : normal;
+                font-size     : 14px;
+                line-height   : 16px;
+                text-transform: uppercase;
+                color         : #fff;
+                display       : flex;
+                flex-direction: row;
+                align-items   : center;
+                padding       : 12px 40px;
+                gap           : 10px;
+
+                cursor        : pointer;
+
+                background: transparent;
+                border-color: #fff;
+                border-width: 1px;
+                font-weight: 400;
+            
+                img{
+                    width : 13px;
+                    height: 13px;
+                }
+            }
+        }
+    }
+}

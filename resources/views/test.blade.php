@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="styles-container">
-        <a href="{{route('style.index')}}"><h2 class="home-title"><span>Genres</span><span> > </span></h2></a>
+        <a href="{{route('style.index')}}"><h2 class="home-title"><span>Genres</span><span>&rsaquo;</span></h2></a>
         <div class="styles-list d-flex">
             @foreach ($styles as $style)
                 <a href="{{ route('style.show', $style->slug)}}" class="styles-element">
@@ -16,7 +16,7 @@
         </div>
     </div>
 
-    <a href="{{route('artist.index')}}"><h2 class="home-title"><span>Artistes</span><span> > </span></h2></a>
+    <a href="{{route('artist.index')}}"><h2 class="home-title"><span>Artistes</span><span>&rsaquo;</span></h2></a>
     <div class="artists-container">
         <div class="artists-list d-flex">
             @foreach ($artists as $artist)

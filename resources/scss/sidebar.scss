@@ -1,19 +1,19 @@
 .sidebar {
-    position : fixed;
-    max-width: 270px;
-    width: 100%;
-    height: 100%;
+    position  : fixed;
+    max-width : 270px;
+    width     : 100%;
+    height    : 100%;
     background: rgba(0, 0, 0, 0.3);
-
+    display : flex;
+    flex-direction: column;
     .sidebar-container {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
+        height         : 100%;
+        display        : flex;
+        flex-direction : column;
+        justify-content: flex-start;
 
-        .top-sidebar,
-        .bottom-sidebar {
-            width: 100%;
+        .top-sidebar {
+            width     : 100%;
             text-align: center;
         }
     }
@@ -28,14 +28,14 @@ h1 {
 }
 
 .search-bar {
-    width: 80%;
+    width : 80%;
     margin: 0 auto;
 
     input[type=search] {
-        width: 100%;
-        padding: 15px;
+        width        : 100%;
+        padding      : 15px;
         border-radius: 8px;
-        outline: 0;
+        outline      : 0;
     }
 
     input[type=search]:focus,
@@ -45,46 +45,89 @@ h1 {
     }
 
     .search-icon {
-        right: 20px;
-        top: 50%;
+        right    : 20px;
+        top      : 50%;
         transform: translateY(-50%);
     }
 }
 
-.profile-container {
-    margin: 0;
+.middle-sidebar {
+    width : 100%;
+    margin: 20px 0 0 0;
 
-    a {
-        background: rgba(38, 35, 39, 0.3);
-        padding: 16px 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0;
-        text-decoration: none;
+    .sidebar-navigation {
+        ul {
+            margin : 0;
+            padding: 0;
 
-        .profile-icon-span {
-            margin-right: 24px;
+            li {
+                list-style      : none;
+                padding         : 0;
+                background-color: #ffffff20;
+
+                a {
+                    padding        : 20px 0 20px 30px;
+                    display        : flex;
+                    flex-direction : row;
+                    flex-wrap      : nowrap;
+                    align-items    : center;
+                    justify-content: flex-start;
+                    color          : white;
+                    text-decoration: none;
+                
+                    &:hover{
+                        text-decoration: underline;
+                    }
+                }
+
+                img {
+                    margin-right: 10px;
+                }
+            }
         }
+    }
+}
 
-        .profile-text-span {
-            font-family: 'Righteous', cursive;
-            font-weight: 400;
-            font-size: 20px;
-            line-height: 25px;
-            text-transform: uppercase;
+.bottom-sidebar {
+    width     : 100%;
+    text-align: center;
+    height : 70px;
+
+    .profile-container {
+        margin: 0;
+
+        a {
+            background     : rgba(38, 35, 39, 0.3);
+            padding        : 12px 20px;
+            display        : flex;
+            align-items    : center;
+            justify-content: center;
+            margin         : 0;
+            text-decoration: none;
+
+            .profile-icon-span {
+                margin-right: 24px;
+            }
+
+            .profile-text-span {
+                font-family   : 'Righteous', cursive;
+                font-weight   : 400;
+                font-size     : 20px;
+                line-height   : 25px;
+                text-transform: uppercase;
+            }
         }
     }
 }
 
 .music-player-waiting-list {
     a {
-        background: #262327aa;
-        padding: 16px 20px;
-        display: flex;
-        flex-direction: row;
+        background     : #262327aa;
+        padding        : 16px 20px;
+        display        : flex;
+        flex-direction : row;
         justify-content: center;
-        align-items: center;
+        align-items    : center;
         text-decoration: none;
 
         .waiting-icon-span {
@@ -94,7 +137,8 @@ h1 {
 }
 
 .music-player {
-    display : none;
+    display: none;
+
     .music-player-cover-container {
         width: 100%;
 
@@ -108,19 +152,20 @@ h1 {
 
 .music-player-command-container {
     margin: 10px;
+
     .music-player-command-slide {
-        display: flex;
+        display       : flex;
         flex-direction: column;
 
         .music-player-command-slide-time {
-            display: flex;
-            flex-direction: row;
+            display        : flex;
+            flex-direction : row;
             justify-content: space-between;
-            font-family: 'Roboto';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 12px;
-            line-height: 14px;
+            font-family    : 'Roboto';
+            font-style     : normal;
+            font-weight    : 400;
+            font-size      : 12px;
+            line-height    : 14px;
         }
 
         .music-player-command-slide-controller input[type=range] {
@@ -130,14 +175,15 @@ h1 {
     }
 
     .music-player-command-title {
-        margin : 15px 0;
+        margin: 15px 0;
+
         span {
             font-family: 'Roboto';
-            font-style: normal;
+            font-style : normal;
             font-weight: 400;
-            font-size: 14px;
+            font-size  : 14px;
             line-height: 16px;
-            text-align: center;
+            text-align : center;
         }
 
         .music-player-command-title-song {
@@ -146,10 +192,10 @@ h1 {
     }
 
     .music-player-command-controllers {
-        display: flex;
-        flex-direction: row;
+        display        : flex;
+        flex-direction : row;
         justify-content: space-between;
-        align-items: center;
+        align-items    : center;
 
         #repeatOnce,
         #repeatNone,
@@ -171,17 +217,19 @@ h1 {
         }
 
         .music-player-command-controllers-player {
-            display: flex;
-            flex-direction: row;
+            display        : flex;
+            flex-direction : row;
             justify-content: space-between;
-            align-items: center;
+            align-items    : center;
+
             #playerPlay {
                 display: none;
             }
 
-            #playerPlay, #playerPause{
+            #playerPlay,
+            #playerPause {
                 width : 26px;
-                margin : 0 30px;
+                margin: 0 30px;
             }
         }
 
