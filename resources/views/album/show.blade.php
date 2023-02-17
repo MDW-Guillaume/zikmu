@@ -6,6 +6,10 @@
 
 @section('scss')
 @vite(['resources/scss/album.scss'])
+@vite(['resources/js/favorite.js'])
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
 @endsection
 
 @section('content')
@@ -40,11 +44,23 @@
                     <div class="title-name">{{$title->name}}</div>
                     <div class="title-favorite">
                         {{-- @if -- Si l'utilisateur a aimé le son alors coeur plein sinon coeur vide--}}
-                        @if ($title->favorite == true)
-                        <img src="{{URL::to('/img')}}/fav-fill.svg" alt="">
-                        @else
-                        <img src="{{URL::to('/img')}}/fav-not-fill.svg" alt="">
-                        @endif
+                        {{-- @if ($title->favorite == true) --}}
+                        <form action="{{ route('album.store', $album->slug) }}" class="actionFavorite" method="post">
+                            {{ csrf_field() }}
+                            <input name="title" type="hidden" value="{{$title->id}}">
+                            <input name="user" type="hidden" value="{{$album->slug}}">
+                            <button type="submit" id="favoriteButton" class="favorite-button @if ($title->favorite == true)is-favorite @endif">
+                                <img src="{{URL::to('/img')}}/fav-fill.svg" alt="Supprimer des favoris" title="Supprimer des favoris" class="favorite-img">
+                                <img src="{{URL::to('/img')}}/fav-not-fill.svg" alt="Ajouter aux favoris" title="Ajouter aux favoris" class="no-favorite-img">
+                            </button>
+                        </form>
+                        {{-- @else
+                        <form id="addFavorite" method="post">
+                            {{ csrf_field() }}
+                            <input type="hidden" value="{{$title->id}}" name="song_id">
+                            <button type="submit"></button>
+                        </form>
+                        @endif --}}
                     </div>
                 </div>
             @endforeach

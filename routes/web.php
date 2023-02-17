@@ -8,6 +8,7 @@ use App\Http\Controllers\ArtistController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\SongsUsersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +41,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/artist', [ArtistController::class, 'index'])->name('artist.index');
     Route::get('/artist/{slug}', [ArtistController::class, 'show'])->name('artist.show');
     
+    Route::post('/album', [SongsUsersController::class, 'store'])->name('album.store');
     Route::get('/album/{slug}', [AlbumController::class, 'show'])->name('album.show');
 
     Route::get('/style', [StyleController::class, 'index'])->name('style.index');

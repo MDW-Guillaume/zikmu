@@ -17,6 +17,9 @@
             @include('include.sidebar')
 
             <div class="page-content">
+                <div class="display-message hidden" id="displayMessageContainer">
+                    <p class="message" id="displayMessage"></p>
+                </div>
             @yield('content')
             @include('include.footer')
             </div>

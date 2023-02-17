@@ -33,11 +33,38 @@ body,
 .page-content {
     width : calc(100% - 300px);
     margin: 0 15px 90px 285px;
-    
-    position : relative;
-    a{
+
+    position: relative;
+
+    .display-message {
+        position: fixed;
+        left    : 0;
+        top     : 0;
+        width   : calc(100% - 400px);
+        margin  : 0 65px 0px 335px;
+        padding : 20px 0;
+        background-color: #00000060;
+        border-bottom-left-radius: 40px;
+        border-bottom-right-radius: 40px;
+
+        &.hidden{
+            top : -100px;
+        }
+
+        &.show{
+            animation : 4s linear showMessage;
+        }
+
+        p.message {
+            margin : 0;
+            text-align: center;
+        }
+    }
+
+    a {
         text-decoration: none;
     }
+
     h2 {
         font-family   : 'Righteous';
         font-style    : normal;
@@ -49,11 +76,12 @@ body,
         text-align    : center;
         text-transform: capitalize;
 
-        color: #FFFFFF;
-        display : flex;
+        color      : #FFFFFF;
+        display    : flex;
         align-items: center;
-        span{
-            margin-right : 5px;
+
+        span {
+            margin-right: 5px;
 
         }
     }
@@ -64,23 +92,24 @@ body,
     flex-direction: column;
     flex-wrap     : nowrap;
     margin        : 30px 0;
-    a{
-        width : fit-content;
+
+    a {
+        width: fit-content;
     }
 
     .styles-list {
         flex-direction : row;
         justify-content: flex-start;
         flex-wrap      : wrap;
-        
+
         .styles-element {
             position        : relative;
             width           : 245px;
             height          : 102px;
             background-image: url('/public/img/style-bg.png');
             margin          : 0 12px 8px 0;
-            color: white;
-            text-decoration: none;
+            color           : white;
+            text-decoration : none;
 
             h3 {
                 position: absolute;
@@ -133,8 +162,9 @@ body,
             border-radius   : 10px;
         }
     }
-    a{
-        width : fit-content;
+
+    a {
+        width: fit-content;
     }
 
     .artists-list {
@@ -204,3 +234,17 @@ body,
     }
 }
 
+@keyframes showMessage{
+    0%{
+        top  : -100px;
+    }
+
+    25%{
+        top : 0;
+    }
+
+    75%{top : 0;}
+    100%{
+        top : -100px;
+    }
+}

@@ -149,11 +149,34 @@
 
             .title-favorite {
                 width: 5%;
-                img{
-                    width : 16px;
-                    height : 16px;
-                    cursor: pointer;
+                text-align : center;
+                form{
+                    .favorite-button{
+                        background: transparent;
+                        border : 0;
+                        padding: 0;
+                        width: fit-content;
+                        height: 16px;
+                        &.is-favorite{
+                            .no-favorite-img{
+                                display : none;
+                            }
+                            .favorite-img{
+                                display : block;
+                            }
+                        }
+                        .favorite-img{
+                            display : none;
+                        }
+                        img{
+                            width : 16px;
+                            height : 16px;
+                            cursor: pointer;
+                            vertical-align: bottom;
+                        }
+                    }
                 }
+                
             }
 
             .title-name {
