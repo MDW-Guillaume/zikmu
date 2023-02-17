@@ -16,8 +16,8 @@
         </div>
     </div>
 
-    <a href="{{route('artist.index')}}"><h2 class="home-title"><span>Artistes</span><span>&rsaquo;</span></h2></a>
     <div class="artists-container">
+        <a href="{{route('artist.index')}}"><h2 class="home-title"><span>Artistes</span><span>&rsaquo;</span></h2></a>
         <div class="artists-list d-flex">
             @foreach ($artists as $artist)
                 <a href="{{ route('artist.show', $artist['slug']) }}" class="artist-element">

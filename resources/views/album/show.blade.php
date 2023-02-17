@@ -40,7 +40,11 @@
                     <div class="title-name">{{$title->name}}</div>
                     <div class="title-favorite">
                         {{-- @if -- Si l'utilisateur a aimé le son alors coeur plein sinon coeur vide--}}
+                        @if ($title->favorite == true)
                         <img src="{{URL::to('/img')}}/fav-fill.svg" alt="">
+                        @else
+                        <img src="{{URL::to('/img')}}/fav-not-fill.svg" alt="">
+                        @endif
                     </div>
                 </div>
             @endforeach

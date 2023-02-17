@@ -24,7 +24,7 @@
                         @endif
                         
                         {{-- Nom prénom / ou / nom d'utilisateur --}}</p>
-                    <span>Durée : {{-- $length --}}</span>
+                    <span>Durée : {{ $length }}</span>
                 </div>
                 <div class="favorite-actions">
                     <button id="playPlaylist" class="play-playlist"><img src="{{ URL::to('/img') }}/play.svg"
@@ -33,6 +33,29 @@
                             src="{{ URL::to('/img') }}/randomizer.svg" alt=""><span>Aléatoire</span></button>
                 </div>
             </div>
+        </div>
+
+        <div class="favorite-playlist">
+            @foreach ($songs as $song)
+                <div class="favorite-element">
+                    <div class="favorite-cover">
+                        @if(is_null($song->album_cover))
+                            <img src="{{ URL::to('/img') }}/unknown_cover.png" alt="">
+                        @else
+                            <img src="{{ URL::to('storage/files/albums') }}/{{ $song->artist_slug }}/{{ $song->album_cover }}" alt="">
+                        @endif
+                    </div>
+                    <div class="favorite-info">
+                        <div class="favorite-title">
+                            <span>{{$song->name}}</span>
+                            <p>{{$song->artist_name}} • {{$song->album_name}}</p>
+                        </div>
+                    </div>
+                    <div class="favorite-delete">
+                        <img src="{{ URL::to('/img') }}/close.svg" alt="">
+                    </div>
+                </div>
+            @endforeach
         </div>
     </div>
 @endsection
