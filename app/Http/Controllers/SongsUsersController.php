@@ -16,12 +16,12 @@ class SongsUsersController extends Controller
         $song_search = DB::table('songs_users')->where(['user_id' => Auth::User()->id, 'song_id' => $id_song])->get();
 
         if(count($song_search) >= 1){
-            $song_insert = DB::table('songs_users')->delete(['user_id' => Auth::User()->id, 'song_id' => $id_song]);
+            $song_insert = DB::table('songs_users')->where(['user_id' => Auth::User()->id, 'song_id' => $id_song])->delete();
         }else{
         $song_insert = DB::table('songs_users')->insert(['user_id' => Auth::User()->id, 'song_id' => $id_song]);
         }
 
-        dd($song_search);
+        // dd($song_search);
         
     return response()->json(['success' => true]);
 

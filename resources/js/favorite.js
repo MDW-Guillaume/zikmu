@@ -21,12 +21,12 @@ for (let i = 0; i < form.length - 1; i++) {
                         if (form[i][3].classList.contains('is-favorite')) {
                             $(form[i][3]).removeClass('is-favorite')
                             console.log(document.getElementById('displayMessage'))
-                            document.getElementById('displayMessage').innerHTML = 'La titre a été ajouté a vos Coups de coeur';
+                            document.getElementById('displayMessage').innerHTML = 'La titre a été supprimé de vos Coups de coeur';
                             document.getElementById('displayMessageContainer').classList.add('show');
                             setTimeout(function() {document.getElementById('displayMessageContainer').classList.remove('show')}, 4000);
                         } else {
                             $(form[i][3]).addClass('is-favorite')
-                            document.getElementById('displayMessage').innerHTML = 'La titre a été supprimé de vos Coups de coeur';
+                            document.getElementById('displayMessage').innerHTML = 'La titre a été ajouté de vos Coups de coeur';
                             document.getElementById('displayMessageContainer').classList.add('show');
                             setTimeout(function() {document.getElementById('displayMessageContainer').classList.remove('show')}, 4000);
                         }
