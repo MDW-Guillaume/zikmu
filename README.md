@@ -52,7 +52,7 @@ https://koel.dev/
 git clone git@github.com:MDW-Guillaume/zikmu.git
 cd zikmu
 composer install
-nom install
+npm install
 cp .env.example .env
 nano .env
 ```
