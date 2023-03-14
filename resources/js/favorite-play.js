@@ -24,7 +24,7 @@ playOnce.addEventListener('submit', function(e){
 
                 songArray.forEach(sentSong => {
                     console.log('sentSong : ' + sentSong)
-                    playlist.push("public/music/music/" + sentSong)
+                    playlist.push("music/music/" + sentSong)
                 });
                 console.log('playlist : ' +playlist)
 
