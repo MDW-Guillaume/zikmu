@@ -22,7 +22,7 @@
             @foreach ($artists as $artist)
                 <a href="{{ route('artist.show', $artist['slug']) }}" class="artist-element">
                     <div class="artist-cover"
-                        style="background-image : 
+                        style="background-image :
                     @if ($artist['cover'] == 'unfinded.jpg') url('{{ URL::to('/img') }}/unknow.png')
                     @else
                     url('{{ URL::to('storage/files/artistes') }}/{{ $artist['style_slug'] }}/{{ $artist['cover'] }}') @endif

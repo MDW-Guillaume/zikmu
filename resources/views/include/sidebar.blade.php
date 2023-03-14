@@ -33,7 +33,7 @@
                 <span class="profile-text-span">Mon compte</span>
             </a>
         </div>
-
+        <audio id="audioplayer" controls></audio>
         <div class="music-player">
             <div class="music-player-cover-container">
                 <img src="{{ URL::to('/img/Frame 37.png') }}{{-- Variable album.cover --}}" class="profile-icon" alt="">

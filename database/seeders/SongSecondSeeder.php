@@ -24,8 +24,8 @@ class SongSeeder extends Seeder
     public function run()
     {
         # Récupération des artistes, albums, longueur et année de sortie
-        // $musical_path = scandir(public_path('music') . '/music');
-        $musical_path = scandir(public_path('music') . '/music');
+        $musical_path = scandir(public_path('music') . '/music-20s');
+        // $musical_path = scandir(public_path('music'));
         // dd($musical_path);
         //         die;
         # Création d'un répertoire pour stocker les dossiers de chaque albums
@@ -40,9 +40,8 @@ class SongSeeder extends Seeder
                 $folder_slug_name = Str::slug($musical_path[$i]);
 
                 # Séparation des informations comprises dans le nom du dossier
-                $musical_explode = explode(' - ', $musical_path[$i]);
-                // dd($musical_explode);
-                // die;
+                $musical_explode = explode(' - ', $folder_slug_name . $musical_path[$i]);
+
                 $artist_name = $musical_explode[2];
                 $artist_slug = Str::slug($musical_explode[2]);
                 $album_name = $musical_explode[3];

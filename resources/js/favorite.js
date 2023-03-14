@@ -1,4 +1,4 @@
-// var url = 
+// var url =
 
 console.log($('.actionFavorite'))
 var form = $('.actionFavorite')

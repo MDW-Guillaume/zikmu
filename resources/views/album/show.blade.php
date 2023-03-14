@@ -16,7 +16,7 @@
     <div class="page-album">
         <div class="album-card">
             <div class="album-cover"
-                style="background-image : 
+                style="background-image :
                     @if (is_null($album->cover)) url('{{ URL::to('/img') }}/unknown_cover.png')
                     @else
                     url('{{ URL::to('storage/files/albums') }}/{{ $artist->slug }}/{{ $album->cover }}') @endif
@@ -39,8 +39,9 @@
 
         <div class="titles-list">
             @foreach ($titles as $title)
+            {{-- {{ dd($title->slug); }} --}}
                 <div class="title-element">
-                    <div class="title-position"><span class="title-position-span">{{$title->position}}</span></div>
+                    <div class="title-position"><span class="title-position-span" style="color : white;">{{$title->position}}</span></div>
                     <div class="title-name">{{$title->name}}</div>
                     <div class="title-favorite">
                         {{-- @if -- Si l'utilisateur a aimé le son alors coeur plein sinon coeur vide--}}

@@ -26,8 +26,8 @@ class AlbumController extends Controller
 
         $album_titles = DB::table('songs')->where('album_id', $album->id)->get();
         $favorites = DB::table('songs_users')->where('user_id', Auth::user()->id)->select('song_id')->get();
-        
-        
+
+
         foreach($album_titles as $album_title){
             $album_title->favorite = false;
             foreach($favorites as $favorite){
@@ -37,7 +37,10 @@ class AlbumController extends Controller
                 }
             }
         }
-        
+
+        // dd($artist, $album_titles, $style);
+        // die;
+
         // dd($album_titles, $favorites);
         return view('album.show', [
             'album' => $album,
@@ -48,5 +51,9 @@ class AlbumController extends Controller
         ]);
 
 
+    }
+
+    public function play($slug){
+        dd($slug);
     }
 }
