@@ -10,8 +10,7 @@ class SongsUsersController extends Controller
 {
     public function store(Request $request){
         $id_song = $request->input('title') ;
-        $id_user = $request->input('user') ;
-        dd(Auth::User()->id);
+        // dd(Auth::User()->id);
 
         $song_search = DB::table('songs_users')->where(['user_id' => Auth::User()->id, 'song_id' => $id_song])->get();
 

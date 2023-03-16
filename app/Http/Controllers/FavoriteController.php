@@ -28,6 +28,7 @@ class FavoriteController extends Controller
             // dd($album);
 
             $user_favorite_array[$i]->album_name = $album->name;
+            $user_favorite_array[$i]->album_slug = $album->slug;
             $user_favorite_array[$i]->album_cover = $album->cover;
 
             $artist = DB::table('artists')->where('id', $album->artist_id)->first();
@@ -61,4 +62,5 @@ class FavoriteController extends Controller
             'length' => $length,
         ]);
     }
+
 }

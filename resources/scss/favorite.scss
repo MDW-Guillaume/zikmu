@@ -49,6 +49,10 @@
         .favorite-actions {
             display: flex;
 
+            #playPlaylist{
+                display : flex;
+            }
+
             .play-playlist {
                 background   : linear-gradient(16.12deg, #5523BF 9.64%, #B00D72 75.1%);
                 border-radius: 40px;
@@ -162,8 +166,16 @@
                     font-size  : 14px;
                     line-height: 16px;
                     margin     : 0;
+                    a{
+                        color : white;
+                    }
                 }
             }
+        }
+
+        .favorite-delete .favorite-button{
+            background-color: transparent;
+            border: none;
         }
     }
 }
