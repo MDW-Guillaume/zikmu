@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-class SongSecondSeeder extends Seeder
+class SongSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -40,7 +40,7 @@ class SongSecondSeeder extends Seeder
         # Pour chaque album du répertoire /music-20s
         for ($i = 0; $i < count($musical_path); $i++) {
             # Si le fichier/dossier n'est pas un chemin
-            if ($musical_path[$i] != "." && $musical_path[$i] != '..') {
+            if ($musical_path[$i] != "." && $musical_path[$i] != '..' && $musical_path[$i] != '.DS_Store') {
 
                 # transformation du nom de dossier en slug
                 $folder_slug_name = Str::slug($musical_path[$i]);
@@ -94,7 +94,7 @@ class SongSecondSeeder extends Seeder
 
                 # Pour chaque titres compris dans l'album
                 for ($j = 0; $j < count($album_content) - 2; $j++) {
-                    if ($album_content[$j] != "." && $album_content[$j] != '..' && $album_content[$j] != 'cover.jpg') {
+                    if ($album_content[$j] != "." && $album_content[$j] != '..' && $album_content[$j] != '.DS_Store' && $album_content[$j] != 'cover.jpg') {
 
                         # On récupère les informations comprises dans le nom du fichier
                         $title_explode = explode(' - ', $album_content[$j]);
@@ -139,7 +139,7 @@ class SongSecondSeeder extends Seeder
         }
 
         for ($i = 0; $i < count($style_path); $i++) {
-            if ($style_path[$i] != "." && $style_path[$i] != '..') {
+            if ($style_path[$i] != "." && $style_path[$i] != '..' && $style_path[$i] != '.DS_Store') {
 
                 # Stockage et formatage des informations des dossiers dans des variables
                 $style_name = $style_path[$i];
@@ -167,7 +167,7 @@ class SongSecondSeeder extends Seeder
 
                 # Parcours de chaque dossier de genre
                 for ($j = 0; $j < count($style_artist_path); $j++) {
-                    if ($style_artist_path[$j] != "." && $style_artist_path[$j] != '..') {
+                    if ($style_artist_path[$j] != "." && $style_artist_path[$j] != '..' && $style_artist_path[$j] != '.DS_Store') {
 
                         # Récupération du nom de fichier pour le transformer en slug.
                         # Stockage du nom du fichier avec son extention, et ce peut importe la longueur de celle-ci.
@@ -196,7 +196,7 @@ class SongSecondSeeder extends Seeder
             File::makeDirectory(public_path('storage') . '/files/albums/');
         }
         for ($i = 0; $i < count($album_path); $i++) {
-            if ($album_path[$i] != "." && $album_path[$i] != '..') {
+            if ($album_path[$i] != "." && $album_path[$i] != '..' && $album_path[$i] != '.DS_Store') {
                 $artist_form_album_path = $album_path[$i];
                 $artist_slug_form_album_path = Str::slug($album_path[$i]);
 
@@ -208,7 +208,7 @@ class SongSecondSeeder extends Seeder
                 $artist_album_path = scandir(public_path('music') . '/albums/' . $artist_form_album_path);
 
                 for ($j = 0; $j < count($artist_album_path); $j++) {
-                    if ($artist_album_path[$j] != "." && $artist_album_path[$j] != '..') {
+                    if ($artist_album_path[$j] != "." && $artist_album_path[$j] != '..' && $artist_album_path[$j] != '.DS_Store') {
                         $album_cover = $artist_album_path[$j];
                         $slug_album_no_ext = pathinfo($artist_album_path[$j], PATHINFO_FILENAME);
 
