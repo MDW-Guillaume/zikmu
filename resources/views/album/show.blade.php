@@ -34,7 +34,18 @@
 
         <div class="album-actions">
             <button id="addToFavorite" class="favorite"><img src="{{ URL::to('/img') }}/fav-fill.svg" alt=""><span>Ajouter</span></button>
-            <button id="addToFavorite" class="listen"><img src="{{ URL::to('/img') }}/play.svg" alt=""><span>Écouter</span></button>
+            
+
+            <form action="{{ route('favorite.play') }}" method="post" id="playPlaylist">
+                @csrf
+                @foreach ($titles as $song)
+                    {{-- {{dd($song->id)}} --}}
+                    <input type="hidden" value="{{ $song->id }}" name="{{ $song->id }}">
+                @endforeach
+            
+                <button id="playOnce" type="submit" class="listen"><img src="{{ URL::to('/img') }}/play.svg" alt=""><span>Écouter</span></button>
+            </form>
+            
         </div>
 
         <div class="titles-list">

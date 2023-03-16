@@ -44,6 +44,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/artist/{slug}', [ArtistController::class, 'show'])->name('artist.show');
 
     Route::post('/album', [SongsUsersController::class, 'store'])->name('album.store');
+    // Route::post('/album', [SongsUsersController::class, 'play'])->name('album.play');
     Route::get('/album/{slug}', [AlbumController::class, 'show'])->name('album.show');
 
     // Route::get('/song/{slug}', [SongController::class, 'show'])->name('song.show');
