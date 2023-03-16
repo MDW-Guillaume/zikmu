@@ -6,14 +6,14 @@
 
 @section('scss')
     @vite(['resources/scss/favorite.scss'])
-    @vite(['resources/js/favorite-play.js'])
+    @vite(['resources/js/song-play.js'])
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
 @endsection
 
 @section('content')
-    <div class="page-favorite">
+    <div class="page-favorite" id="content">
         <div class="favorite-card">
             <div class="favorite-cover" style="background-image : url('{{ URL::to('/img') }}/favorite-playlist.png')">
             </div>
@@ -32,7 +32,7 @@
                     <span>Durée : {{ $length }}</span>
                 </div>
                 <div class="favorite-actions">
-                    <form action="{{ route('favorite.play') }}" method="post" id="playPlaylist">
+                    <form action="{{ route('song.play') }}" method="post" id="playPlaylist">
                         @csrf
                         @foreach ($songs as $song)
                             {{-- {{dd($song->id)}} --}}
@@ -65,7 +65,7 @@
                         </div>
                     </div>
                     <div class="favorite-delete">
-                        <form action="{{ route('album.store', $song->album_slug) }}" class="actionFavorite" method="post">
+                        <form action="{{ route('favorite.store') }}" class="actionFavorite" method="post">
                             {{ csrf_field() }}
                             <input name="title" type="hidden" value="{{$song->id}}">
                             <button type="submit" id="favoriteButton" class="favorite-button">

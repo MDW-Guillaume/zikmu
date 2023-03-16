@@ -7,13 +7,14 @@
 @section('scss')
 @vite(['resources/scss/album.scss'])
 @vite(['resources/js/favorite.js'])
+@vite(['resources/js/song-play.js'])
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
 @endsection
 
 @section('content')
-    <div class="page-album">
+    <div class="page-album" id="content">
         <div class="album-card">
             <div class="album-cover"
                 style="background-image :
@@ -25,7 +26,9 @@
             <div class="album-details">
                 <h2 class="album-name">{{ $album->name }}</h2>
                 <p>par <a href="{{route('artist.show', $artist->slug)}}">{{$artist->name}}</a></p>
-                <a href="{{ route('style.show', $style->slug); }}" class="album-style">{{ $style->name }} <span>&rsaquo;</span></a>
+                @if (isset($style->slug))
+                <a href="{{route('style.show', $style->slug); }}" class="album-style">{{ $style->name }} <span>&rsaquo;</span></a>
+                @endif
                 <div class="album-specs">
                     <span>{{ count($titles); }} titres • {{ $length }} • {{ $album->release }}</span>
                 </div>
@@ -36,14 +39,14 @@
             <button id="addToFavorite" class="favorite"><img src="{{ URL::to('/img') }}/fav-fill.svg" alt=""><span>Ajouter</span></button>
             
 
-            <form action="{{ route('favorite.play') }}" method="post" id="playPlaylist">
+            <form action="{{ route('song.play') }}" method="post" id="playPlaylist">
                 @csrf
                 @foreach ($titles as $song)
                     {{-- {{dd($song->id)}} --}}
                     <input type="hidden" value="{{ $song->id }}" name="{{ $song->id }}">
                 @endforeach
             
-                <button id="playOnce" type="submit" class="listen"><img src="{{ URL::to('/img') }}/play.svg" alt=""><span>Écouter</span></button>
+                <button id="playOnce" type="submit" value="linear" class="listen"><img src="{{ URL::to('/img') }}/play.svg" alt=""><span>Écouter</span></button>
             </form>
             
         </div>
@@ -57,7 +60,7 @@
                     <div class="title-favorite">
                         {{-- @if -- Si l'utilisateur a aimé le son alors coeur plein sinon coeur vide--}}
                         {{-- @if ($title->favorite == true) --}}
-                        <form action="{{ route('album.store', $album->slug) }}" class="actionFavorite" method="post">
+                        <form action="{{ route('favorite.store', $album->slug) }}" class="actionFavorite" method="post">
                             {{ csrf_field() }}
                             <input name="title" type="hidden" value="{{$title->id}}">
                             <input name="user" type="hidden" value="{{$album->slug}}">

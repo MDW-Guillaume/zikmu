@@ -10,7 +10,7 @@ for (let i = 0; i < form.length - 1; i++) {
             var formData = $(form[i]).serialize(); // Récupérer les données du formulaire
             console.log(formData)
             $.ajax({
-                url: '/album',
+                url: '/favorite',
                 type: 'POST',
                 data: formData,
                 dataType: 'json',

@@ -9,7 +9,7 @@ playOnce.addEventListener('submit', function (e) {
     var formData = $(playOnce).serialize();
     // console.log(formData)
     $.ajax({
-        url: '/favorite',
+        url: '/play-song',
         type: 'post',
         data: formData,
         dataType: 'json',
@@ -27,7 +27,7 @@ playOnce.addEventListener('submit', function (e) {
 
                 songArray.forEach(sentSong => {
                     // playlist.push("music/music/" + sentSong) // Fonctionne pour les noms de fichiers en dur
-                    playlist.push("storage/files/music/" + sentSong) 
+                    playlist.push("/storage/files/music/" + sentSong) 
                 });
                 console.log('playlist : ' + playlist)
 

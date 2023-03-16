@@ -43,20 +43,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/artist', [ArtistController::class, 'index'])->name('artist.index');
     Route::get('/artist/{slug}', [ArtistController::class, 'show'])->name('artist.show');
 
-    Route::post('/album', [SongsUsersController::class, 'store'])->name('album.store');
-    // Route::post('/album', [SongsUsersController::class, 'play'])->name('album.play');
     Route::get('/album/{slug}', [AlbumController::class, 'show'])->name('album.show');
-
-    // Route::get('/song/{slug}', [SongController::class, 'show'])->name('song.show');
-
+    
     Route::get('/style', [StyleController::class, 'index'])->name('style.index');
     Route::get('/style/{slug}', [StyleController::class, 'show'])->name('style.show');
-
+    
     Route::get('/favorite', [FavoriteController::class, 'index'])->name('favorite.index');
-    Route::post('/favorite', [SongController::class, 'listenPlaylist'])->name('favorite.play');
+    Route::post('/favorite', [SongsUsersController::class, 'store'])->name('favorite.store');
 
     Route::get('/test', [TestController::class, 'index'])->name('test.index');
     Route::get('/test2', [TestController::class, 'show'])->name('test.show');
+
+    Route::post('/play-song', [SongController::class, 'listenAlbum'])->name('song.play');
 
 });
 

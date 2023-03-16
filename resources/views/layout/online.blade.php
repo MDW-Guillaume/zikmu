@@ -10,6 +10,11 @@
         @vite(['resources/scss/sidebar.scss'])
         @vite(['resources/scss/app.scss'])
         @vite(['resources/scss/mixin.scss'])
+        @vite(['resources/js/reload-in-back.js'])
+
+        @vite(['resources/scss/favorite.scss'])
+        @vite(['resources/js/song-play.js'])
+        
         <title>Zik&Mu - @yield('title')</title>
     </head>
     <body>

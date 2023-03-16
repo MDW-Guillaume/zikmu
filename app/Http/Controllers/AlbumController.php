@@ -52,8 +52,4 @@ class AlbumController extends Controller
 
 
     }
-
-    public function play($slug){
-        dd($slug);
-    }
 }
