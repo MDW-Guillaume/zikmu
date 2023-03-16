@@ -5,22 +5,6 @@ playOnce.addEventListener('submit', function (e) {
     e.preventDefault();
     
     let playerMethod = e.submitter.value
-    // getPlayerMethod()
-    console.log(playerMethod)
-    // const submitButtons = e.target.querySelectorAll('button[type="submit"]');
-
-    // for (let i = 0; i < submitButtons.length; i++) {
-    //     submitButtons[i].addEventListener('click', function (event) {
-    //         const submittedButtonValue = event.target.getAttribute('value');
-    //         if (submittedButtonValue === 'linear') {
-    //             const playerMethod = 'linear'
-    //         } else if (submittedButtonValue === 'random') {
-    //             const playerMethod = 'random'
-    //         }
-    //     });
-    // }
-
-    // console.log(submittedButtonValue)
 
     var formData = $(playOnce).serialize();
     // console.log(formData)
