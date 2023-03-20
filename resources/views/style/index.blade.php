@@ -9,6 +9,7 @@
 @endsection
 
 @section('content')
+<div id="content">
     <div class="page-style page-index">
         <h2>Nos univers</h2>
         <div class="styles-list d-flex">
@@ -19,4 +20,5 @@
             @endforeach
         </div>
     </div>
+</div>
 @endsection

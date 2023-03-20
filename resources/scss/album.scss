@@ -5,7 +5,7 @@
     .album-card {
         display       : flex;
         flex-direction: row;
-        align-items   : start;
+        align-items   : flex-start;
 
         .album-cover {
             width              : 160px;
@@ -38,7 +38,7 @@
                 font-weight: 300;
                 font-size  : 18px;
                 line-height: 21px;
-            
+
                 a{
                     display : inline;
                 }
@@ -176,7 +176,7 @@
                         }
                     }
                 }
-                
+
             }
 
             .title-name {

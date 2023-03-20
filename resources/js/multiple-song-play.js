@@ -1,9 +1,10 @@
 let playOnce = $('#playPlaylist')[0]
-console.log(playOnce)
+
+if(typeof(playOnce) !== 'undefined'){
 
 playOnce.addEventListener('submit', function (e) {
     e.preventDefault();
-    
+
     let playerMethod = e.submitter.value
 
     var formData = $(playOnce).serialize();
@@ -27,7 +28,7 @@ playOnce.addEventListener('submit', function (e) {
 
                 songArray.forEach(sentSong => {
                     // playlist.push("music/music/" + sentSong) // Fonctionne pour les noms de fichiers en dur
-                    playlist.push("/storage/files/music/" + sentSong) 
+                    playlist.push("/storage/files/music/" + sentSong)
                 });
                 console.log('playlist : ' + playlist)
 
@@ -70,3 +71,4 @@ playOnce.addEventListener('submit', function (e) {
     })
 
 })
+}

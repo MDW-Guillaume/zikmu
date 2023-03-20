@@ -9,13 +9,14 @@
 @endsection
 
 @section('content')
+<div id="content">
     <div class="page-artist page-index">
         <h2>Artistes</h2>
         <div class="artists-list d-flex">
             @foreach ($artists as $artist)
                 <a href="{{ route('artist.show', $artist->slug) }}" class="artist-element">
                     <div class="artist-cover"
-                        style="background-image : 
+                        style="background-image :
                     @if (is_null($artist->cover)) url('{{ URL::to('/img') }}/unknow.png')
                     @else
                     url('{{ URL::to('storage/files/artistes') }}/{{ $artist->style }}/{{ $artist->cover }}') @endif
@@ -32,4 +33,5 @@
             @endforeach
         </div>
     </div>
+</div>
 @endsection

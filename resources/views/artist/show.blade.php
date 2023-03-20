@@ -9,10 +9,11 @@
 @endsection
 
 @section('content')
+<div id="content">
     <div class="page-artist">
         <div class="artist-card">
             <div class="artist-cover"
-                style="background-image : 
+                style="background-image :
                     @if (is_null($artist->cover)) url('{{ URL::to('/img') }}/unknow.png')
                     @else
                     url('{{ URL::to('storage/files/artistes') }}/{{ $style->slug }}/{{ $artist->cover }}') @endif
@@ -49,4 +50,5 @@
             </div>
         </div>
     </div>
+</div>
 @endsection
