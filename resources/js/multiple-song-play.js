@@ -1,4 +1,6 @@
+if( typeof($('#playPlaylist')[0]) !== 'undefined' ){
 let playOnce = $('#playPlaylist')[0]
+}
 
 if(typeof(playOnce) !== 'undefined'){
 

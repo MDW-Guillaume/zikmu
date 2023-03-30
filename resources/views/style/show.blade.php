@@ -31,9 +31,13 @@
                                                 src="{{ URL::to('storage/files/albums') }}/{{ $album->artist_slug }}/{{ $album->cover }}"
                                                 alt=""></a>
                                     @endif
-                                    <button
-                                        style="background-color : transparent; border : 0; cursor : pointer; border-radius : 50%;"><img
-                                            src="{{ URL::to('/img') }}/play_song_btn.png" alt=""></button>
+                                    <form action="{{ route('play.album') }}" class="play-album" method="post">
+                                        @csrf
+                                        <input type="hidden" name="album_id" value="{{ $album->id }}">
+                                        <input type="submit"
+                                            style="background-color : transparent; background-image : url({{ URL::to('/img') }}/play_song_btn.png); border : 0; cursor : pointer; border-radius : 50%;"
+                                            value="">
+                                    </form>
                                 </div>
                                 <a href="{{ route('album.show', $album->slug) }}" class="album-details">
                                     <h3 class="album-name">{{ $album->name }}</h3>

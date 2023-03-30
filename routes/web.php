@@ -44,10 +44,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/artist/{slug}', [ArtistController::class, 'show'])->name('artist.show');
 
     Route::get('/album/{slug}', [AlbumController::class, 'show'])->name('album.show');
-    
+
     Route::get('/style', [StyleController::class, 'index'])->name('style.index');
     Route::get('/style/{slug}', [StyleController::class, 'show'])->name('style.show');
-    
+
     Route::get('/favorite', [FavoriteController::class, 'index'])->name('favorite.index');
     Route::post('/favorite', [SongsUsersController::class, 'store'])->name('favorite.store');
 
@@ -55,6 +55,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/test2', [TestController::class, 'show'])->name('test.show');
 
     Route::post('/play-song', [SongController::class, 'listenAlbum'])->name('song.play');
+    Route::post('/play-unique-song', [SongController::class, 'listenSong'])->name('song.uniqueplay');
+    Route::post('/play-album', [SongController::class, 'listenAlbumFormCover'])->name('play.album');
+    Route::post('/play-form-favorite', [SongController::class, 'listenUniqueFavorite'])->name('play.songfavorite');
 
 });
 

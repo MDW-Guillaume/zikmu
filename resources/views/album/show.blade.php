@@ -57,36 +57,31 @@
 
             <div class="titles-list">
                 @foreach ($titles as $title)
-                    {{-- {{ dd($title->slug); }} --}}
-                    <div class="title-element">
-                        <div class="title-position"><span class="title-position-span"
-                                style="color : white;">{{ $title->position }}</span></div>
-                        <div class="title-name">{{ $title->name }}</div>
-                        <div class="title-favorite">
-                            {{-- @if -- Si l'utilisateur a aimé le son alors coeur plein sinon coeur vide --}}
-                            {{-- @if ($title->favorite == true) --}}
-                            <form action="{{ route('favorite.store', $album->slug) }}" class="actionFavorite"
-                                method="post">
-                                {{ csrf_field() }}
-                                <input name="title" type="hidden" value="{{ $title->id }}">
-                                <input name="user" type="hidden" value="{{ $album->slug }}">
-                                <button type="submit" id="favoriteButton"
-                                    class="favorite-button @if ($title->favorite == true) is-favorite @endif">
-                                    <img src="{{ URL::to('/img') }}/fav-fill.svg" alt="Supprimer des favoris"
-                                        title="Supprimer des favoris" class="favorite-img">
-                                    <img src="{{ URL::to('/img') }}/fav-not-fill.svg" alt="Ajouter aux favoris"
-                                        title="Ajouter aux favoris" class="no-favorite-img">
-                                </button>
-                            </form>
-                            {{-- @else
-                        <form id="addFavorite" method="post">
-                            {{ csrf_field() }}
-                            <input type="hidden" value="{{$title->id}}" name="song_id">
-                            <button type="submit"></button>
-                        </form>
-                        @endif --}}
+                    <form action="{{ route('song.uniqueplay') }}" method="post" class="unique-song-form">
+                        @csrf
+                        <div class="title-element">
+                            <div class="title-position"><span class="title-position-span"
+                                    style="color : white;">{{ $title->position }}</span></div>
+                            <div class="title-name">{{ $title->name }}</div>
+                            <div class="title-favorite">
+                                <form action="{{ route('favorite.store', $album->slug) }}" class="actionFavorite"
+                                    method="post">
+                                    {{ csrf_field() }}
+                                    <input name="title" type="hidden" value="{{ $title->id }}">
+                                    <input name="user" type="hidden" value="{{ $album->slug }}">
+                                    <button type="submit" id="favoriteButton"
+                                        class="favorite-button @if ($title->favorite == true) is-favorite @endif">
+                                        <img src="{{ URL::to('/img') }}/fav-fill.svg" alt="Supprimer des favoris"
+                                            title="Supprimer des favoris" class="favorite-img">
+                                        <img src="{{ URL::to('/img') }}/fav-not-fill.svg" alt="Ajouter aux favoris"
+                                            title="Ajouter aux favoris" class="no-favorite-img">
+                                    </button>
+                                </form>
+                            </div>
+                            <input type="submit" class="play-song-submit" value="">
+                            <input type="hidden" name="title_id" value="{{ $title->id }}">
                         </div>
-                    </div>
+                    </form>
                 @endforeach
             </div>
         </div>

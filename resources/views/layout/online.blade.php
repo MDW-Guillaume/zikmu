@@ -19,6 +19,10 @@
     @vite(['resources/scss/favorite.scss'])
     @vite(['resources/scss/stylepage.scss'])
     @vite(['resources/js/multiple-song-play.js'])
+    @vite(['resources/js/unique-song-play.js'])
+    @vite(['resources/js/favorite.js'])
+    @vite(['resources/js/play-album.js'])
+    @vite(['resources/js/audio-event.js'])
 
     <title>Zik&Mu - @yield('title')</title>
 </head>

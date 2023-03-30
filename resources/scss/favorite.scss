@@ -113,6 +113,22 @@
         }
     }
 
+    form.unique-song-form {
+        width: 100%;
+        position: relative;
+
+        .play-song-submit {
+            z-index: 10;
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            padding: 0;
+            background-color: transparent;
+            border: 0;
+            cursor: pointer;
+        }
+    }
+
     .favorite-element {
         display         : flex;
         flex-direction  : row;
@@ -134,7 +150,9 @@
         }
 
         .favorite-delete {
-            width: 5%;
+            z-index: 20;
+            width: fit-content;
+            margin-right: 25px;
 
             img {
                 width : 16px;

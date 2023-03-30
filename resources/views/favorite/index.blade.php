@@ -5,9 +5,6 @@
 @endsection
 
 @section('scss')
-    @vite(['resources/scss/favorite.scss'])
-    @vite(['resources/js/song-play.js'])
-
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
 @endsection
@@ -51,6 +48,8 @@
 
             <div class="favorite-playlist">
                 @foreach ($songs as $song)
+                <form action="{{ route('song.uniqueplay') }}" method="post" class="unique-song-form favorite-unique-song-form" data-id="{{$song->id}}">
+                    @csrf
                     <div class="favorite-element">
                         <div class="favorite-cover">
                             @if (is_null($song->album_cover))
@@ -68,16 +67,22 @@
                             </div>
                         </div>
                         <div class="favorite-delete">
-                            <form action="{{ route('favorite.store') }}" class="actionFavorite" method="post">
-                                {{ csrf_field() }}
+                            {{-- <form action="{{ route('favorite.store') }}" class="actionFavorite" method="post"> --}}
+                                {{-- {{ csrf_field() }} --}}
                                 <input name="title" type="hidden" value="{{ $song->id }}">
-                                <button type="submit" id="favoriteButton" class="favorite-button">
+                                <input name="csrf" type="hidden" value="{{ csrf_token() }}">
+                                {{-- @csrf --}}
+                                <button type="button" id="favoriteButton" class="favorite-button" data-id="{{ $song->id }}">
                                     <img src="{{ URL::to('/img') }}/close.svg" alt="">
                                 </button>
-                            </form>
+                            {{-- </form> --}}
 
                         </div>
+                        <input type="submit" class="play-song-submit" value="">
+                        <input type="hidden" name="title_id" value="{{ $song->id }}">
                     </div>
+
+                </form>
                 @endforeach
             </div>
         </div>

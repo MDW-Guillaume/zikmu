@@ -47,20 +47,18 @@ class FavoriteController extends Controller
 
         foreach ($user_favorite_array as $song) {
             $length += $song->length;
-            // dd($length);
         }
-        if ($length > 3600) {
-            $length = intdiv($length, 3600) . 'h ' . ($length % 3600) . 'min';
-        } else {
-            $length = ($length % 60) . 'min';
-        }
+        $minutes = floor($length / 60); // Calcul du nombre de minutes
+        $seconds = $length % 60; // Calcul du nombre de secondes restantes
+
+        $show_length = $minutes . " min " . $seconds . " sec"; // Stockage dans la variable $show_length
+
         // dd($user_favorite_array);
 
         return view('favorite.index')->with([
             'user' => $user,
             'songs' => $user_favorite_array,
-            'length' => $length,
+            'length' => $show_length,
         ]);
     }
-
 }

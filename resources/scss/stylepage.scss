@@ -12,7 +12,7 @@
         margin-bottom : 40px;
     }
 
-    
+
 
     .albums-list {
         display       : flex;
@@ -41,11 +41,18 @@
                     }
                 }
 
-                button {
+                form {
                     position: absolute;
-                    bottom  : 5px;
-                    left    : 5px;
-                    z-index : 2;
+                    bottom: 5px;
+                    left: 5px;
+                    z-index: 2;
+
+                    input[type=submit] {
+                        cursor: pointer;
+                        padding: 0 !important;
+                        width: 34px;
+                        height: 34px;
+                    }
                 }
             }
 
@@ -84,7 +91,7 @@
             flex-direction : row;
             justify-content: flex-start;
             flex-wrap      : wrap;
-            
+
             .styles-element {
                 position        : relative;
                 width           : calc(25% - 30px);
@@ -93,12 +100,12 @@
                 margin          : 0 12px 8px 0;
                 color: white;
                 text-decoration: none;
-    
+
                 h3 {
                     position: absolute;
                     top     : 0;
                     margin  : 5px;
-    
+
                     font-family   : 'Righteous';
                     font-style    : normal;
                     font-weight   : 400;
