@@ -110,7 +110,7 @@ class SongController extends Controller
             }
         }
 
-        return response()->json(['success' => true, 'request' => $song_array]);
+        return response()->json(['success' => true, 'songs' => $song_array]);
     }
 
     public function listenAlbumFormCover(Request $request)
@@ -138,41 +138,96 @@ class SongController extends Controller
     public function listenUniqueFavorite(Request $request)
     {
 
+        /* ---------------------- CODE FONCTIONNEL ---------------------- */
+
+
+        // $clicked_title = $request->input('title');
+
+
+        // $clicked_info = DB::table('songs')->where('id', $clicked_title)->select('id', 'slug', 'album_id')->first();
+        // $album_info = DB::table('albums')->where('id', $clicked_info->album_id)->select('slug', 'release', 'length', 'artist_id')->first();
+        // $artist_info = DB::table('artists')->where('id', $album_info->artist_id)->select('slug')->first();
+
+        // $release = $album_info->release;
+        // $length = $album_info->length;
+        // $artist = $artist_info->slug;
+        // $album = $album_info->slug;
+        // $song_title = $clicked_info->slug;
+
+        // $song_array['clickedSong'] = $release . '-' . $length . '-' . $artist . '-' . $album . '/' . $song_title;
+
+        // $user = Auth::user();
+
+        // $my_user_favorite_songs = DB::table('songs_users')->where('user_id', $user->id)->select('song_id')->get();
+
+
+        // foreach ($my_user_favorite_songs as $title) {
+        //     $song_info = DB::table('songs')->where('id', $title->song_id)->select('id', 'slug', 'album_id')->first();
+        //     $album_info = DB::table('albums')->where('id', $song_info->album_id)->select('slug', 'release', 'length', 'artist_id')->first();
+        //     $artist_info = DB::table('artists')->where('id', $album_info->artist_id)->select('slug')->first();
+
+        //     $release = $album_info->release;
+        //     $length = $album_info->length;
+        //     $artist = $artist_info->slug;
+        //     $album = $album_info->slug;
+        //     $song_title = $song_info->slug;
+
+
+        //     $song_array[] = $release . '-' . $length . '-' . $artist . '-' . $album . '/' . $song_title;
+
+        // }
+
+        // return response()->json(['success' => true, 'songs' => $song_array]);
+
+
+
+
+        /* ---------------------- AJOUT DE LA COVER ---------------------- */
+
         $clicked_title = $request->input('title');
 
 
         $clicked_info = DB::table('songs')->where('id', $clicked_title)->select('id', 'slug', 'album_id')->first();
-        $album_info = DB::table('albums')->where('id', $clicked_info->album_id)->select('slug', 'release', 'length', 'artist_id')->first();
+        $album_info = DB::table('albums')->where('id', $clicked_info->album_id)->select('slug', 'release', 'length', 'cover', 'artist_id')->first();
         $artist_info = DB::table('artists')->where('id', $album_info->artist_id)->select('slug')->first();
 
         $release = $album_info->release;
         $length = $album_info->length;
         $artist = $artist_info->slug;
         $album = $album_info->slug;
+        $album_cover = $album_info->cover;
         $song_title = $clicked_info->slug;
 
-        $song_array['clickedSong'] = $release . '-' . $length . '-' . $artist . '-' . $album . '/' . $song_title;
+        $song_array['clickedSong']['song'] = $release . '-' . $length . '-' . $artist . '-' . $album . '/' . $song_title;
+        $song_array['clickedSong']['cover'] = $artist. '/' . $album_cover;
 
         $user = Auth::user();
 
         $my_user_favorite_songs = DB::table('songs_users')->where('user_id', $user->id)->select('song_id')->get();
 
-
+        $i = 0;
         foreach ($my_user_favorite_songs as $title) {
             $song_info = DB::table('songs')->where('id', $title->song_id)->select('id', 'slug', 'album_id')->first();
-            $album_info = DB::table('albums')->where('id', $song_info->album_id)->select('slug', 'release', 'length', 'artist_id')->first();
+            $album_info = DB::table('albums')->where('id', $song_info->album_id)->select('slug', 'release', 'length', 'cover', 'artist_id')->first();
             $artist_info = DB::table('artists')->where('id', $album_info->artist_id)->select('slug')->first();
 
             $release = $album_info->release;
             $length = $album_info->length;
             $artist = $artist_info->slug;
             $album = $album_info->slug;
+            $album_cover = $album_info->cover;
             $song_title = $song_info->slug;
 
 
-            $song_array[] = $release . '-' . $length . '-' . $artist . '-' . $album . '/' . $song_title;
+            $song_array[$i]['song'] = $release . '-' . $length . '-' . $artist . '-' . $album . '/' . $song_title;
+            $song_array[$i]['cover'] = $artist. '/' . $album_cover;
+
+            $i++;
         }
 
-        return response()->json(['success' => true, 'request' => $song_array]);
+        // dd($song_array);
+        // die;
+        return response()->json(['success' => true, 'songs' => $song_array]);
+        // return response()->json(['success' => true, 'songs' => $song_array]);
     }
 }

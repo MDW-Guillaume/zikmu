@@ -25,7 +25,7 @@
         </div>
 
     </div>
-    <div class="bottom-sidebar">
+    <div class="bottom-sidebar" id="bottomSidebar">
         <div class="profile-container">
             <a href="{{ route('profile.index') }}" class="c-white">
                 <span class="profile-icon-span"><img src="{{ URL::to('/img/user.svg') }}" class="profile-icon"
@@ -36,7 +36,7 @@
         <audio id="audioplayer" controls></audio>
         <div class="music-player">
             <div class="music-player-cover-container">
-                <img src="{{ URL::to('/img/Frame 37.png') }}{{-- Variable album.cover --}}" class="profile-icon" alt="">
+                <img src="{{ URL::to('/img/Frame 37.png') }}{{-- Variable album.cover --}}" class="music-player-cover-image" id="coverSong" alt="">
             </div>
 
             <div class="music-player-command-container c-white">

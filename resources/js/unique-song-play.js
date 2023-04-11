@@ -15,9 +15,11 @@ if (typeof (playSongForm) != 'undefined') {
 
 
             if (playSongForm[i].classList.contains('favorite-unique-song-form')) {
+                // SI le clic vient de la page Favoris
                 var url = '/play-form-favorite'
                 console.log('ici')
             } else {
+                // SI le clic vient d'ailleurs
                 var url = '/play-unique-song'
                 console.log('la')
             }
@@ -29,44 +31,64 @@ if (typeof (playSongForm) != 'undefined') {
                 data: formData,
                 dataType: 'json',
                 success: function (response) {
-                    if (response.request != null) {
-                        var songArray = response.request
-                        if (response.request.hasOwnProperty('clickedSong')) {
-                            var clickedSong = response.request['clickedSong']
-                            var selection = null;
-                        }
-                        var lastSong = null;
-                        // var selection = null;
-                        var playlist = []; // List of songs
-                        let i = -1
+                    // LECTURE DU SON
+                    var songsArray = response.songs
 
-                        console.log(typeof(songArray))
+                    if (response.songs.hasOwnProperty('clickedSong')) {
+                        var clickedSong = response.songs['clickedSong']
+                        var selection = null;
+                    }
 
-                        Object.values(songArray).forEach(sentSong => {
-                            // playlist.push("music/music/" + sentSong) // Fonctionne pour les noms de fichiers en dur
-                            playlist.push("/storage/files/music/" + sentSong)
-                        });
-                        console.log('playlist : ' + playlist)
 
-                        var player = document.getElementById("audioplayer"); // Get audio element
-                        player.autoplay = true;
+                    var lastSong = null;
+                    var playlist = []; // List of songs
+                    let i = -1
 
-                        player.addEventListener("ended", playSong);
+                    let coverSongArray = response.songs
+                    let coverArray = []
+                    let coverDiv = document.getElementById('coverSong')
+                    let bottomSidebar = document.getElementById('bottomSidebar');
 
-                        function playSong() {
-                            i++
-                            while (selection == lastSong) {
-                                selection = i
-                            };
-                            lastSong = selection; // Remember the last song
+
+                    Object.values(songsArray).forEach(songArray => {
+                        playlist.push("/storage/files/music/" + songArray.song)
+                    });
+
+                    Object.values(coverSongArray).forEach(coverElement => {
+                        coverArray.push("/storage/files/albums/" + coverElement.cover)
+                    });
+
+
+                    var player = document.getElementById("audioplayer"); // Get audio element
+                    player.autoplay = true;
+
+                    player.addEventListener("ended", playSong);
+
+                    function playSong() {
+                        i++
+                        while (selection == lastSong) {
+                            selection = i
+                        };
+                        lastSong = selection; // Remember the last song
+                        if(playlist[selection] != undefined){
                             player.src = playlist[selection]; // Tell HTML the location of the new song
                         }
+                        if(coverArray[selection]!= undefined){
+                            coverDiv.src = coverArray[selection]; // Tell HTML the location of the new song
+                        }
 
-
-                        playSong();
-
-                        player.play(); // Start song
+                        player.addEventListener("ended", function () {
+                            if (playlist.length - 1 == selection) {
+                                bottomSidebar.style.height = "70px"
+                            }
+                        });
                     }
+
+                    // LAUNCH
+
+                    playSong();
+
+                    player.play(); // Start song
                 }
             })
         })
