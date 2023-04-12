@@ -11,17 +11,12 @@ if (typeof (playSongForm) != 'undefined') {
 
             var formData = $(playSongForm[i]).serialize();
 
-            console.log(formData)
-
-
             if (playSongForm[i].classList.contains('favorite-unique-song-form')) {
                 // SI le clic vient de la page Favoris
                 var url = '/play-form-favorite'
-                console.log('ici')
             } else {
                 // SI le clic vient d'ailleurs
                 var url = '/play-unique-song'
-                console.log('la')
             }
 
             $.ajax({
@@ -34,6 +29,9 @@ if (typeof (playSongForm) != 'undefined') {
                     // LECTURE DU SON
                     var songsArray = response.songs
 
+                    console.log('la')
+                    console.log(response.songs)
+
                     if (response.songs.hasOwnProperty('clickedSong')) {
                         var clickedSong = response.songs['clickedSong']
                         var selection = null;
@@ -42,7 +40,7 @@ if (typeof (playSongForm) != 'undefined') {
 
                     var lastSong = null;
                     var playlist = []; // List of songs
-                    let i = -1
+                    var clickedSongPath = '';
 
                     let coverSongArray = response.songs
                     let coverArray = []
@@ -50,13 +48,22 @@ if (typeof (playSongForm) != 'undefined') {
                     let bottomSidebar = document.getElementById('bottomSidebar');
 
 
-                    Object.values(songsArray).forEach(songArray => {
-                        playlist.push("/storage/files/music/" + songArray.song)
+                    Object.entries(songsArray).forEach(([key, songArray]) => {
+                        console.log(`${key}: ${songArray}`)
+                        if (key != 'clickedSong') {
+                            playlist.push("/storage/files/music/" + songArray.song)
+                        } else {
+                            clickedSongPath = "/storage/files/music/" + songArray.song
+                        }
                     });
+
+                    localStorage.setItem("playlist", playlist);
 
                     Object.values(coverSongArray).forEach(coverElement => {
                         coverArray.push("/storage/files/albums/" + coverElement.cover)
                     });
+
+
 
 
                     var player = document.getElementById("audioplayer"); // Get audio element
@@ -64,22 +71,90 @@ if (typeof (playSongForm) != 'undefined') {
 
                     player.addEventListener("ended", playSong);
 
-                    function playSong() {
-                        i++
+                    // function playSong() {
+                    //     i++
+                    //     localStorage.setItem("playlist-placement-i", i)
+                    //     while (selection == lastSong) {
+                    //         selection = i
+                    //     };
+                    //     lastSong = selection; // Remember the last song
+                    //     if(playlist[selection] != undefined){
+                    //         player.src = playlist[selection]; // Tell HTML the location of the new song
+                    //     }
+                    //     if(coverArray[selection]!= undefined){
+                    //         coverDiv.src = coverArray[selection]; // Tell HTML the location of the new song
+                    //     }
+
+                    //     player.addEventListener("ended", function () {
+                    //         if (playlist.length - 1 == selection) {
+                    //             bottomSidebar.style.height = "70px"
+                    //             localStorage.removeItem("playlist")
+                    //             localStorage.removeItem("playlist-placement-i")
+                    //         }
+                    //     });
+                    // }
+
+                    /* Lecture d'un titre suivant */
+
+
+                    // Pour jouer un son qui est cliqué:
+                    // On va récupérer la clé du son correspondant dans le tableau playlist
+                    // On enregistre et envoie cette variable en appelant la fonction playSong
+                    // avec un paramètre qui sera la posoition du son
+
+
+                    // let i = 0
+
+                    // Je chercher a récupérer la clé de la playlist à partir de la valeur de la variable clickedSongPath
+
+                    let clickedSongIndex = playlist.indexOf(clickedSongPath);
+
+                    let playerNext = document.getElementById('playerNext')
+
+                    localStorage.setItem("playlist-placement-i", clickedSongIndex);
+
+                    playerNext.addEventListener('click', function () {
+                        let currentStep = localStorage.getItem("playlist-placement-i")
+                        currentStep++
+
+                        playSong(currentStep)
+                    })
+
+                    function playSong(stepSong = null) {
+
                         while (selection == lastSong) {
-                            selection = i
+                            selection = clickedSongIndex
                         };
-                        lastSong = selection; // Remember the last song
-                        if(playlist[selection] != undefined){
-                            player.src = playlist[selection]; // Tell HTML the location of the new song
-                        }
-                        if(coverArray[selection]!= undefined){
-                            coverDiv.src = coverArray[selection]; // Tell HTML the location of the new song
+
+                        if (typeof (stepSong) == 'number') {
+                            selection = stepSong
                         }
 
+
+
+                        // On reinitialise la variable stepSong pour continuer la lecture de la playlist
+                        stepSong = null
+
+                        localStorage.setItem("playlist-placement-i", clickedSongIndex)
+
+                        lastSong = selection; // Remember the last song
+
+                        if (playlist[selection] != undefined) {
+                            player.src = playlist[selection];
+                        }
+
+                        if (coverArray[selection] != undefined) {
+                            coverDiv.src = coverArray[selection];
+                        }
+
+                        clickedSongIndex++
+
                         player.addEventListener("ended", function () {
-                            if (playlist.length - 1 == selection) {
+                            if (playlist.length == selection) {
                                 bottomSidebar.style.height = "70px"
+                                localStorage.removeItem("playlist")
+                                localStorage.removeItem("playlist-placement-i")
+                                player.removeAttribute('src', 'autoplay')
                             }
                         });
                     }
