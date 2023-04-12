@@ -210,6 +210,7 @@ audio{
         #randomActive,
         #randomInactive {
             width: 20px;
+            cursor : pointer;
         }
 
         .music-player-command-controllers-rewind {
@@ -232,6 +233,8 @@ audio{
 
             #playerPlay,
             #playerPause {
+                cursor : pointer;
+                height : 30px;
                 width : 26px;
                 margin: 0 30px;
             }

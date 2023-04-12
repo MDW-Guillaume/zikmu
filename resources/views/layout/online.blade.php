@@ -23,6 +23,7 @@
     @vite(['resources/js/favorite.js'])
     @vite(['resources/js/play-album.js'])
     @vite(['resources/js/audio-event.js'])
+    @vite(['resources/js/song-controller.js'])
 
     <title>Zik&Mu - @yield('title')</title>
 </head>
