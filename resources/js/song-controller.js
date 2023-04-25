@@ -19,3 +19,13 @@ resumeBtn.addEventListener('click', function(){
     resumeBtn.style.display = 'none'
 })
 
+// Player time elapsed
+
+let duration = player.duration
+
+player.ontimeupdate = function() {
+    if (this.currentTime == 0) {
+      // votre fonction à exécuter ici
+      console.log("L'audio est revenu a 0s");
+    }
+  };

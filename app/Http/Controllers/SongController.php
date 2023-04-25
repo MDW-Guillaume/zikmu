@@ -195,11 +195,19 @@ class SongController extends Controller
         $length = $album_info->length;
         $artist = $artist_info->slug;
         $album = $album_info->slug;
-        $album_cover = $album_info->cover;
+        if (is_null($album_info->cover)) {
+            $album_cover = "null";
+        } else {
+            $album_cover = $album_info->cover;
+        }
         $song_title = $clicked_info->slug;
-
-        $song_array['clickedSong']['song'] = $release . '-' . $length . '-' . $artist . '-' . $album . '/' . $song_title;
-        $song_array['clickedSong']['cover'] = $artist. '/' . $album_cover;
+        // Si $album_cover est '' ca accepte la condition
+        $song_array['clickedSong']['song'] = '/storage/files/music/' . $release . '-' . $length . '-' . $artist . '-' . $album . '/' . $song_title;
+        if (file_exists(public_path('storage') . '/files/albums/' . $artist . '/' . $album_cover)) {
+            $song_array['clickedSong']['cover'] = '/storage/files/albums/' . $artist . '/' . $album_cover;
+        } else {
+            $song_array['clickedSong']['cover'] = '/img/unknown_cover.png';
+        }
 
         $user = Auth::user();
 
@@ -207,25 +215,37 @@ class SongController extends Controller
 
         $i = 0;
         foreach ($my_user_favorite_songs as $title) {
-            $song_info = DB::table('songs')->where('id', $title->song_id)->select('id', 'slug', 'album_id')->first();
-            $album_info = DB::table('albums')->where('id', $song_info->album_id)->select('slug', 'release', 'length', 'cover', 'artist_id')->first();
-            $artist_info = DB::table('artists')->where('id', $album_info->artist_id)->select('slug')->first();
+            $song_info = DB::table('songs')->where('id', $title->song_id)->select('id', 'name', 'slug', 'album_id')->first();
+            $album_info = DB::table('albums')->where('id', $song_info->album_id)->select('slug', 'name', 'release', 'length', 'cover', 'artist_id')->first();
+            $artist_info = DB::table('artists')->where('id', $album_info->artist_id)->select('slug', 'name')->first();
 
             $release = $album_info->release;
             $length = $album_info->length;
             $artist = $artist_info->slug;
+            $artist_full_name = $artist_info->name;
             $album = $album_info->slug;
-            $album_cover = $album_info->cover;
+            $album_full_name = $album_info->name;
+            $song_full_name = $song_info->name;
+            if (is_null($album_info->cover)) {
+                $album_cover = "null";
+            } else {
+                $album_cover = $album_info->cover;
+            }
             $song_title = $song_info->slug;
 
 
-            $song_array[$i]['song'] = $release . '-' . $length . '-' . $artist . '-' . $album . '/' . $song_title;
-            $song_array[$i]['cover'] = $artist. '/' . $album_cover;
-
+            $song_array[$i]['song'] = '/storage/files/music/' . $release . '-' . $length . '-' . $artist . '-' . $album . '/' . $song_title;
+            $song_array[$i]['artist'] = $artist_full_name;
+            $song_array[$i]['album'] = $album_full_name;
+            $song_array[$i]['songName'] = $song_full_name;
+            if (file_exists(public_path('storage') . '/files/albums/' . $artist . '/' . $album_cover)) {
+                $song_array[$i]['cover'] = '/storage/files/albums/' . $artist . '/' . $album_cover;
+            } else {
+                $song_array[$i]['cover'] = '/img/unknown_cover.png';
+            }
             $i++;
         }
 
-        // dd($song_array);
         // die;
         return response()->json(['success' => true, 'songs' => $song_array]);
         // return response()->json(['success' => true, 'songs' => $song_array]);

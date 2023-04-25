@@ -1,8 +1,6 @@
 if ($('.unique-song-form')[0] != 'undefined') {
     var playSongForm = $('.unique-song-form')
-    console.log(playSongForm)
 }
-// console.log(typeof (playSongForm), $('.unique-song-form')[0], $('.unique-song-form')[0] != 'undefined')
 
 if (typeof (playSongForm) != 'undefined') {
     for (let i = 0; i < playSongForm.length; i++) {
@@ -28,9 +26,7 @@ if (typeof (playSongForm) != 'undefined') {
                 success: function (response) {
                     // LECTURE DU SON
                     var songsArray = response.songs
-
-                    console.log('la')
-                    console.log(response.songs)
+                    console.log(songsArray)
 
                     if (response.songs.hasOwnProperty('clickedSong')) {
                         var clickedSong = response.songs['clickedSong']
@@ -44,26 +40,43 @@ if (typeof (playSongForm) != 'undefined') {
 
                     let coverSongArray = response.songs
                     let coverArray = []
+                    let responseSongNameArray = response.songs
+                    let songNameArray = []
+                    let responseArtistNameArray = response.songs
+                    let artistNameArray = []
+                    let responseAlbumNameArray = response.songs
+                    let albumNameArray = []
                     let coverDiv = document.getElementById('coverSong')
+                    let playerInfoArtist = document.getElementById('playerInfoArtist')
+                    let playerInfoAlbum = document.getElementById('playerInfoAlbum')
+                    let playerInfoSong = document.getElementById('playerInfoName')
                     let bottomSidebar = document.getElementById('bottomSidebar');
 
 
                     Object.entries(songsArray).forEach(([key, songArray]) => {
-                        console.log(`${key}: ${songArray}`)
                         if (key != 'clickedSong') {
-                            playlist.push("/storage/files/music/" + songArray.song)
+                            playlist.push(songArray.song)
                         } else {
-                            clickedSongPath = "/storage/files/music/" + songArray.song
+                            clickedSongPath = songArray.song
                         }
                     });
 
                     localStorage.setItem("playlist", playlist);
 
-                    Object.values(coverSongArray).forEach(coverElement => {
-                        coverArray.push("/storage/files/albums/" + coverElement.cover)
+                    Object.values(songsArray).forEach(coverElement => {
+                        coverArray.push(coverElement.cover)
                     });
 
+                    Object.values(songsArray).forEach(songNameElement => {
+                        songNameArray.push(songNameElement.songName)
+                    });
 
+                    Object.values(songsArray).forEach(artistNameElement => {
+                        artistNameArray.push(artistNameElement.artist)
+                    });
+                    Object.values(songsArray).forEach(albumNameElement => {
+                        albumNameArray.push(albumNameElement.album)
+                    });
 
 
                     var player = document.getElementById("audioplayer"); // Get audio element
@@ -110,17 +123,47 @@ if (typeof (playSongForm) != 'undefined') {
                     let clickedSongIndex = playlist.indexOf(clickedSongPath);
 
                     let playerNext = document.getElementById('playerNext')
+                    let playerPrev = document.getElementById('playerPrevious')
 
                     localStorage.setItem("playlist-placement-i", clickedSongIndex);
 
-                    playerNext.addEventListener('click', function () {
-                        let currentStep = localStorage.getItem("playlist-placement-i")
-                        currentStep++
+                    let audioDuration = 0;
 
-                        playSong(currentStep)
+                    player.addEventListener('timeupdate', function () {
+                        console.log('je tape Ici')
+                        audioDuration = player.currentTime;
+                    });
+
+                    playerNext.addEventListener('click', function () {
+                        console.log('je joue le suivant')
+                        setTimeout(function () {
+                            if (audioDuration > 1) {
+                                let currentStep = localStorage.getItem("playlist-placement-i")
+                                let nextStep = parseInt(currentStep) + 1
+
+                                if (parseInt(currentStep) + 1 != playlist.length) {
+                                    currentStep = parseInt(currentStep) + 1
+                                    localStorage.setItem('playlist-placement-i', currentStep)
+                                    playSong(currentStep)
+                                }
+
+                            }
+                        }, 1000);
+                    })
+                    playerPrev.addEventListener('click', function () {
+                        console.log('Je joue le précédent')
+                        let currentStep = localStorage.getItem("playlist-placement-i")
+                        // Verification si il existe un titre avant, sinon bouton désactivé.
+                        if (currentStep - 1 >= 0) {
+                            currentStep--
+                            localStorage.setItem('playlist-placement-i', currentStep)
+                            playSong(currentStep)
+                        }
+
                     })
 
                     function playSong(stepSong = null) {
+
 
                         while (selection == lastSong) {
                             selection = clickedSongIndex
@@ -130,12 +173,10 @@ if (typeof (playSongForm) != 'undefined') {
                             selection = stepSong
                         }
 
-
-
                         // On reinitialise la variable stepSong pour continuer la lecture de la playlist
                         stepSong = null
 
-                        localStorage.setItem("playlist-placement-i", clickedSongIndex)
+                        localStorage.setItem("playlist-placement-i", selection)
 
                         lastSong = selection; // Remember the last song
 
@@ -147,14 +188,30 @@ if (typeof (playSongForm) != 'undefined') {
                             coverDiv.src = coverArray[selection];
                         }
 
+                        if (responseSongNameArray[selection] != undefined) {
+                            console.log(songNameArray)
+                            console.log(selection)
+                            console.log(playerInfoSong)
+                            playerInfoSong.textContent = songNameArray[selection];
+                        }
+
+                        if (responseArtistNameArray[selection] != undefined) {
+                            playerInfoArtist.textContent = artistNameArray[selection];
+                        }
+
+                        if (responseAlbumNameArray[selection] != undefined) {
+                            playerInfoAlbum.textContent = albumNameArray[selection];
+                        }
+
                         clickedSongIndex++
 
                         player.addEventListener("ended", function () {
                             if (playlist.length == selection) {
-                                bottomSidebar.style.height = "70px"
                                 localStorage.removeItem("playlist")
                                 localStorage.removeItem("playlist-placement-i")
                                 player.removeAttribute('src', 'autoplay')
+                                bottomSidebar.style.height = "70px"
+                                console.log('unique-song-play / player ended')
                             }
                         });
                     }
@@ -163,6 +220,7 @@ if (typeof (playSongForm) != 'undefined') {
 
                     playSong();
 
+                    player.load()
                     player.play(); // Start song
                 }
             })

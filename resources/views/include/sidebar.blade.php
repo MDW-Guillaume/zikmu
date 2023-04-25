@@ -36,30 +36,27 @@
         <audio id="audioplayer" controls></audio>
         <div class="music-player">
             <div class="music-player-cover-container">
-                <img src="{{ URL::to('/img/Frame 37.png') }}{{-- Variable album.cover --}}" class="music-player-cover-image" id="coverSong" alt="">
+                <img src="" class="music-player-cover-image" id="coverSong" alt="">
             </div>
 
             <div class="music-player-command-container c-white">
                 <div class="music-player-command-slide">
                     <div class="music-player-command-slide-time">
                         <div class="music-player-command-slide-time-direct">
-                            {{-- JS pour ajouter 1 seconde / package de lecture de musique? --}}
-                            <span class="music-player-command-slide-time-direct-minute">00</span>
-                            <span class="music-player-command-slide-time-direct-divider">:</span>
-                            <span class="music-player-command-slide-time-direct-second">00</span>
+                            <span id="musicCurrentTime">00:00<span>
                         </div>
                         <div class="music-player-command-slide-time-total">
-                            <span class="">00:00{{-- Variable song.length --}}</span>
+                            <span id="musicDuration">00:00<span>
                         </div>
                     </div>
                     <div class="music-player-command-slide-controller">
-                        <input type="range" id="seek-slider" max="100" value="0">
+                        <input type="range" id="timeSlider" step="0.01">
                     </div>
                 </div>
                 <div class="music-player-command-title">
-                    <span class="music-player-command-title-song">Space Oddity (2015 Remaster){{-- Variable song.name --}}</span><br>
-                    <span class="music-player-command-title-album">ChangesOneBowie{{-- Variable album.name --}} •</span>
-                    <span class="music-player-command-title-artist">David Bowie{{-- Variable artist.name --}}</span>
+                    <span class="music-player-command-title-song" id="playerInfoName">Space Oddity (2015 Remaster){{-- Variable song.name --}}</span><br>
+                    <span class="music-player-command-title-album" id="playerInfoAlbum">ChangesOneBowie{{-- Variable album.name --}} •</span>
+                    <span class="music-player-command-title-artist" id="playerInfoArtist">David Bowie{{-- Variable artist.name --}}</span>
                 </div>
                 <div class="music-player-command-controllers">
                     <div class="music-player-command-controllers-rewind">

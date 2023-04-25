@@ -19,3 +19,10 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+
+<IfModule mod_headers.c>
+    <FilesMatch "\.(mp3)$">
+        Header set Accept-Ranges "bytes"
+        Header set Content-Range "bytes" 0-9999999/10000000
+    </FilesMatch>
+</IfModule>
