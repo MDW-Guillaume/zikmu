@@ -78,10 +78,9 @@
                             alt="">
                     </div>
                     <div class="music-player-command-controllers-randomizer">
-                        <img src="{{ URL::to('/img/randomizer.svg') }}" class="repeat-icon" id="randomActive"
+                        <img src="{{ URL::to('/img/randomizer.svg') }}" class="repeat-icon" id="randomBtn"
                             alt="">
-                        <img src="{{ URL::to('/img/randomizer.svg') }}" class="repeat-icon" id="randomInactive"
-                            alt="">
+
                     </div>
                 </div>
             </div>
