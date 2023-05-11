@@ -4,6 +4,10 @@ const bottomSidebar = document.querySelector('.bottom-sidebar');
 let trackTime = document.getElementById('musicDuration')
 let timeSlider = document.getElementById('timeSlider')
 let trackCurrentTime = document.getElementById('musicCurrentTime')
+let reducePlayerIcon = document.getElementById('reducePlayer')
+let showPlayerIcon = document.getElementById('showPlayer')
+let playerCover = document.getElementById('coverSong')
+let sidebarMenu = document.getElementById('sidebarMenu')
 console.log(bottomSidebar)
 
 // Créer une instance de MutationObserver avec une fonction de rappel
@@ -12,7 +16,41 @@ const observer = new MutationObserver((mutationsList) => {
         if (mutation.type === 'attributes' && mutation.attributeName === 'src' && audio.getAttribute('src')) {
             console.log('L\'attribut "src" de la balise audio a été modifié');
             // Mettre votre code ici pour réagir à la modification de l'attribut
-            bottomSidebar.style.height = "auto"
+            // bottomSidebar.style.height = "auto"
+
+
+            // NE PAS METTRE DE STYLE AUTO MAIS AJOUTER
+
+            bottomSidebar.classList.add('active')
+            sidebarMenu.classList.add('hide')
+
+            reducePlayerIcon.addEventListener('click', function(){
+                sidebarMenu.classList.remove('hide')
+                bottomSidebar.classList.remove('active')
+                bottomSidebar.classList.add('reduce')
+            })
+
+            showPlayerIcon.addEventListener('click', function(){
+                sidebarMenu.classList.add('hide')
+                bottomSidebar.classList.add('active')
+                bottomSidebar.classList.remove('reduce')
+            })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             // Crée un format de retour avec minutes et secondes.
             function buildDuration(duration) {

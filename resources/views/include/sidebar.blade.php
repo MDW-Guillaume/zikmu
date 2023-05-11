@@ -16,7 +16,7 @@
             </div>
         </div>
 
-        <div class="middle-sidebar">
+        <div class="middle-sidebar" id="sidebarMenu">
             <nav class="sidebar-navigation">
                 <ul>
                     <li><a href="{{ route('favorite.index')}}"><img src="{{URL::to('/img')}}/fav-not-fill.svg">Coups de coeur</a></li>
@@ -39,9 +39,11 @@
         <div class="music-player">
             <div class="music-player-cover-container">
                 <img src="" class="music-player-cover-image" id="coverSong" alt="">
+                <img src="{{ URL::to('/img')}}/arrow-down.png" alt="" id="reducePlayer">
             </div>
 
             <div class="music-player-command-container c-white">
+                <img src="{{ URL::to('/img')}}/arrow-up.png" alt="" id="showPlayer">
                 <div class="music-player-command-slide">
                     <div class="music-player-command-slide-time">
                         <div class="music-player-command-slide-time-direct">
