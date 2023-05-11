@@ -43,7 +43,7 @@ $(document).ready(function () {
 });
 
 
-var scripts = ['unique-song-play.js', 'multiple-song-play.js', 'favorite.js', 'play-album.js', 'audio-event.js', 'song-controller.js'];
+var scripts = ['unique-song-play.js', 'multiple-song-play.js', 'favorite.js', 'play-album.js', 'audio-event.js', 'song-controller.js', 'waitinglistshow.js'];
 var index = 0;
 var endScript = 0;
 

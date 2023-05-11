@@ -55,7 +55,8 @@
                 </div>
                 <div class="music-player-command-title">
                     <span class="music-player-command-title-song" id="playerInfoName">Space Oddity (2015 Remaster){{-- Variable song.name --}}</span><br>
-                    <span class="music-player-command-title-album" id="playerInfoAlbum">ChangesOneBowie{{-- Variable album.name --}} •</span>
+                    <span class="music-player-command-title-album" id="playerInfoAlbum">ChangesOneBowie{{-- Variable album.name --}}</span>
+                    <span class="music-player-command-title-separator">• </span>
                     <span class="music-player-command-title-artist" id="playerInfoArtist">David Bowie{{-- Variable artist.name --}}</span>
                 </div>
                 <div class="music-player-command-controllers">
@@ -85,7 +86,7 @@
                 </div>
             </div>
             <div class="music-player-waiting-list">
-                <a href="{{-- route('waiting.index')--}}" class="c-white">
+                <a href="{{ route('waiting.index') }}" class="c-white">
                     <span class="waiting-icon-span"><img src="{{ URL::to('/img/queue.svg') }}" class="waiting-icon"
                             alt=""></span>
                     <span class="waiting-text-span">File d'attente</span>

@@ -9,6 +9,51 @@ use Illuminate\Support\Facades\DB;
 
 class SongController extends Controller
 {
+
+    public function index()
+    {
+        return view('waitinglist.index');
+    }
+
+    public function waitingList(Request $request)
+    {
+
+        $titles_url_array = $request->data;
+        $song_name_array = [];
+
+        foreach ($titles_url_array as $title_url) {
+            $filename = basename($title_url); // récupère le nom du fichier avec l'extension : "recomposed-by-max-richter-vivaldi-the-four-seasons-spring-1.mp3"
+            $name = pathinfo($filename, PATHINFO_FILENAME) . '.' . pathinfo($filename, PATHINFO_EXTENSION); // récupère le nom du fichier sans l'extension : "recomposed-by-max-richter-vivaldi-the-four-seasons-spring-1"
+            $song_name_array[] = $name;
+        }
+
+
+        $i = 0;
+        foreach ($song_name_array as $song_name) {
+            $song_info = DB::table('songs')->where('slug', $song_name)->select('id', 'name', 'slug', 'album_id')->first();
+            $album_info = DB::table('albums')->where('id', $song_info->album_id)->select('name', 'slug', 'release', 'length', 'artist_id')->first();
+            $artist_info = DB::table('artists')->where('id', $album_info->artist_id)->select('slug', 'name')->first();
+
+            $release = $album_info->release;
+            $length = $album_info->length;
+            $artist = $artist_info->name;
+            $album = $album_info->name;
+            $song_title = $song_info->name;
+            $cover = 'albums/' . $artist_info->slug . '/' . $album_info->slug;
+
+            $song_array[$i]['song'] = $song_title;
+            $song_array[$i]['album'] = $album;
+            $song_array[$i]['artist'] = $artist;
+            $song_array[$i]['length'] = $length;
+            $song_array[$i]['cover'] = $cover;
+            $i++;
+        }
+        // dd($song_array);
+        // die;
+
+        return response()->json(['success' => true, 'request' => $song_array]);
+    }
+
     public function listenPlaylist(Request $request)
     {
 

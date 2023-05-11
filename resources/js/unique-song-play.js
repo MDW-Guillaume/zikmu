@@ -36,6 +36,7 @@ if (typeof (playSongForm) != 'undefined') {
                     var lastSong = null;
                     var playlist = []; // List of songs
                     var clickedSongPath = '';
+                    let currentStep = null
 
                     let coverSongArray = response.songs
                     let coverArray = []
@@ -59,7 +60,6 @@ if (typeof (playSongForm) != 'undefined') {
                             clickedSongPath = songArray.song
                         }
                     });
-                    console.log(playlist)
                     if(localStorage.getItem('playlist')){
                         localStorage.removeItem("playlist")
                     }
@@ -146,26 +146,44 @@ if (typeof (playSongForm) != 'undefined') {
                         audioDuration = player.currentTime;
                     });
 
-                    playerNext.addEventListener('click', function () {
-                        console.log('je joue le suivant')
+                    // https://www.educative.io/answers/how-to-ensure-an-event-listener-is-only-fired-once-in-javascript
+
+                    // function oneTimeListener(node, type, callback) {
+                    //     // create event
+                    //     node.addEventListener(type, function listener(e) {
+
+                    //       // remove event listener
+                    //       e.target.removeEventListener(e.type, listener);
+
+                    //       // call handler with original context
+                    //       return callback.call(this, e);
+
+                    //     });
+                    //   }
+
+                    //   oneTimeListener(playerNext, 'click', playNext);
+                      playerNext.addEventListener('click', playNext);
+
+                      function playNext() {
+                        console.log(typeof(audioDuration))
                         if (audioDuration > 1) {
-                            player.pause()
-                            // setTimeout(function () {
-                            let currentStep = localStorage.getItem("playlist-placement-i")
-                            let nextStep = parseInt(currentStep) + 1
-
-                            if (parseInt(currentStep) + 1 != playlist.length) {
-                                currentStep = parseInt(currentStep) + 1
-                                localStorage.setItem('playlist-placement-i', currentStep)
-                                playSong(currentStep)
-                            }
-
-                            // }, 1000);
+                            currentStep = localStorage.getItem("playlist-placement-i");
+                            // console.log(currentStep);
+                            let nextStep = parseInt(currentStep) + 1;
+                            // console.log(nextStep);
+                            // console.log( nextStep, playlist.length, nextStep != playlist.length);
+                          if (nextStep != playlist.length) {
+                              player.pause();
+                            currentStep = nextStep;
+                            localStorage.setItem('playlist-placement-i', currentStep);
+                            playSong(currentStep);
+                          }
+                          audioDuration = 0
+                          console.log(player.currentTime)
                         }
-                    })
+                      }
 
                     playerPrev.addEventListener('click', function () {
-                        console.log('Je joue le précédent')
                         let currentStep = localStorage.getItem("playlist-placement-i")
                         // Verification si il existe un titre avant, sinon bouton désactivé.
                         if (currentStep - 1 >= 0) {
@@ -236,11 +254,6 @@ if (typeof (playSongForm) != 'undefined') {
                                     albumNameArray.splice(playerAudioSrcIndex, 1)
                                     songNameArray.splice(playerAudioSrcIndex, 1)
                                 }
-                                // for (let i = 0; i < array.length; i++) {
-                                //     let randomIndex = Math.floor(Math.random() * array.length);
-                                //     console.log(randomIndex)
-                                //     console.log("i : " + i)
-                                // }
 
                                 let returnArray = {
                                     playlist: randomPlaylist,
@@ -260,36 +273,38 @@ if (typeof (playSongForm) != 'undefined') {
                             artistNameArray = shuffledArray.artist
                             albumNameArray = shuffledArray.album
                             songNameArray = shuffledArray.songName
-                            console.log(shuffledArray.playlist);
 
                             // if (currentTrackIndex !== -1) {
                             //     playlist.splice(currentTrackIndex, 1);
                             //     playlist.unshift(currentTrack);
                             // }
-                            // console.log(playlist);
+
                             localStorage.setItem('playlist-placement-i', 0)
+
                             // clickedSongIndex = 0
                         } else {
                             randomBtn.removeAttribute('data-active')
                             let currentTrackIndex = playlist.indexOf(playlist[currentIndex]);
+
                             console.log('currentIndex', currentTrackIndex)
-                            Object.entries(songsArray).forEach(([key, songArray]) => {
-                                playlist = []
-                                if (key != 'clickedSong') {
-                                    playlist.push(songArray.song)
-                                }
-                            });
+
+                            // Object.entries(songsArray).forEach(([key, songArray]) => {
+                            //     playlist = []
+                            //     if (key != 'clickedSong') {
+                            //         playlist.push(songArray.song)
+                            //     }
+                            // });
                         }
                     })
 
                     function playSong(stepSong = null) {
-                        console.log(coverArray)
-
                         while (selection == lastSong) {
                             selection = clickedSongIndex
                         };
 
+                        // selection = getItem("playlist-placement-i")
                         if (typeof (stepSong) == 'number') {
+                            clickedSongIndex = stepSong
                             selection = stepSong
                         }
                         // On reinitialise la variable stepSong pour continuer la lecture de la playlist
@@ -336,6 +351,7 @@ if (typeof (playSongForm) != 'undefined') {
                                 console.log('unique-song-play / player ended')
                             }
                         });
+                        console.log(coverArray)
                     }
 
                     // LAUNCH

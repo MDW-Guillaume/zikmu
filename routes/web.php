@@ -51,6 +51,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/favorite', [FavoriteController::class, 'index'])->name('favorite.index');
     Route::post('/favorite', [SongsUsersController::class, 'store'])->name('favorite.store');
 
+    Route::get('/waiting', [SongController::class, 'index'])->name('waiting.index');
+    Route::post('/waiting-list', [SongController::class, 'waitingList'])->name('waiting.waitingList');
+
     Route::get('/test', [TestController::class, 'index'])->name('test.index');
     Route::get('/test2', [TestController::class, 'show'])->name('test.show');
 
