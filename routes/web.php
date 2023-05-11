@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AlbumController;
 use App\Http\Controllers\StyleController;
 use App\Http\Controllers\ArtistController;
+use App\Http\Controllers\ArtistsUsersController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
@@ -43,6 +44,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/artist', [ArtistController::class, 'index'])->name('artist.index');
     Route::get('/artist/{slug}', [ArtistController::class, 'show'])->name('artist.show');
 
+    Route::get('/my-artists', [ArtistsUsersController::class, 'myartists'])->name('artist.myartists');
+    Route::post('/my-artists', [ArtistsUsersController::class, 'store'])->name('artist.store');
+
     Route::get('/album/{slug}', [AlbumController::class, 'show'])->name('album.show');
 
     Route::get('/style', [StyleController::class, 'index'])->name('style.index');
@@ -63,8 +67,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/play-form-favorite', [SongController::class, 'listenUniqueFavorite'])->name('play.songfavorite');
 
 });
-
-
 
 Route::get('/dashboard', function () {
     return view('dashboard');

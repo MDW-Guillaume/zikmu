@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+
 
 class ArtistController extends Controller
 {
@@ -28,7 +30,7 @@ class ArtistController extends Controller
         $artist_style= DB::table('styles')->select('slug')->where('id', $artist_info->style_id)->first();
 
         $albums = DB::table('albums')->where('artist_id', $artist_info->id)->orderByDesc('release')->get();
-        
+
         // dd($artist_info, $artist_style, $albums)
 
         return view('artist.show')->with([

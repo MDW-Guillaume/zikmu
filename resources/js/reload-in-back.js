@@ -494,6 +494,46 @@ function favoriteDelete() {
     }
 }
 
+function favoriteArtistAddAndDelete() {
+    let addArtistForm = document.getElementById('addArtistToFavorite')
+
+    if (addArtistForm) {
+        $(document).ready(function () {
+            addArtistForm.addEventListener('submit', function(e){
+                e.preventDefault(); // Empêcher l'envoi par défaut du formulaire
+
+                var formData = $(addArtistForm).serialize();
+
+                $.ajax({
+                    url: '/my-artists',
+                    type: 'POST',
+                    data: formData,
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.success) {
+                            console.log(response.action)
+                            // Changement d'affichage du bouton "Ajouter"
+                            if(response.action == 'add'){
+                                document.getElementById('displayMessage').innerHTML = 'Cet artiste a été ajouté à vos artistes favoris';
+                                document.getElementById('displayMessageContainer').classList.add('show');
+                                setTimeout(function() {document.getElementById('displayMessageContainer').classList.remove('show')}, 4000);
+                            }else{
+                                document.getElementById('displayMessage').innerHTML = 'Cet artiste a été supprimé de vos artistes favoris';
+                                document.getElementById('displayMessageContainer').classList.add('show');
+                                setTimeout(function() {document.getElementById('displayMessageContainer').classList.remove('show')}, 4000);
+
+                            }
+
+                        } else {
+                            alert('Une erreur est survenue : ' + response.error);
+                        }
+                    }
+                });
+            })
+        })
+    }
+}
+
 $(document).ready(function () {
     $(document).on('click', 'a', function (event) {
         event.preventDefault();
@@ -509,6 +549,7 @@ $(document).ready(function () {
                 afficheAlbumAvecFavoris();
                 favoriteDelete();
                 affichePlayer();
+                favoriteArtistAddAndDelete();
                 // reloadScript();
                 // index = 0;
             }
