@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AlbumController;
+use App\Http\Controllers\AlbumsUsersController;
 use App\Http\Controllers\StyleController;
 use App\Http\Controllers\ArtistController;
 use App\Http\Controllers\ArtistsUsersController;
@@ -48,6 +49,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/my-artists', [ArtistsUsersController::class, 'store'])->name('artist.store');
 
     Route::get('/album/{slug}', [AlbumController::class, 'show'])->name('album.show');
+    Route::get('/my-albums', [AlbumsUsersController::class, 'myalbums'])->name('album.myalbums');
+    Route::post('/my-albums', [AlbumsUsersController::class, 'store'])->name('album.store');
+
 
     Route::get('/style', [StyleController::class, 'index'])->name('style.index');
     Route::get('/style/{slug}', [StyleController::class, 'show'])->name('style.show');

@@ -493,7 +493,6 @@ function favoriteDelete() {
         });
     }
 }
-
 function favoriteArtistAddAndDelete() {
     let addArtistForm = document.getElementById('addArtistToFavorite')
     if (addArtistForm) {
@@ -534,6 +533,46 @@ function favoriteArtistAddAndDelete() {
         })
     }
 }
+function favoriteAlbumAddAndDelete() {
+    let addAlbumForm = document.getElementById('addAlbumToFavorite')
+    if (addAlbumForm) {
+        $(document).ready(function () {
+            addAlbumForm.addEventListener('submit', function(e){
+                e.preventDefault(); // Empêcher l'envoi par défaut du formulaire
+
+                var formData = $(addAlbumForm).serialize();
+
+                let favButton = document.getElementById('favButton')
+                $.ajax({
+                    url: '/my-albums',
+                    type: 'POST',
+                    data: formData,
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.success) {
+                            // Changement d'affichage du bouton "Ajouter"
+                            if(response.action == 'add'){
+                                favButton.classList.add('favorite')
+                                document.getElementById('displayMessage').innerHTML = 'Cet album a été ajouté à vos albums favoris';
+                                document.getElementById('displayMessageContainer').classList.add('show');
+                                setTimeout(function() {document.getElementById('displayMessageContainer').classList.remove('show')}, 4000);
+                            }else{
+                                favButton.classList.remove('favorite')
+                                document.getElementById('displayMessage').innerHTML = 'Cet album a été supprimé de vos albums favoris';
+                                document.getElementById('displayMessageContainer').classList.add('show');
+                                setTimeout(function() {document.getElementById('displayMessageContainer').classList.remove('show')}, 4000);
+
+                            }
+
+                        } else {
+                            alert('Une erreur est survenue : ' + response.error);
+                        }
+                    }
+                });
+            })
+        })
+    }
+}
 
 $(document).ready(function () {
     $(document).on('click', 'a', function (event) {
@@ -551,6 +590,7 @@ $(document).ready(function () {
                 favoriteDelete();
                 affichePlayer();
                 favoriteArtistAddAndDelete();
+                favoriteAlbumAddAndDelete();
                 // reloadScript();
                 // index = 0;
             }

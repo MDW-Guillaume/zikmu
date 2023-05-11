@@ -21,6 +21,7 @@
                 <ul>
                     <li><a href="{{ route('favorite.index')}}"><img src="{{URL::to('/img')}}/fav-not-fill.svg">Coups de coeur</a></li>
                     <li><a href="{{ route('artist.myartists')}}"><img src="{{URL::to('/img')}}/microphone.png">Mes artistes</a></li>
+                    <li><a href="{{ route('album.myalbums')}}"><img src="{{URL::to('/img')}}/compact-disc.png">Mes albums</a></li>
                 </ul>
             </nav>
         </div>

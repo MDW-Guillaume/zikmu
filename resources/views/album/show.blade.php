@@ -37,8 +37,16 @@
             </div>
 
             <div class="album-actions">
-                <button id="addToFavorite" class="favorite"><img src="{{ URL::to('/img') }}/fav-fill.svg"
-                        alt=""><span>Ajouter</span></button>
+                <form action="{{ route('album.store') }}" method="post" id="addAlbumToFavorite">
+                    {{ csrf_field() }}
+                    <input type="hidden" name="album_id" value="{{ $album->id }}">
+                    <button type="submit" id="favButton" class="favorite @if (isset($album->favorite))is_favorite @endif">
+                        <span class="favorite-album"><img src="{{ URL::to('/img') }}/fav-fill.svg"
+                                alt="">Retirer</span>
+                        <span class="not-favorite-album"><img src="{{ URL::to('/img') }}/fav-not-fill.svg"
+                                alt="">Ajouter</span>
+                    </button>
+                </form>
 
 
                 <form action="{{ route('song.play') }}" method="post" id="playPlaylist">
