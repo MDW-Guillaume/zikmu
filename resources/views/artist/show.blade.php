@@ -22,8 +22,12 @@
                 <div class="artist-details">
                     <h2 class="artist-name">{{ $artist->name }}</h2>
                     <p><img src="{{ URL::to('/img') }}/fav-fill.svg" alt="">{{ $artist->follow }}</p>
-                    <button id="addToFavorite"><img src="{{ URL::to('/img') }}/fav-fill.svg"
-                            alt=""><span>Ajouter</span></button>
+                    <form action="{{ route('artist.store') }}" method="post" id="addArtistToFavorite">
+                        {{csrf_field()}}
+                        <input type="hidden" name="artist_id" value="{{$artist->id}}">
+                        <button type="submit"><img src="{{ URL::to('/img') }}/fav-fill.svg"
+                                alt=""><span>Ajouter</span></button>
+                    </form>
                 </div>
             </div>
             <div class="artist-albums-list">

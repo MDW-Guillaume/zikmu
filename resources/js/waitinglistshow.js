@@ -1,4 +1,4 @@
-if( typeof(document.getElementById("waitingListPage")) !== 'undefined' ){
+if(document.getElementById("waitingListPage")){
     let token = document.getElementById('csrfToken').value
 
     let actualPlaylist = localStorage.getItem('playlist')
@@ -26,19 +26,27 @@ if( typeof(document.getElementById("waitingListPage")) !== 'undefined' ){
     contentType: 'application/json',
     dataType: 'json',
     success: function(response) {
-        let theResponse = response
-        let waitingTitleLength = theResponse.length
-        let waitingTimeLength = ''
+        console.log(response)
+        let waitingListArray = response.request
+        let waitingTitleLength = waitingListArray.length
+        let waitingTimeLength = 0
 
-        console.log(waitingTitleLength)
-        theResponse.forEach(element => {
-
-        });
+        // Ajout du nombre de titres dans la file d'attente
         let waitingListTitles = document.getElementById('waitingListTitles')
 
         waitingListTitles.innerHTML = waitingTitleLength
 
-        // traitement en cas de succès
+        // Ajout du temps restant dans la file d'attente
+        let waitingListTime = document.getElementById('waitingListLength')
+
+        waitingListArray.forEach(element => {
+            waitingTimeLength = waitingTimeLength + element.length
+            console.log(element.length)
+        });
+
+
+
+        console.log(waitingTimeLength)
     },
     error: function(jqXHR, textStatus, errorThrown) {
         // traitement en cas d'erreur

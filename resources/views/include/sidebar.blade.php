@@ -20,6 +20,7 @@
             <nav class="sidebar-navigation">
                 <ul>
                     <li><a href="{{ route('favorite.index')}}"><img src="{{URL::to('/img')}}/fav-not-fill.svg">Coups de coeur</a></li>
+                    <li><a href="{{ route('artist.myartists')}}"><img src="{{URL::to('/img')}}/microphone.png">Mes artistes</a></li>
                 </ul>
             </nav>
         </div>

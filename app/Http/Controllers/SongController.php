@@ -30,12 +30,11 @@ class SongController extends Controller
 
         $i = 0;
         foreach ($song_name_array as $song_name) {
-            $song_info = DB::table('songs')->where('slug', $song_name)->select('id', 'name', 'slug', 'album_id')->first();
+            $song_info = DB::table('songs')->where('slug', $song_name)->select('id', 'name', 'slug', 'album_id', 'listenUniqueFavorite')->first();
             $album_info = DB::table('albums')->where('id', $song_info->album_id)->select('name', 'slug', 'release', 'length', 'artist_id')->first();
             $artist_info = DB::table('artists')->where('id', $album_info->artist_id)->select('slug', 'name')->first();
 
-            $release = $album_info->release;
-            $length = $album_info->length;
+            $length = $song_info->length;
             $artist = $artist_info->name;
             $album = $album_info->name;
             $song_title = $song_info->name;
