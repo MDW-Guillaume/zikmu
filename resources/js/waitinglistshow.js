@@ -1,4 +1,4 @@
-if(document.getElementById("waitingListPage")){
+if(document.getElementById("waitingListPage")) {
     let token = document.getElementById('csrfToken').value
 
     let actualPlaylist = localStorage.getItem('playlist')
