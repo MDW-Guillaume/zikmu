@@ -11,9 +11,26 @@ class ArtistsUsersController extends Controller
     public function myartists(){
         $user = Auth::user();
 
-        $my_user_favorite_artists = DB::table('artists_users')->where('user_id', $user->id)->select('id', 'artist_id')->get();
+        $my_user_favorite_artists_db = DB::table('artists_users')->where('user_id', $user->id)->select('id', 'artist_id')->get();
 
-        return view('artist.myartists');
+        $my_user_favorite_artists = [];
+
+        $i = 0;
+        foreach( $my_user_favorite_artists_db as $user_artist){
+            $artist_db = DB::table('artists')->where('id', $user_artist->artist_id)->first();
+
+            if(!is_null($artist_db->style_id)){
+                $artist_style = DB::table('styles')->where('id', $artist_db->style_id)->first();
+                $artist_db->style = $artist_style->slug;
+            }
+
+            $my_user_favorite_artists[$i] = $artist_db;
+            $i++;
+        }
+
+        return view('artist.myartists')->with([
+            'artists' => $my_user_favorite_artists
+        ]);
     }
 
     public function store(Request $request){

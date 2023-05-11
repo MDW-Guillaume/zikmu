@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::disableForeignKeyConstraints();
-        Schema::create('artist_user', function (Blueprint $table) {
+        Schema::create('artists_users', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('artist_id');

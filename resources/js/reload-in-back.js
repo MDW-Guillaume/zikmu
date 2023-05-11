@@ -511,7 +511,6 @@ function favoriteArtistAddAndDelete() {
                     dataType: 'json',
                     success: function (response) {
                         if (response.success) {
-                            console.log(response.action)
                             // Changement d'affichage du bouton "Ajouter"
                             if(response.action == 'add'){
                                 document.getElementById('displayMessage').innerHTML = 'Cet artiste a été ajouté à vos artistes favoris';
