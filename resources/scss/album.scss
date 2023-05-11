@@ -128,8 +128,14 @@
         flex-direction: column;
         justify-content: flex-start;
 
-        form {
-            width: 100%;
+        .title-list-element{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        form.unique-song-form {
+            width: 90%;
             position: relative;
 
             .play-song-submit {
@@ -141,6 +147,10 @@
                 border: 0;
                 cursor: pointer;
             }
+        }
+
+        form.actionFavorite{
+            width : 10%;
         }
 
         .title-element {
