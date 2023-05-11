@@ -65,7 +65,23 @@
                     height: 16px;
                     margin-right: 10px;
                 }
+
+                &.is_favorite {
+                    .not-favorite-artist {
+                        display: none;
+                    }
+
+                    .favorite-artist {
+                        display: block;
+                    }
+                }
+
+                .favorite-artist {
+                    display: none;
+                }
             }
+
+
         }
     }
 

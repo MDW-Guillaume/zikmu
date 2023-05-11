@@ -496,7 +496,6 @@ function favoriteDelete() {
 
 function favoriteArtistAddAndDelete() {
     let addArtistForm = document.getElementById('addArtistToFavorite')
-
     if (addArtistForm) {
         $(document).ready(function () {
             addArtistForm.addEventListener('submit', function(e){
@@ -504,6 +503,7 @@ function favoriteArtistAddAndDelete() {
 
                 var formData = $(addArtistForm).serialize();
 
+                let favButton = document.getElementById('favButton')
                 $.ajax({
                     url: '/my-artists',
                     type: 'POST',
@@ -513,10 +513,12 @@ function favoriteArtistAddAndDelete() {
                         if (response.success) {
                             // Changement d'affichage du bouton "Ajouter"
                             if(response.action == 'add'){
+                                favButton.classList.add('is_favorite')
                                 document.getElementById('displayMessage').innerHTML = 'Cet artiste a été ajouté à vos artistes favoris';
                                 document.getElementById('displayMessageContainer').classList.add('show');
                                 setTimeout(function() {document.getElementById('displayMessageContainer').classList.remove('show')}, 4000);
                             }else{
+                                favButton.classList.remove('is_favorite')
                                 document.getElementById('displayMessage').innerHTML = 'Cet artiste a été supprimé de vos artistes favoris';
                                 document.getElementById('displayMessageContainer').classList.add('show');
                                 setTimeout(function() {document.getElementById('displayMessageContainer').classList.remove('show')}, 4000);

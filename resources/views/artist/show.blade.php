@@ -23,10 +23,14 @@
                     <h2 class="artist-name">{{ $artist->name }}</h2>
                     <p><img src="{{ URL::to('/img') }}/fav-fill.svg" alt="">{{ $artist->follow }}</p>
                     <form action="{{ route('artist.store') }}" method="post" id="addArtistToFavorite">
-                        {{csrf_field()}}
-                        <input type="hidden" name="artist_id" value="{{$artist->id}}">
-                        <button type="submit"><img src="{{ URL::to('/img') }}/fav-fill.svg"
-                                alt=""><span>Ajouter</span></button>
+                        {{ csrf_field() }}
+                        <input type="hidden" name="artist_id" value="{{ $artist->id }}">
+                        <button type="submit" id="favButton" class="@if (isset($artist->favorite))is_favorite @endif">
+                            <span class="favorite-artist"><img src="{{ URL::to('/img') }}/fav-fill.svg"
+                                    alt="">Retirer</span>
+                            <span class="not-favorite-artist"><img src="{{ URL::to('/img') }}/fav-not-fill.svg"
+                                    alt="">Ajouter</span>
+                        </button>
                     </form>
                 </div>
             </div>

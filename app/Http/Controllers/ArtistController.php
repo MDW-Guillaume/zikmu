@@ -9,29 +9,38 @@ use Illuminate\Support\Facades\Auth;
 
 class ArtistController extends Controller
 {
-    public function index(){
-        $artists= DB::table('artists')->get();
+    public function index()
+    {
+        $artists = DB::table('artists')->get();
 
-        foreach($artists as $artist){
-            if(!is_null($artist->style_id)){
-            $artist_style = DB::table('styles')->where('id', $artist->style_id)->first();
-            $artist->style = $artist_style->slug;
-        }}
-        // dd($artists);
+
+        foreach ($artists as $artist) {
+            if (!is_null($artist->style_id)) {
+                $artist_style = DB::table('styles')->where('id', $artist->style_id)->first();
+                $artist->style = $artist_style->slug;
+            }
+        }
 
         return view('artist.index')->with([
             'artists' => $artists
         ]);
     }
 
-    public function show($slug){
+    public function show($slug)
+    {
         $artist_info = DB::table('artists')->where('slug', $slug)->first();
 
-        $artist_style= DB::table('styles')->select('slug')->where('id', $artist_info->style_id)->first();
+        $artist_style = DB::table('styles')->select('slug')->where('id', $artist_info->style_id)->first();
 
         $albums = DB::table('albums')->where('artist_id', $artist_info->id)->orderByDesc('release')->get();
 
-        // dd($artist_info, $artist_style, $albums)
+        $favorites = DB::table('artists_users')->where('user_id', Auth::user()->id)->select('artist_id')->get();
+
+        foreach ($favorites as $favorite) {
+            if ($artist_info->id == $favorite->artist_id) {
+                $artist_info->favorite = true;
+            }
+        }
 
         return view('artist.show')->with([
             'artist' => $artist_info,
