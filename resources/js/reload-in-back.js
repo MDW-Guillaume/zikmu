@@ -552,12 +552,12 @@ function favoriteAlbumAddAndDelete() {
                         if (response.success) {
                             // Changement d'affichage du bouton "Ajouter"
                             if(response.action == 'add'){
-                                favButton.classList.add('favorite')
+                                favButton.classList.add('is_favorite')
                                 document.getElementById('displayMessage').innerHTML = 'Cet album a été ajouté à vos albums favoris';
                                 document.getElementById('displayMessageContainer').classList.add('show');
                                 setTimeout(function() {document.getElementById('displayMessageContainer').classList.remove('show')}, 4000);
                             }else{
-                                favButton.classList.remove('favorite')
+                                favButton.classList.remove('is_favorite')
                                 document.getElementById('displayMessage').innerHTML = 'Cet album a été supprimé de vos albums favoris';
                                 document.getElementById('displayMessageContainer').classList.add('show');
                                 setTimeout(function() {document.getElementById('displayMessageContainer').classList.remove('show')}, 4000);

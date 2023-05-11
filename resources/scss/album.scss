@@ -99,7 +99,7 @@
             font-weight: 400;
             cursor: pointer;
 
-            &.favorite {
+            &.is_favorite {
                 .not-favorite-album {
                     display: none;
                 }
@@ -234,6 +234,76 @@
                 font-weight: 400;
                 font-size: 14px;
                 line-height: 16px;
+            }
+        }
+    }
+
+    .albums-list {
+        margin-top: 30px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        .album-element {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            margin-right: 30px;
+            margin-bottom: 30px;
+            z-index: 3;
+
+            .album-cover {
+                width: 180px;
+                height: 180px;
+                position: relative;
+
+                a {
+                    display: block;
+
+                    img {
+                        max-width: 100%;
+                        height: 100%;
+                    }
+                }
+
+                form {
+                    position: absolute;
+                    bottom: 5px;
+                    left: 5px;
+                    z-index: 2;
+
+                    input[type=submit] {
+                        cursor: pointer;
+                        padding: 0 !important;
+                        width: 34px;
+                        height: 34px;
+                    }
+                }
+            }
+
+            .album-details {
+                margin-top: 5px;
+                display: flex;
+                flex-direction: column;
+                text-decoration: none;
+                color: #FFFFFF;
+
+                h3 {
+                    margin: 0;
+                    font-family: 'Roboto';
+                    font-style: normal;
+                    font-weight: 500;
+                    font-size: 14px;
+                    line-height: 16px;
+                }
+
+                span {
+                    font-family: 'Roboto';
+                    font-style: normal;
+                    font-weight: 300;
+                    font-size: 14px;
+                    line-height: 16px;
+                }
             }
         }
     }
