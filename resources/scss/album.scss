@@ -132,6 +132,8 @@
             display: flex;
             flex-direction: row;
             justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5333333333);
+
         }
 
         form.unique-song-form {
@@ -151,6 +153,43 @@
 
         form.actionFavorite{
             width : 10%;
+            display: flex;
+            align-items : center;
+            justify-content: flex-end;
+            padding-right : 20px;
+            .favorite-button {
+                background: transparent;
+                border: 0;
+                padding: 0;
+                width: fit-content;
+                height: 16px;
+
+                &.is-favorite {
+                    .no-favorite-img {
+                        display: none;
+                    }
+
+                    .favorite-img {
+                        display: block;
+                    }
+                }
+
+                .favorite-img {
+                    display: none;
+                }
+
+                img {
+                    width: 16px;
+                    height: 16px;
+                    cursor: pointer;
+                    vertical-align: bottom;
+                }
+            }
+        }
+
+        .title-favorite {
+            width: 5%;
+            text-align: center;
         }
 
         .title-element {
@@ -159,7 +198,6 @@
             justify-content: space-between;
             align-items: center;
             width: 100%;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.5333333333);
             padding: 20px 0;
 
             .title-position {
@@ -169,43 +207,6 @@
                 font-weight: 700;
                 font-size: 14px;
                 line-height: 16px;
-
-            }
-
-            .title-favorite {
-                width: 5%;
-                text-align: center;
-
-                form {
-                    .favorite-button {
-                        background: transparent;
-                        border: 0;
-                        padding: 0;
-                        width: fit-content;
-                        height: 16px;
-
-                        &.is-favorite {
-                            .no-favorite-img {
-                                display: none;
-                            }
-
-                            .favorite-img {
-                                display: block;
-                            }
-                        }
-
-                        .favorite-img {
-                            display: none;
-                        }
-
-                        img {
-                            width: 16px;
-                            height: 16px;
-                            cursor: pointer;
-                            vertical-align: bottom;
-                        }
-                    }
-                }
 
             }
 
