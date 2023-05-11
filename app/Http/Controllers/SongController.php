@@ -99,12 +99,7 @@ class SongController extends Controller
 
     public function listenAlbum(Request $request)
     {
-
-        // dd($request);
         $favorite_titles = $request->input();
-
-
-
 
         foreach ($favorite_titles as $title) {
             if (preg_match('/^[0-9]+$/', $title)) {
@@ -128,34 +123,21 @@ class SongController extends Controller
 
     public function listenSong(Request $request)
     {
-        $favorite_titles = $request->input();
-        // dd($favorite_titles);
-        foreach ($favorite_titles as $title) {
-            if (preg_match('/^[0-9]+$/', $title)) {
-                $song_info = DB::table('songs')->where('id', $title)->select('id', 'slug', 'album_id')->first();
-                $album_info = DB::table('albums')->where('id', $song_info->album_id)->select('id', 'slug', 'release', 'length', 'artist_id')->first();
-                $all_songs = DB::table('songs')->where('album_id', $album_info->id)->select('id', 'slug')->get();
-                $artist_info = DB::table('artists')->where('id', $album_info->artist_id)->select('slug')->first();
+        $song_info = DB::table('songs')->where('id', $request->title_id)->select('id', 'slug', 'album_id')->first();
+        $album_info = DB::table('albums')->where('id', $song_info->album_id)->select('id', 'slug', 'release', 'length', 'artist_id')->first();
+        $all_songs = DB::table('songs')->where('album_id', $album_info->id)->select('id', 'slug')->get();
+        $artist_info = DB::table('artists')->where('id', $album_info->artist_id)->select('slug')->first();
 
-                $release = $album_info->release;
-                $length = $album_info->length;
-                $artist = $artist_info->slug;
-                $album = $album_info->slug;
-            }
-        }
-        $is_selected_song = 0;
+        $release = $album_info->release;
+        $length = $album_info->length;
+        $artist = $artist_info->slug;
+        $album = $album_info->slug;
+
         foreach ($all_songs as $song) {
-            if ($song_info->id == $song->id) {
-                $is_selected_song = 1;
-            }
-
-            if ($is_selected_song == 1) {
-                $song_title = $song->slug;
-                $song_array[] = $release . '-' . $length . '-' . $artist . '-' . $album . '/' . $song_title;
-            }
+            $song_array[] = $release . '-' . $length . '-' . $artist . '-' . $album . '/' . $song->slug;
         }
 
-        return response()->json(['success' => true, 'songs' => $song_array]);
+        return response()->json(['success' => true, 'songs' => $song_array, 'clickedSong' => $request->title_id]);
     }
 
     public function listenAlbumFormCover(Request $request)
