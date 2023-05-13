@@ -49,13 +49,14 @@
                 </form>
 
 
-                <form action="{{ route('song.play') }}" method="post" id="playPlaylist">
+                <form action="{{ route('song.play') }}" method="post" class="fast-play-album" id="playPlaylist">
                     @csrf
-                    @foreach ($titles as $song)
-                        {{-- {{dd($song->id)}} --}}
+                    {{-- @foreach ($titles as $song)
                         <input type="hidden" value="{{ $song->id }}" name="{{ $song->id }}">
-                    @endforeach
+                    @endforeach --}}
 
+                    <input type="hidden" name="album_id" value="{{$album->id}}">
+                    <input type="hidden" name="position" value="1">
                     <button id="playOnce" type="submit" value="linear" class="listen"><img
                             src="{{ URL::to('/img') }}/play.svg" alt=""><span>Écouter</span></button>
                 </form>
@@ -74,7 +75,7 @@
                                 <div class="title-favorite">
                                 </div>
                                 <input type="submit" class="play-song-submit" value="">
-                                <input type="hidden" name="title_id" value="{{ $title->id }}">
+                                <input type="hidden" name="song_id" value="{{ $title->id }}">
                             </div>
                         </form>
                         <form action="{{ route('favorite.store', $album->slug) }}" class="actionFavorite" method="post">

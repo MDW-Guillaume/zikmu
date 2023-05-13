@@ -71,6 +71,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/play-album', [SongController::class, 'listenAlbumFormCover'])->name('play.album');
     Route::post('/play-form-favorite', [SongController::class, 'listenUniqueFavorite'])->name('play.songfavorite');
 
+    Route::post('/play-album-element', [PlayAlbumController::class, 'playAlbumElement'])->name('play.playalbumelement');
     Route::post('/fast-play-album', [PlayAlbumController::class, 'fastPlayAlbum'])->name('play.fastplayalbum');
     Route::post('/play-next-song', [PlayAlbumController::class, 'playNextSong'])->name('play.playnextsong');
 });

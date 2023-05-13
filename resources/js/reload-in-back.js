@@ -398,11 +398,9 @@ function playSentSong(url, position) {
     player.setAttribute("position", position)
     player.addEventListener('loadedmetadata', function() {
         // J'attend que le média soit chargé pour mettre un écouteur sur la fin d'un son
-        console.log('Player metadata loaded');
         player.addEventListener('ended', playNextQueuedSong);
     });
 }
-
 function playNextQueuedSong() {
     if (player.hasAttribute('src')) {
         playerPosition = player.getAttribute('position')
@@ -437,17 +435,38 @@ function playNextQueuedSong() {
         })
     }
 }
+function playAlbumFromTitle() {
+    let cliquedSongForm = document.querySelectorAll('.unique-song-form')
+    if(cliquedSongForm){
+        cliquedSongForm.forEach(clickedSong => {
+            clickedSong.addEventListener('submit', function (e) {
+                e.preventDefault()
 
+                var formData = $(clickedSong).serialize();
+                let url = '/play-album-element'
+
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    processData: false,
+                    data: formData,
+                    dataType: 'json',
+                    success: function (response) {
+                        // Je lance la lecture du premier titre.
+                        playSentSong(response.song_url, response.position)
+                    }
+                })
+            })
+        })
+    }
+}
 
 function fastPlayAlbum() {
     let fastPlayAlbumForm = document.querySelectorAll('.fast-play-album')
-    console.log(fastPlayAlbumForm)
     if (fastPlayAlbumForm) {
         fastPlayAlbumForm.forEach(fastPlayAlbumElement => {
-            console.log(fastPlayAlbumElement)
             fastPlayAlbumElement.addEventListener('submit', function (e) {
                 e.preventDefault()
-                console.log('#####')
 
                 var formData = $(fastPlayAlbumElement).serialize();
                 let url = '/fast-play-album'
@@ -471,7 +490,6 @@ function fastPlayAlbum() {
         });
     }
 }
-
 function afficheAlbumAvecFavoris() {
     var form = $('.actionFavorite')
     if (form) {
@@ -479,9 +497,7 @@ function afficheAlbumAvecFavoris() {
             $(document).ready(function () {
                 form[i].addEventListener('submit', function (e) {
                     e.preventDefault(); // Empêcher l'envoi par défaut du formulaire
-                    console.log(form[i][3])
                     var formData = $(form[i]).serialize(); // Récupérer les données du formulaire
-                    console.log(formData)
                     $.ajax({
                         url: '/favorite',
                         type: 'POST',
@@ -493,7 +509,6 @@ function afficheAlbumAvecFavoris() {
                                 // Par exemple, ajouter le nouveau champ à un tableau existant
                                 if (form[i][3].classList.contains('is-favorite')) {
                                     $(form[i][3]).removeClass('is-favorite')
-                                    console.log(document.getElementById('displayMessage'))
                                     document.getElementById('displayMessage').innerHTML = 'La titre a été supprimé de vos Coups de coeur';
                                     document.getElementById('displayMessageContainer').classList.add('show');
                                     setTimeout(function () { document.getElementById('displayMessageContainer').classList.remove('show') }, 4000);
@@ -513,7 +528,6 @@ function afficheAlbumAvecFavoris() {
         }
     }
 }
-
 function favoriteDelete() {
     var deleteDiv = document.querySelectorAll('.favorite-delete')
     // var form = $('.actionFavorite')
@@ -530,7 +544,6 @@ function favoriteDelete() {
             } // Récupérer les données du formulaire
 
 
-            console.log(formData)
             $.ajax({
                 url: '/favorite',
                 type: 'POST',
@@ -546,7 +559,6 @@ function favoriteDelete() {
                             // Par exemple, ajouter le nouveau champ à un tableau existant
                             if (form[i][3].classList.contains('is-favorite')) {
                                 $(form[i][3]).removeClass('is-favorite')
-                                console.log(document.getElementById('displayMessage'))
                                 document.getElementById('displayMessage').innerHTML = 'La titre a été supprimé de vos Coups de coeur';
                                 document.getElementById('displayMessageContainer').classList.add('show');
                                 setTimeout(function () { document.getElementById('displayMessageContainer').classList.remove('show') }, 4000);
@@ -671,6 +683,7 @@ $(document).ready(function () {
                 afficheAlbumAvecFavoris();
                 favoriteDelete();
                 // affichePlayer();
+                playAlbumFromTitle();
                 fastPlayAlbum();
                 favoriteArtistAddAndDelete();
                 favoriteAlbumAddAndDelete();
@@ -679,8 +692,8 @@ $(document).ready(function () {
             }
         });
     });
-
     afficheAlbumAvecFavoris();
+    playAlbumFromTitle()
     favoriteDelete();
     fastPlayAlbum();
     favoriteArtistAddAndDelete();

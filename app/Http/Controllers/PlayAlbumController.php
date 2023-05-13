@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Song;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -19,17 +20,18 @@ class PlayAlbumController extends Controller
         // Récupération de l'id de l'utilisateur
         $user_id = Auth::user();
 
+        // Regénération de la file d'attente
+        SongsQueue::where('user_id', $user_id->id)->delete();
+
         // Ajout des titres dans la table file d'attente song_queue
-        $position = 0;
         foreach ($get_album_titles as $title_id) {
             SongsQueue::firstOrCreate(
                 [
                     'user_id' => $user_id->id,
                     'song_id' => $title_id->id,
-                    'position' => $position,
+                    'position' => $title_id->position,
                     ]
             );
-            $position++;
         }
 
         // Récupération de la position de départ
@@ -57,7 +59,8 @@ class PlayAlbumController extends Controller
         return response()->json(['success' => true, 'position' => $position, 'song_url' => $song_url, 'song_name' => $song_name, 'album_name' => $album_name, 'artist_name' => $artist_name]);
     }
 
-    public function playNextSong(Request $request){
+    public function playNextSong(Request $request)
+    {
         $user_id = Auth::user();
 
         $position = $request->position;
@@ -82,5 +85,53 @@ class PlayAlbumController extends Controller
         $song_url = '/storage/files/music/' . $release . '-' . $length . '-' . $artist_slug . '-' . $album_slug . '/' . $song_slug;
 
         return response()->json(['success' => true, 'position' => $position, 'song_url' => $song_url, 'song_name' => $song_name, 'album_name' => $album_name, 'artist_name' => $artist_name]);
+    }
+
+    public function playAlbumElement(Request $request)
+    {
+        // Récupération des informations de l'utilisateur
+        $user = Auth::user();
+        // Récupération de l'ID du son cliqué
+        $song_id = $request->song_id;
+
+        // Récupération des informations nécessaires du son (position, slug, album_id)
+        $song_info = DB::table('songs')->where('id', $song_id)->select('album_id', 'position', 'slug', 'name')->first();
+
+        // Récupération de tous les titres de l'album
+        $all_album_songs = DB::table('songs')->where('album_id', $song_info->album_id)->get();
+
+        // On clear les sons déja en file d'attente pour l'utilisateur
+        SongsQueue::where('user_id', $user->id)->delete();
+
+        // Ajout des titres dans la table file d'attente song_queue
+        foreach ($all_album_songs as $album_song) {
+            SongsQueue::firstOrCreate(
+                [
+                    'user_id' => $user->id,
+                    'song_id' => $album_song->id,
+                    'position' => $album_song->position,
+                    ]
+            );
+        }
+
+        // Récupération des informations nécessaires de l'album à partir du son
+        $album_info = DB::table('albums')->where('id', $song_info->album_id)->select('artist_id', 'slug', 'length', 'release', 'name')->first();
+
+        // Récupération des informations nécessaires de l'artiste à partir de l'album
+        $artist_info = DB::table('artists')->where('id', $album_info->artist_id)->select('slug', 'name')->first();
+
+        $release = $album_info->release;
+        $length = $album_info->length;
+        $artist_slug = $artist_info->slug;
+        $artist_name = $artist_info->name;
+        $album_slug = $album_info->slug;
+        $album_name = $album_info->name;
+        $song_slug = $song_info->slug;
+        $song_name = $song_info->name;
+
+        $song_url = '/storage/files/music/' . $release . '-' . $length . '-' . $artist_slug . '-' . $album_slug . '/' . $song_slug;
+
+        return response()->json(['success' => true, 'position' => $song_info->position, 'song_url' => $song_url, 'song_name' => $song_name, 'album_name' => $album_name, 'artist_name' => $artist_name]);
+
     }
 }
