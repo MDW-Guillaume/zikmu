@@ -13,6 +13,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\SongsUsersController;
 use App\Http\Controllers\SongController;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\PlayAlbumController;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,6 +71,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/play-album', [SongController::class, 'listenAlbumFormCover'])->name('play.album');
     Route::post('/play-form-favorite', [SongController::class, 'listenUniqueFavorite'])->name('play.songfavorite');
 
+    Route::post('/fast-play-album', [PlayAlbumController::class, 'fastPlayAlbum'])->name('play.fastplayalbum');
+    Route::post('/play-next-song', [PlayAlbumController::class, 'playNextSong'])->name('play.playnextsong');
 });
 
 Route::get('/dashboard', function () {

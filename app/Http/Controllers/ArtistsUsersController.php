@@ -36,15 +36,23 @@ class ArtistsUsersController extends Controller
     public function store(Request $request){
         $id_artist = $request->input('artist_id') ;
 
+        // Recherche de la présence de l'artiste dans la table `artists_users`
         $artist_search = DB::table('artists_users')->where(['user_id' => Auth::User()->id, 'artist_id' => $id_artist])->get();
 
+        // Ajout ou suppression de l'artiste en fonction du la valeur de $artist_search
+        // +
+        // Ajout ou suppression d'un follow sur l'artiste
         if(count($artist_search) >= 1){
             $artist_insert = DB::table('artists_users')->where(['user_id' => Auth::User()->id, 'artist_id' => $id_artist])->delete();
+            DB::table('artists')->where('id', $id_artist)->decrement('follow');
             $action = 'delete';
         }else{
             $artist_insert = DB::table('artists_users')->insert(['user_id' => Auth::User()->id, 'artist_id' => $id_artist]);
+            DB::table('artists')->where('id', $id_artist)->increment('follow');
             $action = 'add';
         }
+
+
 
         return response()->json(['success' => true, 'action' => $action]);
     }

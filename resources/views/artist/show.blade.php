@@ -25,7 +25,7 @@
                     <form action="{{ route('artist.store') }}" method="post" id="addArtistToFavorite">
                         {{ csrf_field() }}
                         <input type="hidden" name="artist_id" value="{{ $artist->id }}">
-                        <button type="submit" id="favButton" class="@if (isset($artist->favorite))is_favorite @endif">
+                        <button type="submit" id="favButton" class="@if (isset($artist->favorite)) is_favorite @endif">
                             <span class="favorite-artist"><img src="{{ URL::to('/img') }}/fav-fill.svg"
                                     alt="">Retirer</span>
                             <span class="not-favorite-artist"><img src="{{ URL::to('/img') }}/fav-not-fill.svg"
@@ -38,31 +38,26 @@
                 <h2>Discographie</h2>
                 <div class="albums-container">
                     @foreach ($albums as $album)
-                        {{-- {{ dd($album) }} --}}
                         <div class="album-element">
                             <div class="album-cover" style="border : 2px solid black;">
-                                @if (is_null($album->cover))
-                                    <a href="{{ route('album.show', $album->slug) }}"><img
-                                            src="{{ URL::to('/img') }}/unknown_cover.png" alt=""></a>
-                                    <form action="{{ route('play.album') }}" class="play-album" method="post">
-                                        @csrf
-                                        <input type="hidden" name="album_id" value="{{ $album->id }}">
-                                        <input type="submit"
-                                            style="background-color : transparent; background-image : url({{ URL::to('/img') }}/play_song_btn.png); border : 0; cursor : pointer; border-radius : 50%;"
-                                            value="">
-                                    </form>
-                                @else
-                                    <a href="{{ route('album.show', $album->slug) }}"><img
-                                            src="{{ URL::to('storage/files/albums') }}/{{ $artist->slug }}/{{ $album->cover }}"
-                                            alt="{{ $album->id }}"></a>
-                                    <form action="{{ route('play.album') }}" class="play-album" method="post">
-                                        @csrf
-                                        <input type="hidden" name="album_id" value="{{ $album->id }}">
-                                        <input type="submit"
-                                            style="background-color : transparent; background-image : url({{ URL::to('/img') }}/play_song_btn.png); border : 0; cursor : pointer; border-radius : 50%;"
-                                            value="">
-                                    </form>
-                                @endif
+                                <a href="{{ route('album.show', $album->slug) }}">
+                                    <img src="
+                                    @if (is_null($album->cover))
+                                    {{ URL::to('/img') }}/unknown_cover.png
+                                    @else
+                                    {{ URL::to('storage/files/albums') }}/{{ $artist->slug }}/{{ $album->cover }}
+                                    @endif
+                                    " alt="">
+                                </a>
+
+                                <form action="{{ route('play.album') }}" class="play-album fast-play-album" method="post">
+                                    @csrf
+                                    <input type="hidden" name="album_id" value="{{ $album->id }}">
+                                    <input type="hidden" name="position" value="0">
+                                    <input type="submit"
+                                        style="background-color : transparent; background-image : url({{ URL::to('/img') }}/play_song_btn.png); border : 0; cursor : pointer; border-radius : 50%;"
+                                        value="">
+                                </form>
                             </div>
                             <a href="{{ route('album.show', $album->slug) }}" class="album-details">
                                 <h3 class="album-name">{{ $album->name }}</h3>
