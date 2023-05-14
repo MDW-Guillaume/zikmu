@@ -47,8 +47,11 @@
             </div>
 
             <div class="favorite-playlist">
+                @php
+                    $i = 1;
+                @endphp
                 @foreach ($songs as $song)
-                <form action="{{ route('song.uniqueplay') }}" method="post" class="unique-song-form favorite-unique-song-form" data-id="{{$song->id}}">
+                <form action="{{ route('song.uniqueplay') }}" method="post" class="favorite-unique-song-form" data-id="{{$song->id}}">
                     @csrf
                     <div class="favorite-element">
                         <div class="favorite-cover">
@@ -79,10 +82,14 @@
 
                         </div>
                         <input type="submit" class="play-song-submit" value="">
-                        <input type="hidden" name="title_id" value="{{ $song->id }}">
+                        <input type="hidden" name="song_id" value="{{ $song->id }}">
+                        <input type="hidden" name="position" value="{{$i}}">
                     </div>
 
                 </form>
+                @php
+                    $i++;
+                @endphp
                 @endforeach
             </div>
         </div>
