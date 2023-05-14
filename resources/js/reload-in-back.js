@@ -390,10 +390,20 @@
 // }
 
 let player = document.getElementById("audioplayer");
-let playerPosition = null
-function playSentSong(url, position) {
+let playerPosition = null;
+let playerCover = document.getElementById('coverSong');
+let playerSongName = document.getElementById('playerInfoName');
+let playerArtistName = document.getElementById('playerInfoArtist');
+let playerAlbumName = document.getElementById('playerInfoAlbum');
+function playSentSong(url, position, informations) {
+    player.pause();
     player.src = url;
-    player.load()
+    player.load();
+    console.log(informations)
+    playerCover.src = informations['cover']
+    playerSongName.innerHTML = informations['song']
+    playerArtistName.innerHTML = informations['artist']
+    playerAlbumName.innerHTML = informations['album']
     player.play();
     player.setAttribute("position", position)
     player.addEventListener('loadedmetadata', function() {
@@ -429,8 +439,14 @@ function playNextQueuedSong() {
             dataType: 'json',
             cache: false,
             success: function (response) {
-                // Je lance la lecture du titre suivant.
-                playSentSong(response.song_url, response.position)
+                // Regroupement des informations visuelles du lecteur
+                let playerInformations = []
+                playerInformations['cover'] = response.cover_url
+                playerInformations['artist'] = response.artist_name
+                playerInformations['album'] = response.album_name
+                playerInformations['song'] = response.song_name
+                // Je lance la lecture du premier titre.
+                playSentSong(response.song_url, response.position, playerInformations)
             }
         })
     }
@@ -452,15 +468,20 @@ function playAlbumFromTitle() {
                     data: formData,
                     dataType: 'json',
                     success: function (response) {
+                        // Regroupement des informations visuelles du lecteur
+                        let playerInformations = []
+                        playerInformations['cover'] = response.cover_url
+                        playerInformations['artist'] = response.artist_name
+                        playerInformations['album'] = response.album_name
+                        playerInformations['song'] = response.song_name
                         // Je lance la lecture du premier titre.
-                        playSentSong(response.song_url, response.position)
+                        playSentSong(response.song_url, response.position, playerInformations)
                     }
                 })
             })
         })
     }
 }
-
 function fastPlayAlbum() {
     let fastPlayAlbumForm = document.querySelectorAll('.fast-play-album')
     if (fastPlayAlbumForm) {
@@ -489,6 +510,40 @@ function fastPlayAlbum() {
             // Quand le son se termine on crée une fonction qui récupère la position actuelle et ajoute +1
         });
     }
+}
+function playFavoriteFromTitle() {
+    let cliquedSongForm = document.querySelectorAll('.favorite-unique-song-form')
+    if(cliquedSongForm){
+        cliquedSongForm.forEach(clickedSong => {
+            clickedSong.addEventListener('submit', function (e) {
+                e.preventDefault()
+
+                var formData = $(clickedSong).serialize();
+                let url = '/play-favorite-element'
+
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    processData: false,
+                    data: formData,
+                    dataType: 'json',
+                    success: function (response) {
+                        // Regroupement des informations visuelles du lecteur
+                        let playerInformations = []
+                        playerInformations['cover'] = response.cover_url
+                        playerInformations['artist'] = response.artist_name
+                        playerInformations['album'] = response.album_name
+                        playerInformations['song'] = response.song_name
+                        // Je lance la lecture du premier titre.
+                        playSentSong(response.song_url, response.position, playerInformations)
+                    }
+                })
+            })
+        })
+    }
+}
+function fastPlayFavorite() {
+
 }
 function afficheAlbumAvecFavoris() {
     var form = $('.actionFavorite')
@@ -675,16 +730,19 @@ $(document).ready(function () {
         var url = $(this).attr('href');
 
         console.log('****', url);
+
         $.ajax({
             url: url,
             type: 'GET',
             success: function (data) {
                 $('#content').html($(data).find('#content').html());
+                history.replaceState(null, '', url);
                 afficheAlbumAvecFavoris();
                 favoriteDelete();
                 // affichePlayer();
                 playAlbumFromTitle();
                 fastPlayAlbum();
+                playFavoriteFromTitle();
                 favoriteArtistAddAndDelete();
                 favoriteAlbumAddAndDelete();
                 // reloadScript();
@@ -696,6 +754,7 @@ $(document).ready(function () {
     playAlbumFromTitle()
     favoriteDelete();
     fastPlayAlbum();
+    playFavoriteFromTitle();
     favoriteArtistAddAndDelete();
     favoriteAlbumAddAndDelete();
 });
