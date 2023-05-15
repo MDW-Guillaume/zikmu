@@ -297,18 +297,24 @@ audio {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        align-items: center;
+        align-items: flex-end;
 
         #repeatOnce,
         #repeatNone,
         #repeat,
-        #randomInactive,
+        #randomBtn,
         #playerPrevious,
-        #playerNext,
-        #randomActive,
-        #randomInactive {
+        #playerNext {
             width: 20px;
             cursor: pointer;
+        }
+
+        #randomBtn,
+        #repeat{
+            filter : brightness(0.50);
+            &.active{
+                filter : brightness(1);
+            }
         }
 
         .music-player-command-controllers-rewind {

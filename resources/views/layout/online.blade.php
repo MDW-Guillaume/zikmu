@@ -18,10 +18,7 @@
         'resources/scss/stylepage.scss',
         'resources/js/reload-in-back.js',
         'resources/js/multiple-song-play.js',
-        'resources/js/unique-song-play.js',
         'resources/js/play-album.js',
-        'resources/js/audio-event.js',
-        'resources/js/song-controller.js',
         'resources/js/waitinglistshow.js'
     ])
     <title>Zik&Mu - @yield('title')</title>

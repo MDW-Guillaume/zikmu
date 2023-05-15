@@ -30,15 +30,16 @@
                         <span>Durée : {{ $length }}</span>
                     </div>
                     <div class="favorite-actions">
-                        <form action="{{ route('song.play') }}" method="post" id="playPlaylist">
+                        <form action="{{ route('play.fastplayfavorite') }}" method="post" id="playFavoriteBtn">
                             @csrf
-                            @foreach ($songs as $song)
-                                {{-- {{dd($song->id)}} --}}
-                                <input type="hidden" value="{{ $song->id }}" name="{{ $song->id }}">
-                            @endforeach
-                            <button type="submit" value="linear" class="play-playlist"><img
+                                <input type="hidden" value="1" name="position">
+                            <button type="submit" class="play-playlist"><img
                                     src="{{ URL::to('/img') }}/play.svg" alt=""><span>Lire</span></button>
-                            <button type="submit" value="random" id="playPlaylistRandom" class="play-playlist-random"><img
+
+                        </form>
+                        <form action="{{ route('play.randomplayfavorite') }}" method="post" id="playRandomFavorite">
+                            @csrf
+                            <button type="submit" id="playPlaylistRandom" class="play-playlist-random"><img
                                     src="{{ URL::to('/img') }}/randomizer.svg"
                                     alt=""><span>Aléatoire</span></button>
                         </form>

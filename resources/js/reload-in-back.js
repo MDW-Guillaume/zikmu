@@ -395,7 +395,12 @@ let playerCover = document.getElementById('coverSong');
 let playerSongName = document.getElementById('playerInfoName');
 let playerArtistName = document.getElementById('playerInfoArtist');
 let playerAlbumName = document.getElementById('playerInfoAlbum');
+const bottomSidebar = document.querySelector('.bottom-sidebar');
+
 function playSentSong(url, position, informations) {
+    if (bottomSidebar.classList.contains('reduce')) {
+        bottomSidebar.classList.remove('reduce')
+    }
     player.pause();
     player.src = url;
     player.load();
@@ -406,7 +411,7 @@ function playSentSong(url, position, informations) {
     playerAlbumName.innerHTML = informations['album']
     player.play();
     player.setAttribute("position", position)
-    player.addEventListener('loadedmetadata', function() {
+    player.addEventListener('loadedmetadata', function () {
         // J'attend que le média soit chargé pour mettre un écouteur sur la fin d'un son
         player.addEventListener('ended', playNextQueuedSong);
     });
@@ -432,28 +437,107 @@ function playNextQueuedSong() {
         $.ajax({
             url: url,
             type: 'post',
-            beforeSend: function(xhr) {
+            beforeSend: function (xhr) {
                 xhr.setRequestHeader('X-CSRF-TOKEN', $('meta[name="csrf-token"]').attr('content'));
             },
             data: formData,
             dataType: 'json',
             cache: false,
             success: function (response) {
-                // Regroupement des informations visuelles du lecteur
-                let playerInformations = []
-                playerInformations['cover'] = response.cover_url
-                playerInformations['artist'] = response.artist_name
-                playerInformations['album'] = response.album_name
-                playerInformations['song'] = response.song_name
-                // Je lance la lecture du premier titre.
-                playSentSong(response.song_url, response.position, playerInformations)
+                if (response.success) {
+                    //     console.log(response);
+                    // Regroupement des informations visuelles du lecteur
+                    let playerInformations = []
+                    playerInformations['cover'] = response.cover_url
+                    playerInformations['artist'] = response.artist_name
+                    playerInformations['album'] = response.album_name
+                    playerInformations['song'] = response.song_name
+                    // Je lance la lecture du premier titre.
+                    playSentSong(response.song_url, response.position, playerInformations);
+                } else { }
             }
         })
     }
 }
+function playPreviousQueuedSong() {
+    if (player.hasAttribute('src')) {
+        playerPosition = player.getAttribute('position')
+
+        let playerPreviousSong = parseInt(playerPosition) - 1
+
+        let url = '/play-previous-song'
+
+        // Je me sers du cookie XSRF-TOKEN pour eviter d'obtenir une erreur 419
+        const csrfToken = Cookies.get('XSRF-TOKEN');
+
+        let formData = {
+            _token: $('meta[name="csrf-token"]').attr('content'),
+            position: playerPreviousSong,
+        }
+
+        let jsonData = JSON.stringify(formData);
+
+        $.ajax({
+            url: url,
+            type: 'post',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('X-CSRF-TOKEN', $('meta[name="csrf-token"]').attr('content'));
+            },
+            data: formData,
+            dataType: 'json',
+            cache: false,
+            success: function (response) {
+                if (response.success) {
+                    //     console.log(response);
+                    // Regroupement des informations visuelles du lecteur
+                    let playerInformations = []
+                    playerInformations['cover'] = response.cover_url
+                    playerInformations['artist'] = response.artist_name
+                    playerInformations['album'] = response.album_name
+                    playerInformations['song'] = response.song_name
+                    // Je lance la lecture du premier titre.
+                    playSentSong(response.song_url, response.position, playerInformations);
+                } else { }
+            }
+        })
+    }
+}
+function randomizeQueuedSong(status) {
+    console.log(status);
+
+    playerPosition = player.getAttribute('position')
+
+    let url = '/randomize-queued-songs'
+
+    // Je me sers du cookie XSRF-TOKEN pour eviter d'obtenir une erreur 419
+    const csrfToken = Cookies.get('XSRF-TOKEN');
+
+    let formData = {
+        _token: $('meta[name="csrf-token"]').attr('content'),
+        position: playerPosition,
+        status: status
+    }
+
+    let jsonData = JSON.stringify(formData);
+
+    $.ajax({
+        url: url,
+        type: 'post',
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('X-CSRF-TOKEN', $('meta[name="csrf-token"]').attr('content'));
+        },
+        data: formData,
+        dataType: 'json',
+        cache: false,
+        success: function (response) {
+            player.setAttribute('position', response.position)
+            console.log(player)
+        }
+    })
+}
 function playAlbumFromTitle() {
     let cliquedSongForm = document.querySelectorAll('.unique-song-form')
-    if(cliquedSongForm){
+    if (cliquedSongForm) {
         cliquedSongForm.forEach(clickedSong => {
             clickedSong.addEventListener('submit', function (e) {
                 e.preventDefault()
@@ -500,8 +584,14 @@ function fastPlayAlbum() {
                     data: formData,
                     dataType: 'json',
                     success: function (response) {
+                        // Regroupement des informations visuelles du lecteur
+                        let playerInformations = []
+                        playerInformations['cover'] = response.cover_url
+                        playerInformations['artist'] = response.artist_name
+                        playerInformations['album'] = response.album_name
+                        playerInformations['song'] = response.song_name
                         // Je lance la lecture du premier titre.
-                        playSentSong(response.song_url, response.position)
+                        playSentSong(response.song_url, response.position, playerInformations)
                     }
                 })
 
@@ -513,7 +603,7 @@ function fastPlayAlbum() {
 }
 function playFavoriteFromTitle() {
     let cliquedSongForm = document.querySelectorAll('.favorite-unique-song-form')
-    if(cliquedSongForm){
+    if (cliquedSongForm) {
         cliquedSongForm.forEach(clickedSong => {
             clickedSong.addEventListener('submit', function (e) {
                 e.preventDefault()
@@ -543,7 +633,67 @@ function playFavoriteFromTitle() {
     }
 }
 function fastPlayFavorite() {
+    let playFavoriteForm = document.getElementById('playFavoriteBtn')
 
+    if (playFavoriteForm) {
+        playFavoriteForm.addEventListener('submit', function (e) {
+            e.preventDefault()
+
+            var formData = $(playFavoriteForm).serialize();
+            let url = '/fast-play-favorite'
+
+
+            $.ajax({
+                url: url,
+                type: 'post',
+                processData: false,
+                data: formData,
+                dataType: 'json',
+                success: function (response) {
+                    // Regroupement des informations visuelles du lecteur
+                    let playerInformations = []
+                    playerInformations['cover'] = response.cover_url
+                    playerInformations['artist'] = response.artist_name
+                    playerInformations['album'] = response.album_name
+                    playerInformations['song'] = response.song_name
+                    // Je lance la lecture du premier titre.
+                    playSentSong(response.song_url, response.position, playerInformations)
+                }
+            })
+
+        })
+    }
+}
+function randomPlayFavorite() {
+    let playRandomFavorite = document.getElementById('playRandomFavorite')
+    if (playRandomFavorite) {
+        playRandomFavorite.addEventListener('submit', function (e) {
+            console.log(playRandomFavorite)
+            e.preventDefault()
+
+            var formData = $(playRandomFavorite).serialize();
+            let url = '/random-play-favorite'
+
+
+            $.ajax({
+                url: url,
+                type: 'post',
+                processData: false,
+                data: formData,
+                dataType: 'json',
+                success: function (response) {
+                    // Regroupement des informations visuelles du lecteur
+                    let playerInformations = []
+                    playerInformations['cover'] = response.cover_url
+                    playerInformations['artist'] = response.artist_name
+                    playerInformations['album'] = response.album_name
+                    playerInformations['song'] = response.song_name
+                    // Je lance la lecture du premier titre.
+                    playSentSong(response.song_url, response.position, playerInformations)
+                }
+            })
+        })
+    }
 }
 function afficheAlbumAvecFavoris() {
     var form = $('.actionFavorite')
@@ -723,6 +873,157 @@ function favoriteAlbumAddAndDelete() {
     }
 }
 
+/* Player Controls */
+function playerEvent() {
+    let trackTime = document.getElementById('musicDuration');
+    let timeSlider = document.getElementById('timeSlider');
+    let trackCurrentTime = document.getElementById('musicCurrentTime');
+    let reducePlayerIcon = document.getElementById('reducePlayer');
+    let showPlayerIcon = document.getElementById('showPlayer');
+    let sidebarMenu = document.getElementById('sidebarMenu');
+    let pauseBtn = document.getElementById('playerPause')
+    let resumeBtn = document.getElementById('playerPlay')
+    // Créer une instance de MutationObserver avec une fonction de rappel
+    const observer = new MutationObserver((mutationsList) => {
+        for (const mutation of mutationsList) {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'src' && player.getAttribute('src')) {
+
+                console.log('L\'attribut "src" de la balise audio a été modifié');
+
+                pauseBtn.style.display = 'block'
+                resumeBtn.style.display = 'none'
+
+                bottomSidebar.classList.add('active')
+                sidebarMenu.classList.add('hide')
+
+                reducePlayerIcon.addEventListener('click', function () {
+                    sidebarMenu.classList.remove('hide')
+                    bottomSidebar.classList.remove('active')
+                    bottomSidebar.classList.add('reduce')
+                })
+
+                showPlayerIcon.addEventListener('click', function () {
+                    sidebarMenu.classList.add('hide')
+                    bottomSidebar.classList.add('active')
+                    bottomSidebar.classList.remove('reduce')
+                })
+
+                // Crée un format de retour avec minutes et secondes.
+                function buildDuration(duration) {
+                    let minutes = Math.floor(duration / 60)
+                    let reste = duration % 60
+                    let secondes = Math.floor(reste)
+                    secondes = String(secondes).padStart(2, "0")
+                    return minutes + ":" + secondes
+                }
+
+                // Définit la position exacte de la lecture
+                function setTrackCurrentTime() {
+                    let trackMaxTime = buildDuration(player.currentTime)
+                    trackCurrentTime.textContent = trackMaxTime
+                }
+
+                // Définit l'attribut max dans le slider du lecteur
+                function setTrackMaxTime() {
+                    trackTime.textContent = buildDuration(player.duration)
+                    timeSlider.setAttribute('max', player.duration)
+                }
+
+                // Permet de faire glisser le slider du temps de la musique
+                function updateSlider() {
+                    let actualTime = player.currentTime
+                    timeSlider.value = actualTime
+                }
+
+                // Joue le son à partir du temps séléctionné dans le slider
+                function setSelectedTime() {
+                    let selectedTime = parseFloat(timeSlider.value)
+                    console.log(typeof (selectedTime))
+                    console.log(typeof (player.currentTime))
+                    console.log(player.currentTime)
+                    player.currentTime = selectedTime
+                    // player.currentTime = parseFloat(selectedTime.toFixed(6))
+                    console.log(typeof (parseFloat(selectedTime.toFixed(6))))
+                    console.log(parseFloat(selectedTime.toFixed(6)))
+                    console.log(player.currentTime)
+                }
+
+                player.addEventListener('loadeddata', function () {
+                    setTrackMaxTime()
+                    setInterval(updateSlider, 50);
+
+                })
+
+                player.addEventListener('timeupdate', function () {
+                    setTrackCurrentTime()
+                })
+
+                timeSlider.addEventListener('change', function () {
+                    console.log('je passe dans le input')
+                    player.pause()
+                    setSelectedTime()
+                    player.play()
+                    player.addEventListener('timeupdate', function () {
+                        setTrackCurrentTime()
+                    })
+                })
+            }
+        }
+    });
+    observer.observe(player, { attributes: true });
+}
+function playerPauseAndResume() {
+    let pauseBtn = document.getElementById('playerPause')
+    let resumeBtn = document.getElementById('playerPlay')
+
+    pauseBtn.addEventListener('click', function () {
+        player.pause()
+        pauseBtn.style.display = 'none'
+        resumeBtn.style.display = 'block'
+    })
+
+    resumeBtn.addEventListener('click', function () {
+        player.play()
+        pauseBtn.style.display = 'block'
+        resumeBtn.style.display = 'none'
+    })
+}
+function playerNext() {
+    let playerNext = document.getElementById('playerNext')
+
+    if (playerNext) {
+        playerNext.addEventListener('click', function (e) {
+            playNextQueuedSong()
+        })
+    }
+}
+function playerPrevious() {
+    let playerPrevious = document.getElementById('playerPrevious')
+
+    if (playerPrevious) {
+        playerPrevious.addEventListener('click', function (e) {
+            playPreviousQueuedSong()
+        })
+    }
+}
+function playerRandom() {
+    let randomBtn = document.getElementById('randomBtn')
+
+    if (randomBtn) {
+        randomBtn.addEventListener('click', function (e) {
+            if(randomBtn.classList.contains('active')){
+                randomBtn.classList.remove('active')
+                randomizeQueuedSong('normal')
+            }else{
+                randomBtn.classList.add('active')
+                randomizeQueuedSong('random')
+            }
+        })
+    }
+
+    // Si l'url est la file d'attente, actualiser la page
+}
+
 $(document).ready(function () {
     $(document).on('click', 'a', function reloadOnPageChange(event) {
         event.preventDefault();
@@ -743,8 +1044,15 @@ $(document).ready(function () {
                 playAlbumFromTitle();
                 fastPlayAlbum();
                 playFavoriteFromTitle();
+                fastPlayFavorite();
+                randomPlayFavorite();
                 favoriteArtistAddAndDelete();
                 favoriteAlbumAddAndDelete();
+                playerEvent();
+                playerPauseAndResume();
+                playerNext();
+                playerPrevious();
+                playerRandom();
                 // reloadScript();
                 // index = 0;
             }
@@ -755,8 +1063,15 @@ $(document).ready(function () {
     favoriteDelete();
     fastPlayAlbum();
     playFavoriteFromTitle();
+    fastPlayFavorite();
+    randomPlayFavorite();
     favoriteArtistAddAndDelete();
     favoriteAlbumAddAndDelete();
+    playerEvent();
+    playerPauseAndResume();
+    playerNext();
+    playerPrevious();
+    playerRandom();
 });
 
 
