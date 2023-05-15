@@ -12,10 +12,10 @@ class SongController extends Controller
 
     public function index()
     {
-        return view('waitinglist.index');
+        return view('songqueue.index');
     }
 
-    public function waitingList(Request $request)
+    public function songQueue(Request $request)
     {
 
         $titles_url_array = $request->data;

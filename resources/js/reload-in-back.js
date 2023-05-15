@@ -396,7 +396,17 @@ let playerSongName = document.getElementById('playerInfoName');
 let playerArtistName = document.getElementById('playerInfoArtist');
 let playerAlbumName = document.getElementById('playerInfoAlbum');
 const bottomSidebar = document.querySelector('.bottom-sidebar');
+let randomBtn = document.getElementById('randomBtn')
 
+
+
+// Affichage de la file d'attente
+function showSongQueue(){
+    let songQueueContainer = document.getElementById('songQueueContainer')
+    if(songQueueContainer){
+
+    }
+}
 function playSentSong(url, position, informations) {
     if (bottomSidebar.classList.contains('reduce')) {
         bottomSidebar.classList.remove('reduce')
@@ -417,11 +427,15 @@ function playSentSong(url, position, informations) {
     });
 }
 function playNextQueuedSong() {
+    let nextSong
     if (player.hasAttribute('src')) {
-        playerPosition = player.getAttribute('position')
+        if(player.hasAttribute('replay') && player.getAttribute('replay') == 'one'){
+            nextSong =  player.getAttribute('position')
+        }else{
+            playerPosition = player.getAttribute('position')
 
-        let playerNextSong = parseInt(playerPosition) + 1
-
+            nextSong = parseInt(playerPosition) + 1
+        }
         let url = '/play-next-song'
 
         // Je me sers du cookie XSRF-TOKEN pour eviter d'obtenir une erreur 419
@@ -429,7 +443,7 @@ function playNextQueuedSong() {
 
         let formData = {
             _token: $('meta[name="csrf-token"]').attr('content'),
-            position: playerNextSong,
+            position: nextSong,
         }
 
         let jsonData = JSON.stringify(formData);
@@ -454,17 +468,29 @@ function playNextQueuedSong() {
                     playerInformations['song'] = response.song_name
                     // Je lance la lecture du premier titre.
                     playSentSong(response.song_url, response.position, playerInformations);
-                } else { }
+                } else {
+                    if(player.hasAttribute('replay') && player.getAttribute('replay') == 'all'){
+                        // On met la position à 0 pour relancer la fonction et passer la position de 0 à 1
+                        // pour récupérer les informations du premier titre.
+                        player.setAttribute('position', 0)
+                        playNextQueuedSong();
+                    }
+                }
+                showSongQueue()
             }
         })
     }
 }
 function playPreviousQueuedSong() {
     if (player.hasAttribute('src')) {
-        playerPosition = player.getAttribute('position')
+        let previousSong
+        if(player.hasAttribute('replay') && player.getAttribute('replay') == 'one'){
+            previousSong =  player.getAttribute('position')
+        }else{
+            playerPosition = player.getAttribute('position')
 
-        let playerPreviousSong = parseInt(playerPosition) - 1
-
+            previousSong = parseInt(playerPosition) + 1
+        }
         let url = '/play-previous-song'
 
         // Je me sers du cookie XSRF-TOKEN pour eviter d'obtenir une erreur 419
@@ -472,7 +498,7 @@ function playPreviousQueuedSong() {
 
         let formData = {
             _token: $('meta[name="csrf-token"]').attr('content'),
-            position: playerPreviousSong,
+            position: previousSong,
         }
 
         let jsonData = JSON.stringify(formData);
@@ -497,14 +523,19 @@ function playPreviousQueuedSong() {
                     playerInformations['song'] = response.song_name
                     // Je lance la lecture du premier titre.
                     playSentSong(response.song_url, response.position, playerInformations);
-                } else { }
+                } else {
+                    if(player.hasAttribute('replay') && player.getAttribute('replay') == 'all'){
+                        // On récupère la position du titre précédent + 1 grâce à response.position pour relancer la fonction et passer la position de x à x-1
+                        player.setAttribute('position', parseInt(response.position) + 1)
+                        playPreviousQueuedSong();
+                    }
+                }
+                showSongQueue();
             }
         })
     }
 }
 function randomizeQueuedSong(status) {
-    console.log(status);
-
     playerPosition = player.getAttribute('position')
 
     let url = '/randomize-queued-songs'
@@ -535,6 +566,16 @@ function randomizeQueuedSong(status) {
         }
     })
 }
+function loopQueuedSong(status){
+
+    if(status == 'replayPlaylist'){
+        player.setAttribute('replay', 'all')
+    }else if(status == 'replayOne'){
+        player.setAttribute('replay', 'one')
+    }else if(status == 'normalPlay'){
+        player.removeAttribute('replay')
+    }
+}
 function playAlbumFromTitle() {
     let cliquedSongForm = document.querySelectorAll('.unique-song-form')
     if (cliquedSongForm) {
@@ -560,6 +601,7 @@ function playAlbumFromTitle() {
                         playerInformations['song'] = response.song_name
                         // Je lance la lecture du premier titre.
                         playSentSong(response.song_url, response.position, playerInformations)
+                        randomBtn.classList.remove('active')
                     }
                 })
             })
@@ -592,6 +634,7 @@ function fastPlayAlbum() {
                         playerInformations['song'] = response.song_name
                         // Je lance la lecture du premier titre.
                         playSentSong(response.song_url, response.position, playerInformations)
+                        randomBtn.classList.remove('active')
                     }
                 })
 
@@ -626,6 +669,7 @@ function playFavoriteFromTitle() {
                         playerInformations['song'] = response.song_name
                         // Je lance la lecture du premier titre.
                         playSentSong(response.song_url, response.position, playerInformations)
+                        randomBtn.classList.remove('active')
                     }
                 })
             })
@@ -658,6 +702,7 @@ function fastPlayFavorite() {
                     playerInformations['song'] = response.song_name
                     // Je lance la lecture du premier titre.
                     playSentSong(response.song_url, response.position, playerInformations)
+                    randomBtn.classList.remove('active')
                 }
             })
 
@@ -690,6 +735,7 @@ function randomPlayFavorite() {
                     playerInformations['song'] = response.song_name
                     // Je lance la lecture du premier titre.
                     playSentSong(response.song_url, response.position, playerInformations)
+                    randomBtn.classList.add('active')
                 }
             })
         })
@@ -1007,8 +1053,6 @@ function playerPrevious() {
     }
 }
 function playerRandom() {
-    let randomBtn = document.getElementById('randomBtn')
-
     if (randomBtn) {
         randomBtn.addEventListener('click', function (e) {
             if(randomBtn.classList.contains('active')){
@@ -1023,6 +1067,29 @@ function playerRandom() {
 
     // Si l'url est la file d'attente, actualiser la page
 }
+function playerLoop(){
+    let repeatButton = document.getElementById('repeat')
+    let repeatOnceButton = document.getElementById('repeatOnce')
+
+    repeatButton.addEventListener('click', function(){
+        if(repeatButton.classList.contains('active')){
+            repeatButton.classList.remove('active')
+            repeatButton.classList.add('hide')
+            repeatOnceButton.classList.add('active')
+            loopQueuedSong('replayOne')
+        }else{
+            repeatButton.classList.add('active')
+            loopQueuedSong('replayPlaylist')
+        }
+    })
+
+    repeatOnceButton.addEventListener('click', function(){
+        repeatOnceButton.classList.remove('active')
+        repeatButton.classList.remove('hide')
+        loopQueuedSong('normalPlay')
+    })
+}
+
 
 $(document).ready(function () {
     $(document).on('click', 'a', function reloadOnPageChange(event) {
@@ -1038,6 +1105,7 @@ $(document).ready(function () {
             success: function (data) {
                 $('#content').html($(data).find('#content').html());
                 history.replaceState(null, '', url);
+                showSongQueue();
                 afficheAlbumAvecFavoris();
                 favoriteDelete();
                 // affichePlayer();
@@ -1053,11 +1121,13 @@ $(document).ready(function () {
                 playerNext();
                 playerPrevious();
                 playerRandom();
+                playerLoop();
                 // reloadScript();
                 // index = 0;
             }
         });
     });
+    showSongQueue();
     afficheAlbumAvecFavoris();
     playAlbumFromTitle()
     favoriteDelete();
@@ -1072,6 +1142,7 @@ $(document).ready(function () {
     playerNext();
     playerPrevious();
     playerRandom();
+    playerLoop();
 });
 
 

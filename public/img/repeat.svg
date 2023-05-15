@@ -1,11 +1,12 @@
-<svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_622_4639)">
-<path d="M14.3127 16.4445V20.0001L15.2073 19.3334L20.2391 15.6667L14.3127 11.2223V14.7778H1.67727V9.77783H0V16.3334H0.111825V16.4445H14.3127Z" fill="white"/>
-<path d="M6.03817 4.88889H18.6736V9.88889H20.3509V3.33333H20.2391V3.22222H6.03817V0L5.14363 0.666665L0.111816 4.33333L6.03817 8.77778V4.88889Z" fill="white"/>
-</g>
-<defs>
-<clipPath id="clip0_622_4639">
-<rect width="20.3509" height="20" fill="white"/>
-</clipPath>
-</defs>
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="519.14 234.049 20.351 20" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <clipPath id="clip0_622_4639">
+      <rect width="20.3509" height="20" fill="white"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#clip0_622_4639)" transform="matrix(1, 0, 0, 1, 519.139587, 234.049133)">
+    <path d="M14.3127 16.4445V20.0001L15.2073 19.3334L20.2391 15.6667L14.3127 11.2223V14.7778H1.67727V9.77783H0V16.3334H0.111825V16.4445H14.3127Z" fill="white"/>
+    <path d="M6.03817 4.88889H18.6736V9.88889H20.3509V3.33333H20.2391V3.22222H6.03817V0L5.14363 0.666665L0.111816 4.33333L6.03817 8.77778V4.88889Z" fill="white"/>
+  </g>
 </svg>

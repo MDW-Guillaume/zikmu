@@ -5,7 +5,7 @@
 @endsection
 
 @section('scss')
-    @vite(['resources/scss/waitinglist.scss'])
+    @vite(['resources/scss/songqueue.scss'])
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
@@ -13,7 +13,7 @@
 
 @section('content')
     <div id="content">
-        <div class="page-waitinglist" id="waitingListPage">
+        <div class="page-songqueue" id="songQueuePage">
             <div class="style-name">
                 <h2>A suivre</h2>
             </div>
@@ -34,12 +34,12 @@
             <div class="playlist-panel">
                 <div class="playlist-panel-info">
                     <div class="playlist-panel-info-titles">
-                        <span class="playlist-panel-info-titles-number" id="waitingListTitles"></span>
+                        <span class="playlist-panel-info-titles-number" id="songQueueTitles"></span>
                         <span class="playlist-panel-info-titles-text">titres</span>
                     </div>
                     <div class="separator"> • </div>
                     <div class="playlist-panel-info-length">
-                        <span class="playlist-panel-info-length-number" id="waitingListLength"></span>
+                        <span class="playlist-panel-info-length-number" id="songQueueLength"></span>
                         <span class="playlist-panel-info-length-text">min</span>
                     </div>
                 </div>
@@ -49,7 +49,7 @@
                 </div>
             </div>
 
-            <div class="waitinglist-container">
+            <div class="songQueue-container" id="songQueueContainer">
                 <input name="csrf" type="hidden" value="{{ csrf_token() }}" id="csrfToken">
 
             </div>

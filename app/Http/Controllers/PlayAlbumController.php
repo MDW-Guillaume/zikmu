@@ -86,7 +86,10 @@ class PlayAlbumController extends Controller
 
             return response()->json(['success' => true, 'position' => $position, 'song_url' => $song_url, 'cover_url' => $cover_url,  'song_name' => $song_name, 'album_name' => $album_name, 'artist_name' => $artist_name]);
         } else {
-            return response()->json(['success' => false]);
+            $allQueue = DB::table('songs_queues')->where(['user_id' => $user_id->id])->get();
+            $last_played_song = count($allQueue);
+
+            return response()->json(['success' => false, 'position' => $last_played_song]);
         }
     }
 

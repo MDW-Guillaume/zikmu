@@ -300,7 +300,6 @@ audio {
         align-items: flex-end;
 
         #repeatOnce,
-        #repeatNone,
         #repeat,
         #randomBtn,
         #playerPrevious,
@@ -309,19 +308,30 @@ audio {
             cursor: pointer;
         }
 
+        #repeatOnce,
+        #repeat,
+        #randomBtn {
+            height : 20px;
+        }
+
         #randomBtn,
         #repeat{
             filter : brightness(0.50);
             &.active{
                 filter : brightness(1);
             }
+            &.hide {
+                display : none;
+            }
         }
 
         .music-player-command-controllers-rewind {
-
-            #repeatOnce,
-            #repeatNone {
+            height : 20px;
+            #repeatOnce {
                 display: none;
+                &.active{
+                    display : block;
+                }
             }
         }
 

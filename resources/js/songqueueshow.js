@@ -1,4 +1,4 @@
-if(document.getElementById("waitingListPage")) {
+if(document.getElementById("songQueuePage")) {
     let token = document.getElementById('csrfToken').value
 
     let actualPlaylist = localStorage.getItem('playlist')
@@ -27,19 +27,19 @@ if(document.getElementById("waitingListPage")) {
     dataType: 'json',
     success: function(response) {
         console.log(response)
-        let waitingListArray = response.request
-        let waitingTitleLength = waitingListArray.length
+        let songQueueArray = response.request
+        let waitingTitleLength = songQueueArray.length
         let waitingTimeLength = 0
 
         // Ajout du nombre de titres dans la file d'attente
-        let waitingListTitles = document.getElementById('waitingListTitles')
+        let songQueueTitles = document.getElementById('songQueueTitles')
 
-        waitingListTitles.innerHTML = waitingTitleLength
+        songQueueTitles.innerHTML = waitingTitleLength
 
         // Ajout du temps restant dans la file d'attente
-        let waitingListTime = document.getElementById('waitingListLength')
+        let songQueueTime = document.getElementById('songQueueLength')
 
-        waitingListArray.forEach(element => {
+        songQueueArray.forEach(element => {
             waitingTimeLength = waitingTimeLength + element.length
             console.log(element.length)
         });

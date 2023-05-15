@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="508.913 240 20.351 20" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+  <defs>
+    <clipPath id="clip0_622_4639">
+      <rect width="20.3509" height="20" fill="white"/>
+    </clipPath>
+    <style bx:fonts="Roboto">@import url(https://fonts.googleapis.com/css2?family=Roboto%3Aital%2Cwght%400%2C100%3B0%2C300%3B0%2C400%3B0%2C500%3B0%2C700%3B0%2C900%3B1%2C100%3B1%2C300%3B1%2C400%3B1%2C500%3B1%2C700%3B1%2C900&amp;display=swap);</style>
+  </defs>
+  <g clip-path="url(#clip0_622_4639)" transform="matrix(1, 0, 0, 1, 508.912628, 240)">
+    <path d="M14.3127 16.4445V20.0001L15.2073 19.3334L20.2391 15.6667L14.3127 11.2223V14.7778H1.67727V9.77783H0V16.3334H0.111825V16.4445H14.3127Z" style="fill: rgb(255, 255, 255);"/>
+    <path d="M6.03817 4.88889H18.6736V9.88889H20.3509V3.33333H20.2391V3.22222H6.03817V0L5.14363 0.666665L0.111816 4.33333L6.03817 8.77778V4.88889Z" style="fill: rgb(255, 255, 255);"/>
+  </g>
+  <text style="fill: rgb(255, 255, 255); font-family: Roboto; font-size: 6px; font-weight: 900; white-space: pre;" x="518.067" y="251.669">1</text>
+</svg>
