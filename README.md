@@ -22,6 +22,10 @@ storage/
 
 ```
 
+Creation of symbolic links
+php artisan storage:link
+
+
 Edit the Database configuration
 
 ```
