@@ -19,7 +19,7 @@
         align-items: center;
         margin-bottom : 30px;
 
-        img {
+        .song-playing-cover {
             width: 160px;
             height: 160px;
         }
@@ -47,6 +47,7 @@
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
+        margin-bottom : 40px;
         .playlist-panel-info{
             width : 50%;
             display: flex;
@@ -62,6 +63,12 @@
             img{
                 margin-left : 10px;
             }
+        }
+    }
+
+    .songQueue-container{
+        .waitingSong{
+            display : flex;
         }
     }
 }

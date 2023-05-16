@@ -401,9 +401,197 @@ let randomBtn = document.getElementById('randomBtn')
 
 
 // Affichage de la file d'attente
-function showSongQueue(){
-    let songQueueContainer = document.getElementById('songQueueContainer')
-    if(songQueueContainer){
+function showSongQueue() {
+    let songQueuePage = document.getElementById('songQueuePage')
+    if (songQueuePage) {
+        let token = document.getElementById('csrfToken').value
+        let playerPosition = player.getAttribute('position')
+
+        // crée un objet avec le tableau de données
+        var jsonData = {
+            position: playerPosition,
+            csrf_token: token
+        };
+
+        // convertit l'objet en chaîne JSON
+        var jsonString = JSON.stringify(jsonData);
+
+        // envoie les données en ajax
+        $.ajax({
+            type: 'POST',
+            url: '/waiting-list',
+            headers: {
+                'X-CSRF-Token': token
+            },
+            data: jsonString,
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function (response) {
+
+                let playerPosition = player.getAttribute('position')
+                let request = response.request
+
+                // Modification de l'affichage du titre en cours de lecture
+                let coverSongPlayed = document.getElementById('coverSongPlayed')
+                let NameSongPlayed = document.getElementById('NameSongPlayed')
+                let NameAlbumPlayed = document.getElementById('NameAlbumPlayed')
+                let NameArtistPlayed = document.getElementById('NameArtistPlayed')
+                NameAlbumPlayed.innerHTML = request[0].album_name
+                NameArtistPlayed.innerHTML = request[0].artist_name
+                NameSongPlayed.innerHTML = request[0].song_name
+                coverSongPlayed.src = request[0].cover_url;
+
+                // Modifications du nombre de titres et du temps total de la file d'attente
+                let songQueueTitles = document.getElementById('songQueueTitles')
+                let songQueueLength = document.getElementById('songQueueLength')
+                let waitingLength = 0
+                // Le nombre de titres dans la file d'attente - la position du la file d'attente + le son joué
+                songQueueTitles.innerHTML = parseInt(request.length) - parseInt(playerPosition) + 1
+
+                for (let i = (parseInt(playerPosition) - 1); i < request.length; i++) {
+                    const element = request[i];
+
+                    waitingLength = waitingLength + parseInt(element.song_length)
+                }
+
+                const minutes = Math.floor(waitingLength / 60); // On divise par 60 et on arrondit à l'entier inférieur
+                const remainingSeconds = waitingLength % 60;
+
+                if (minutes >= 1) {
+                    songQueueLength.innerHTML = minutes + ' min ' + remainingSeconds + ' sec'
+                } else {
+                    songQueueLength.innerHTML = waitingLength + ' sec'
+                }
+
+                // Création de la file d'attente dans un container
+
+                // Sélection de l'élément HTML dans lequel insérer la liste
+                let container = document.getElementById('songQueueContainer');
+
+                // Boucle pour générer la liste
+                for (let i = 1; i <= request.length - 1; i++) {
+
+                    // Création d'un formulaire avec les informations de chaque titre
+                    let formContainer = document.createElement('div')
+                    formContainer.classList.add('title-list-element')
+
+                    let form = document.createElement('form');
+                    form.setAttribute('action', '#');
+                    form.setAttribute('method', 'post');
+                    form.classList.add('unique-song-form');
+                    form.classList.add('waitingSong');
+                    formContainer.appendChild(form);
+
+                    let csrfInput = document.createElement('input');
+                    csrfInput.setAttribute('type', 'hidden');
+                    csrfInput.setAttribute('name', '_token');
+                    csrfInput.setAttribute('value', csrfToken);
+                    form.appendChild(csrfInput);
+
+                    let titleElement = document.createElement('div');
+                    titleElement.classList.add('title-element');
+
+                    let titlePosition = document.createElement('div');
+                    titlePosition.classList.add('title-position');
+                    let titlePositionSpan = document.createElement('span');
+                    titlePositionSpan.classList.add('title-position-span');
+                    titlePositionSpan.style.color = 'white';
+                    titlePositionSpan.innerText = parseInt(playerPosition) + i;
+                    titlePosition.appendChild(titlePositionSpan);
+                    titleElement.appendChild(titlePosition);
+
+                    let titleName = document.createElement('div');
+                    titleName.classList.add('title-name');
+                    titleName.innerText = request[i].song_name;
+                    titleElement.appendChild(titleName);
+
+                    let titleFavorite = document.createElement('div');
+                    titleFavorite.classList.add('title-favorite');
+                    titleElement.appendChild(titleFavorite);
+
+                    let submitInput = document.createElement('input');
+                    submitInput.setAttribute('type', 'submit');
+                    submitInput.classList.add('play-song-submit');
+                    submitInput.setAttribute('value', '');
+                    titleElement.appendChild(submitInput);
+
+                    let songIdInput = document.createElement('input');
+                    songIdInput.setAttribute('type', 'hidden');
+                    songIdInput.setAttribute('name', 'song_id');
+                    songIdInput.setAttribute('value', i);
+                    titleElement.appendChild(songIdInput);
+
+                    form.appendChild(titleElement);
+
+
+
+                    let addFavorite = document.createElement('form');
+                    addFavorite.setAttribute('action', '{{ route("favorite.store", $album->slug) }}');
+                    addFavorite.setAttribute('class', 'actionFavorite');
+                    addFavorite.setAttribute('method', 'post');
+
+                    let inputCsrf = document.createElement('input')
+                    inputCsrf.setAttribute('name', "_token")
+                    inputCsrf.setAttribute('value', csrfToken)
+                    inputCsrf.setAttribute('type', 'hidden')
+                    addFavorite.appendChild(inputCsrf)
+
+                    let inputSongId = document.createElement('input')
+                    inputSongId.setAttribute('title', "song_id")
+                    inputSongId.setAttribute('value', request[i].song_id)
+                    inputSongId.setAttribute('type', 'hidden')
+                    addFavorite.appendChild(inputSongId)
+
+                    let submitBtn = document.createElement('button')
+                    submitBtn.setAttribute('type', 'submit')
+                    submitBtn.setAttribute('id', 'favoriteButton')
+                    submitBtn.classList.add('favorite-button')
+                    if (request[i].is_favorite) {
+                        submitBtn.classList.add('is-favorite')
+                    }
+                    addFavorite.appendChild(submitBtn)
+
+                    let noFavImg = document.createElement('img')
+                    noFavImg.src = '/img/fav-not-fill.svg'
+                    noFavImg.setAttribute('alt', 'Ajouter aux favoris')
+                    noFavImg.setAttribute('title', 'Ajouter aux favoris')
+                    noFavImg.classList.add('no-favorite-img')
+                    submitBtn.appendChild(noFavImg)
+
+                    let FavImg = document.createElement('img')
+                    FavImg.src = '/img/fav-fill.svg'
+                    FavImg.setAttribute('alt', 'Supprimer aux favoris')
+                    FavImg.setAttribute('title', 'Supprimer aux favoris')
+                    FavImg.classList.add('favorite-img')
+                    submitBtn.appendChild(FavImg)
+
+                    formContainer.appendChild(addFavorite);
+
+                    container.appendChild(formContainer);
+                }
+
+                let randomPlaylistAction = document.getElementById('randomPlaylistAction')
+
+                randomPlaylistAction.addEventListener('click', function () {
+                    if (randomBtn) {
+                        if (randomBtn.classList.contains('active')) {
+                            randomizeQueuedSong('normal')
+                            randomizeQueuedSong('random')
+                        } else {
+                            randomBtn.classList.add('active')
+                            randomizeQueuedSong('random')
+                        }
+                    }
+                })
+
+
+
+                console.log(response)
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                // traitement en cas d'erreur
+            }
+        });
 
     }
 }
@@ -429,9 +617,9 @@ function playSentSong(url, position, informations) {
 function playNextQueuedSong() {
     let nextSong
     if (player.hasAttribute('src')) {
-        if(player.hasAttribute('replay') && player.getAttribute('replay') == 'one'){
-            nextSong =  player.getAttribute('position')
-        }else{
+        if (player.hasAttribute('replay') && player.getAttribute('replay') == 'one') {
+            nextSong = player.getAttribute('position')
+        } else {
             playerPosition = player.getAttribute('position')
 
             nextSong = parseInt(playerPosition) + 1
@@ -469,7 +657,7 @@ function playNextQueuedSong() {
                     // Je lance la lecture du premier titre.
                     playSentSong(response.song_url, response.position, playerInformations);
                 } else {
-                    if(player.hasAttribute('replay') && player.getAttribute('replay') == 'all'){
+                    if (player.hasAttribute('replay') && player.getAttribute('replay') == 'all') {
                         // On met la position à 0 pour relancer la fonction et passer la position de 0 à 1
                         // pour récupérer les informations du premier titre.
                         player.setAttribute('position', 0)
@@ -484,9 +672,9 @@ function playNextQueuedSong() {
 function playPreviousQueuedSong() {
     if (player.hasAttribute('src')) {
         let previousSong
-        if(player.hasAttribute('replay') && player.getAttribute('replay') == 'one'){
-            previousSong =  player.getAttribute('position')
-        }else{
+        if (player.hasAttribute('replay') && player.getAttribute('replay') == 'one') {
+            previousSong = player.getAttribute('position')
+        } else {
             playerPosition = player.getAttribute('position')
 
             previousSong = parseInt(playerPosition) + 1
@@ -524,7 +712,7 @@ function playPreviousQueuedSong() {
                     // Je lance la lecture du premier titre.
                     playSentSong(response.song_url, response.position, playerInformations);
                 } else {
-                    if(player.hasAttribute('replay') && player.getAttribute('replay') == 'all'){
+                    if (player.hasAttribute('replay') && player.getAttribute('replay') == 'all') {
                         // On récupère la position du titre précédent + 1 grâce à response.position pour relancer la fonction et passer la position de x à x-1
                         player.setAttribute('position', parseInt(response.position) + 1)
                         playPreviousQueuedSong();
@@ -566,13 +754,13 @@ function randomizeQueuedSong(status) {
         }
     })
 }
-function loopQueuedSong(status){
+function loopQueuedSong(status) {
 
-    if(status == 'replayPlaylist'){
+    if (status == 'replayPlaylist') {
         player.setAttribute('replay', 'all')
-    }else if(status == 'replayOne'){
+    } else if (status == 'replayOne') {
         player.setAttribute('replay', 'one')
-    }else if(status == 'normalPlay'){
+    } else if (status == 'normalPlay') {
         player.removeAttribute('replay')
     }
 }
@@ -1055,10 +1243,10 @@ function playerPrevious() {
 function playerRandom() {
     if (randomBtn) {
         randomBtn.addEventListener('click', function (e) {
-            if(randomBtn.classList.contains('active')){
+            if (randomBtn.classList.contains('active')) {
                 randomBtn.classList.remove('active')
                 randomizeQueuedSong('normal')
-            }else{
+            } else {
                 randomBtn.classList.add('active')
                 randomizeQueuedSong('random')
             }
@@ -1067,23 +1255,23 @@ function playerRandom() {
 
     // Si l'url est la file d'attente, actualiser la page
 }
-function playerLoop(){
+function playerLoop() {
     let repeatButton = document.getElementById('repeat')
     let repeatOnceButton = document.getElementById('repeatOnce')
 
-    repeatButton.addEventListener('click', function(){
-        if(repeatButton.classList.contains('active')){
+    repeatButton.addEventListener('click', function () {
+        if (repeatButton.classList.contains('active')) {
             repeatButton.classList.remove('active')
             repeatButton.classList.add('hide')
             repeatOnceButton.classList.add('active')
             loopQueuedSong('replayOne')
-        }else{
+        } else {
             repeatButton.classList.add('active')
             loopQueuedSong('replayPlaylist')
         }
     })
 
-    repeatOnceButton.addEventListener('click', function(){
+    repeatOnceButton.addEventListener('click', function () {
         repeatOnceButton.classList.remove('active')
         repeatButton.classList.remove('hide')
         loopQueuedSong('normalPlay')
