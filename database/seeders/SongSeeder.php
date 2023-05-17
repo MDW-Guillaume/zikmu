@@ -62,6 +62,18 @@ class SongSeeder extends Seeder
 
                 # Récupération des éléments compris dans le dossier de l'album $i
                 $album_content = scandir(public_path('music') . '/music-20s/' . $musical_path[$i]);
+                // Filtrer les fichiers musicaux uniquement (ignorer les dossiers "." et "..")
+                usort($album_content, function ($a, $b) {
+                    $pattern = '/\d+/'; // Expression régulière pour extraire le numéro de titre
+                    preg_match($pattern, $a, $aMatches);
+                    preg_match($pattern, $b, $bMatches);
+
+                    $aNumber = isset($aMatches[0]) ? intval($aMatches[0]) : 0;
+                    $bNumber = isset($bMatches[0]) ? intval($bMatches[0]) : 0;
+
+                    return $aNumber - $bNumber;
+                });
+
 
                 # Ajout de l'artiste en base de donnée si celui-ci n'existe pas
                 # et récupération de son id pour l'ajout dans la table Albums
@@ -93,11 +105,13 @@ class SongSeeder extends Seeder
                     ->get();
 
                 # Pour chaque titres compris dans l'album
-                for ($j = 0; $j < count($album_content) - 2; $j++) {
+                for ($j = 0; $j < count($album_content); $j++) {
                     if ($album_content[$j] != "." && $album_content[$j] != '..' && $album_content[$j] != '.DS_Store' && $album_content[$j] != 'cover.jpg') {
 
                         # On récupère les informations comprises dans le nom du fichier
                         $title_explode = explode(' - ', $album_content[$j]);
+
+
                         $title_position = $title_explode[0];
                         $title_info = pathinfo($title_explode[1]);
                         $title_name = $title_info['filename'];
