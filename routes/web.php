@@ -79,6 +79,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/play-favorite-element', [PlayAlbumController::class, 'playFavoriteElement'])->name('play.playfavoriteelement');
     Route::post('/fast-play-favorite', [PlayAlbumController::class, 'fastPlayFavorite'])->name('play.fastplayfavorite');
     Route::post('/random-play-favorite', [PlayAlbumController::class, 'randomPlayFavorite'])->name('play.randomplayfavorite');
+    Route::post('/play-queued-element', [PlayAlbumController::class, 'playQueuedElement'])->name('play.playqueuedelement');
 });
 
 Route::get('/dashboard', function () {

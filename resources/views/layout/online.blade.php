@@ -20,7 +20,6 @@
         'resources/js/reload-in-back.js',
         'resources/js/multiple-song-play.js',
         'resources/js/play-album.js',
-        'resources/js/songqueueshow.js'
     ])
     <title>Zik&Mu - @yield('title')</title>
 </head>

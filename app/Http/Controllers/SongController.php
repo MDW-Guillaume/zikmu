@@ -25,13 +25,14 @@ class SongController extends Controller
         foreach ($get_all_songs as $unique_song) {
             if ($i == 0) {
                 // Récuération des informations relatives au son et création d'une URL à renvoyer en JSON
-                $get_song_information = DB::table('songs')->where('id', $unique_song->song_id)->select('slug', 'name', 'album_id', 'length')->first();
-                // $get_album_information = DB::table('albums')->where('id', $get_song_information->album_id)->select('slug', 'release', 'length', 'name', 'artist_id')->first();
+                $get_song_information = DB::table('songs')->where('id', $unique_song->song_id)->select('slug', 'name', 'album_id', 'length', 'position')->first();
+                $get_song_queue_position = DB::table('songs_queues')->where('song_id', $unique_song->song_id)->select('position')->first();
                 $get_album_information = DB::table('albums')->where('id', $get_song_information->album_id)->select('artist_id', 'slug', 'name', 'cover')->first();
                 $get_artist_information = DB::table('artists')->where('id', $get_album_information->artist_id)->select('slug', 'name')->first();
 
                 $songs_array[$i]['song_name'] = $get_song_information->name;
                 $songs_array[$i]['song_length'] = $get_song_information->length;
+                $songs_array[$i]['song_position'] = $get_song_queue_position->position;
                 $songs_array[$i]['album_name'] = $get_album_information->name;
                 $songs_array[$i]['artist_name'] = $get_artist_information->name;
 
@@ -47,6 +48,7 @@ class SongController extends Controller
                 }
             }else{
                 $get_song_information = DB::table('songs')->where('id', $unique_song->song_id)->select('name', 'length', 'album_id')->first();
+                $get_song_queue_position = DB::table('songs_queues')->where('song_id', $unique_song->song_id)->select('position')->first();
                 $get_favorite_status_song = DB::table('songs_users')->where(['user_id' => $user->id, 'song_id' => $unique_song->song_id])->first();
 
                 if($get_favorite_status_song){
@@ -57,6 +59,7 @@ class SongController extends Controller
                 $songs_array[$i]['song_id'] = $unique_song->song_id;
                 $songs_array[$i]['song_name'] = $get_song_information->name;
                 $songs_array[$i]['song_length'] = $get_song_information->length;
+                $songs_array[$i]['song_position'] = $get_song_queue_position->position;
 
             }
             $i++;

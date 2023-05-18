@@ -486,22 +486,20 @@ function showSongQueue() {
                 } else {
                     // Boucle pour générer la liste
                     for (let i = 1; i <= request.length - 1; i++) {
-
                         // Création d'un formulaire avec les informations de chaque titre
                         let formContainer = document.createElement('div')
                         formContainer.classList.add('title-list-element')
 
                         let form = document.createElement('form');
-                        form.setAttribute('action', '#');
+                        form.setAttribute('action', '/play-queued-element');
                         form.setAttribute('method', 'post');
-                        form.classList.add('unique-song-form');
                         form.classList.add('waitingSong');
                         formContainer.appendChild(form);
 
                         let csrfInput = document.createElement('input');
                         csrfInput.setAttribute('type', 'hidden');
                         csrfInput.setAttribute('name', '_token');
-                        csrfInput.setAttribute('value', csrfToken);
+                        csrfInput.setAttribute('value', token);
                         form.appendChild(csrfInput);
 
                         let titleElement = document.createElement('div');
@@ -537,23 +535,30 @@ function showSongQueue() {
                         songIdInput.setAttribute('value', i);
                         titleElement.appendChild(songIdInput);
 
+                        let positionInput = document.createElement('input');
+                        positionInput.setAttribute('type', 'hidden');
+                        positionInput.setAttribute('name', 'position');
+                        positionInput.setAttribute('value', request[i].song_position);
+                        titleElement.appendChild(positionInput);
+
                         form.appendChild(titleElement);
 
 
 
                         let addFavorite = document.createElement('form');
-                        addFavorite.setAttribute('action', '{{ route("favorite.store", $album->slug) }}');
-                        addFavorite.setAttribute('class', 'actionFavorite');
+                        addFavorite.setAttribute('action', '/favorite');
+                        addFavorite.classList.add('actionFavorite');
+                        addFavorite.classList.add('favorite-delete');
                         addFavorite.setAttribute('method', 'post');
 
                         let inputCsrf = document.createElement('input')
                         inputCsrf.setAttribute('name', "_token")
-                        inputCsrf.setAttribute('value', csrfToken)
+                        inputCsrf.setAttribute('value', token)
                         inputCsrf.setAttribute('type', 'hidden')
                         addFavorite.appendChild(inputCsrf)
 
                         let inputSongId = document.createElement('input')
-                        inputSongId.setAttribute('title', "song_id")
+                        inputSongId.setAttribute('name', "title")
                         inputSongId.setAttribute('value', request[i].song_id)
                         inputSongId.setAttribute('type', 'hidden')
                         addFavorite.appendChild(inputSongId)
@@ -586,12 +591,47 @@ function showSongQueue() {
                         container.appendChild(formContainer);
                     }
                 }
+                playWaitingSong()
+                afficheAlbumAvecFavoris()
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 // traitement en cas d'erreur
             }
         });
 
+    }
+}
+function playWaitingSong() {
+    // Je récupère tous les form et au submit j'execute playSong
+    let waitingSongForms = document.querySelectorAll('.waitingSong');
+    if (waitingSongForms) {
+        for (let i = 0; i < waitingSongForms.length; i++) {
+            let waitingSongForm = waitingSongForms[i];
+            waitingSongForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                console.log(waitingSongForm)
+                var formData = $(waitingSongForm).serialize();
+                let url = '/play-queued-element'
+
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    processData: false,
+                    data: formData,
+                    dataType: 'json',
+                    success: function (response) {
+                        console.log('success')
+                        let playerInformations = []
+                        playerInformations['cover'] = response.cover_url
+                        playerInformations['artist'] = response.artist_name
+                        playerInformations['album'] = response.album_name
+                        playerInformations['song'] = response.song_name
+                        // Je lance la lecture du premier titre.
+                        playSentSong(response.song_url, response.position, playerInformations);
+                    }
+                })
+            })
+        }
     }
 }
 function songQueueRandomizer() {
@@ -693,13 +733,13 @@ function playNextQueuedSong() {
                         // pour récupérer les informations du premier titre.
                         player.setAttribute('position', 0)
                         playNextQueuedSong();
-                    }else if(!player.hasAttribute('replay')){
-                        player.addEventListener('ended', function(){
-                            if(player.paused){
-                            pauseBtn.style.display = 'none'
-                            resumeBtn.style.display = 'block';
+                    } else if (!player.hasAttribute('replay')) {
+                        player.addEventListener('ended', function () {
+                            if (player.paused) {
+                                pauseBtn.style.display = 'none'
+                                resumeBtn.style.display = 'block';
                             }
-                    })
+                        })
                     }
                 }
             }
@@ -970,6 +1010,7 @@ function afficheAlbumAvecFavoris() {
         for (let i = 0; i < form.length - 1; i++) {
             $(document).ready(function () {
                 form[i].addEventListener('submit', function (e) {
+                    console.log('Y a des btn fav')
                     e.preventDefault(); // Empêcher l'envoi par défaut du formulaire
                     var formData = $(form[i]).serialize(); // Récupérer les données du formulaire
                     $.ajax({
@@ -980,14 +1021,13 @@ function afficheAlbumAvecFavoris() {
                         success: function (response) {
                             if (response.success) {
                                 // Mettre à jour la page sans la recharger
-                                // Par exemple, ajouter le nouveau champ à un tableau existant
-                                if (form[i][3].classList.contains('is-favorite')) {
-                                    $(form[i][3]).removeClass('is-favorite')
+                                if (form[i][2].classList.contains('is-favorite')) {
+                                    $(form[i][2]).removeClass('is-favorite')
                                     document.getElementById('displayMessage').innerHTML = 'La titre a été supprimé de vos Coups de coeur';
                                     document.getElementById('displayMessageContainer').classList.add('show');
                                     setTimeout(function () { document.getElementById('displayMessageContainer').classList.remove('show') }, 4000);
                                 } else {
-                                    $(form[i][3]).addClass('is-favorite')
+                                    $(form[i][2]).addClass('is-favorite')
                                     document.getElementById('displayMessage').innerHTML = 'La titre a été ajouté de vos Coups de coeur';
                                     document.getElementById('displayMessageContainer').classList.add('show');
                                     setTimeout(function () { document.getElementById('displayMessageContainer').classList.remove('show') }, 4000);
@@ -1320,7 +1360,6 @@ $(document).ready(function () {
                 songQueueRandomizer();
                 afficheAlbumAvecFavoris();
                 favoriteDelete();
-                // affichePlayer();
                 playAlbumFromTitle();
                 fastPlayAlbum();
                 playFavoriteFromTitle();

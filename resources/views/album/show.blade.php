@@ -81,7 +81,7 @@
                         <form action="{{ route('favorite.store', $album->slug) }}" class="actionFavorite" method="post">
                             {{ csrf_field() }}
                             <input name="title" type="hidden" value="{{ $title->id }}">
-                            <input name="user" type="hidden" value="{{ $album->slug }}">
+                            {{-- <input name="user" type="hidden" value="{{ $album->slug }}"> --}}
                             <button type="submit" id="favoriteButton"
                                 class="favorite-button @if ($title->favorite == true) is-favorite @endif">
                                 <img src="{{ URL::to('/img') }}/fav-fill.svg" alt="Supprimer des favoris"
