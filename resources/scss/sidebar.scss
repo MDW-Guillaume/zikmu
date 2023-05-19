@@ -50,6 +50,12 @@ h1 {
         top: 50%;
         transform: translateY(-50%);
     }
+
+    #sidebarSearch.typing {
+        + .search-icon {
+          display: none;
+        }
+      }
 }
 
 .middle-sidebar {

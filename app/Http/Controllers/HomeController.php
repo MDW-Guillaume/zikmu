@@ -55,7 +55,7 @@ class HomeController extends Controller
         }
         // dd($artists);
 
-        return view('test')->with([
+        return view('home')->with([
             'music' => $zikmu,
             'styles' => $styles,
             'artists' => $artists

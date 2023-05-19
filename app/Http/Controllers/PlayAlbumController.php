@@ -485,4 +485,54 @@ class PlayAlbumController extends Controller
             return response()->json(['success' => true, 'position' => $position, 'song_url' => $song_url, 'cover_url' => $cover_url,  'song_name' => $song_name, 'album_name' => $album_name, 'artist_name' => $artist_name]);
         }
     }
+
+    public function fastPlaySongSearch(Request $request)
+    {
+        // Récupération des informations de l'utilisateur
+        $user = Auth::user();
+
+        // Récupération de la position du son cliqué
+        $position = $request->position;
+        $song_id = $request->song_id;
+
+        // On clear les sons déja en file d'attente pour l'utilisateur
+        SongsQueue::where('user_id', $user->id)->delete();
+
+        // Ajout du titre dans la table file d'attente song_queue
+        SongsQueue::firstOrCreate(
+            [
+                'user_id' => $user->id,
+                'song_id' => $song_id,
+                'position' => $position,
+            ]
+        );
+
+        // Récupération des informations nécessaires du son (position, slug, album_id)
+        $song_info = DB::table('songs')->where('id', $song_id)->select('album_id', 'slug', 'name')->first();
+
+        // Récupération des informations nécessaires de l'album à partir du son
+        $album_info = DB::table('albums')->where('id', $song_info->album_id)->select('artist_id', 'slug', 'length', 'release', 'name', 'cover')->first();
+
+        // Récupération des informations nécessaires de l'artiste à partir de l'album
+        $artist_info = DB::table('artists')->where('id', $album_info->artist_id)->select('slug', 'name')->first();
+
+        $release = $album_info->release;
+        $length = $album_info->length;
+        $artist_slug = $artist_info->slug;
+        $artist_name = $artist_info->name;
+        $album_slug = $album_info->slug;
+        $album_name = $album_info->name;
+        $album_cover = $album_info->cover;
+        $song_slug = $song_info->slug;
+        $song_name = $song_info->name;
+
+        if ($album_cover) {
+            $cover_url = '/storage/files/albums/' . $artist_slug . '/' . $album_cover;
+        } else {
+            $cover_url = '/img/unknown_cover.png';
+        }
+        $song_url = '/storage/files/music/' . $release . '-' . $length . '-' . $artist_slug . '-' . $album_slug . '/' . $song_slug;
+
+        return response()->json(['success' => true, 'position' => $position, 'song_url' => $song_url, 'cover_url' => $cover_url, 'song_name' => $song_name, 'album_name' => $album_name, 'artist_name' => $artist_name]);
+    }
 }

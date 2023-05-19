@@ -8,11 +8,12 @@
             </h1>
 
             <div class="search-bar">
-                <div class="relative">
-                    <input type="search" name="sidebar-search" id="sidebarSearch"
+                <form action="/search" method="post" class="searchbar-form relative" id="searchBarForm">
+                    {{ csrf_field() }}
+                    <input type="search" name="search" id="sidebarSearch"
                         placeholder="Artistes, titres, albums...">
                     <img src="{{ URL::to('/img/search.svg') }}" class="search-icon absolute" alt="">
-                </div>
+                </form>
             </div>
         </div>
 

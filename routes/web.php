@@ -14,6 +14,7 @@ use App\Http\Controllers\SongsUsersController;
 use App\Http\Controllers\SongController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\PlayAlbumController;
+use App\Http\Controllers\SearchController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,7 +54,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/my-albums', [AlbumsUsersController::class, 'myalbums'])->name('album.myalbums');
     Route::post('/my-albums', [AlbumsUsersController::class, 'store'])->name('album.store');
 
-
     Route::get('/style', [StyleController::class, 'index'])->name('style.index');
     Route::get('/style/{slug}', [StyleController::class, 'show'])->name('style.show');
 
@@ -63,8 +63,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/waiting', [SongController::class, 'index'])->name('waiting.index');
     Route::post('/waiting-list', [SongController::class, 'songQueue'])->name('waiting.songqueue');
 
-    Route::get('/test', [TestController::class, 'index'])->name('test.index');
-    Route::get('/test2', [TestController::class, 'show'])->name('test.show');
+    Route::get('/search', [SearchController::class, 'index'])->name('search.index');
+    Route::post('/search', [SearchController::class, 'show'])->name('search.show');
+
+    // Route::get('/test', [TestController::class, 'index'])->name('test.index');
+    // Route::get('/test2', [TestController::class, 'show'])->name('test.show');
 
     Route::post('/play-song', [SongController::class, 'listenAlbum'])->name('song.play');
     Route::post('/play-unique-song', [SongController::class, 'listenSong'])->name('song.uniqueplay');
@@ -80,6 +83,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/fast-play-favorite', [PlayAlbumController::class, 'fastPlayFavorite'])->name('play.fastplayfavorite');
     Route::post('/random-play-favorite', [PlayAlbumController::class, 'randomPlayFavorite'])->name('play.randomplayfavorite');
     Route::post('/play-queued-element', [PlayAlbumController::class, 'playQueuedElement'])->name('play.playqueuedelement');
+    Route::post('/fast-play-song-search', [PlayAlbumController::class, 'fastPlaySongSearch'])->name('play.fastplaysongsearch');
+
 });
 
 Route::get('/dashboard', function () {

@@ -1,10 +1,8 @@
 // $(document).ready(function () {
 //         // Interceptez tous les clics sur les liens
-
 //         $('a').click(function (event) {
 //             // Empêchez la navigation par défaut
 //             event.preventDefault();
-
 //             // Chargez la nouvelle page en arrière-plan
 //             var url = $(this).attr('href');
 //             $.ajax({
@@ -399,6 +397,7 @@ const bottomSidebar = document.querySelector('.bottom-sidebar');
 let pauseBtn = document.getElementById('playerPause')
 let resumeBtn = document.getElementById('playerPlay')
 let randomBtn = document.getElementById('randomBtn')
+let lastPage;
 
 
 
@@ -874,7 +873,9 @@ function playAlbumFromTitle() {
 }
 function fastPlayAlbum() {
     let fastPlayAlbumForm = document.querySelectorAll('.fast-play-album')
+    console.log('dehors')
     if (fastPlayAlbumForm) {
+        console.log('dedans')
         fastPlayAlbumForm.forEach(fastPlayAlbumElement => {
             fastPlayAlbumElement.addEventListener('submit', function (e) {
                 e.preventDefault()
@@ -1041,6 +1042,36 @@ function afficheAlbumAvecFavoris() {
             });
         }
     }
+}
+function fastSongPlaySearch() {
+    let fastSongPlay = document.querySelectorAll('.play-title')
+
+    fastSongPlay.forEach(songPlay => {
+        songPlay.addEventListener('submit', function(e){
+            e.preventDefault();
+
+            var formData = $(songPlay).serialize();
+            let url = '/fast-play-song-search'
+
+            $.ajax({
+                url: url,
+                type: 'post',
+                processData: false,
+                data: formData,
+                dataType: 'json',
+                success: function (response) {
+                    // Regroupement des informations visuelles du lecteur
+                    let playerInformations = []
+                    playerInformations['cover'] = response.cover_url
+                    playerInformations['artist'] = response.artist_name
+                    playerInformations['album'] = response.album_name
+                    playerInformations['song'] = response.song_name
+                    // Je lance la lecture du premier titre.
+                    playSentSong(response.song_url, response.position, playerInformations)
+                }
+            })
+        })
+    });
 }
 function favoriteDelete() {
     var deleteDiv = document.querySelectorAll('.favorite-delete')
@@ -1341,6 +1372,76 @@ function playerLoop() {
     })
 }
 
+/* Search Events */
+function showAndHideSearchPage() {
+    let searchBarForm = document.getElementById('searchBarForm')
+    let searchBarInput = document.getElementById('sidebarSearch')
+
+    searchBarForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+    })
+
+    searchBarInput.addEventListener('keyup', function (e) {
+        let letters = searchBarInput.value;
+        let letterCount = searchBarInput.value.length;
+
+        if (letterCount > 2 && letters.trim() != '') {
+            var url = '/search'
+            let searchTimeout;
+
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(function () {
+                let formData = $(searchBarForm).serialize();
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: formData,
+                    dataType: 'json',
+                    success: function (response) {
+                        $('#content').html($(response.data).find('#content').html());
+                        if (window.location.href.split('/').pop() != 'search') {
+                            console.log('je suis pas encore dans /search')
+                            lastPage = new URL(window.location.href).pathname;
+                            history.replaceState(null, '', url);
+                        }
+                        let searchSpan = document.getElementById('searchRequested')
+                        searchSpan.innerHTML = letters
+
+                        fastSongPlaySearch()
+                        fastPlayAlbum()
+                    }
+                });
+            }, 500); // Délai de 500 ms avan
+        }
+        else {
+            if (lastPage) {
+                var url = lastPage;
+                let searchTimeout;
+
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(function () {
+                    $.ajax({
+                        url: url,
+                        type: 'GET',
+                        success: function (data) {
+                            $('#content').html($(data).find('#content').html());
+                            history.replaceState(null, '', url);
+                        }
+                    })
+                })
+                lastPage = null
+            }
+            console.log(lastPage)
+        }
+
+        if(letterCount > 0){
+            searchBarInput.classList.add('typing')
+        }else if(letterCount = 0 && searchBarInput.classList.contains('typing')){
+            searchBarInput.classList.remove('typing')
+        }
+    })
+}
+
 
 $(document).ready(function () {
     $(document).on('click', 'a', function reloadOnPageChange(event) {
@@ -1373,6 +1474,7 @@ $(document).ready(function () {
                 playerPrevious();
                 playerRandom();
                 playerLoop();
+                showAndHideSearchPage()
                 // reloadScript();
                 // index = 0;
             }
@@ -1395,6 +1497,7 @@ $(document).ready(function () {
     playerPrevious();
     playerRandom();
     playerLoop();
+    showAndHideSearchPage()
 });
 
 

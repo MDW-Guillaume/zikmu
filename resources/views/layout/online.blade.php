@@ -17,6 +17,7 @@
         'resources/scss/favorite.scss',
         'resources/scss/stylepage.scss',
         'resources/scss/songqueue.scss',
+        'resources/scss/search.scss',
         'resources/js/reload-in-back.js',
         'resources/js/multiple-song-play.js',
         'resources/js/play-album.js',
