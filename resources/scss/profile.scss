@@ -1,0 +1,177 @@
+.page-profile {
+    .user-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        img {
+            width: 100px;
+            height: 100px;
+        }
+
+        p {
+            margin-left: 20px;
+            font-size: 32px;
+            line-height: 38px;
+
+        }
+    }
+
+    .user-navigation {
+        margin: 60px 100px 0 40px;
+
+        ul {
+            margin-top: 0;
+
+            li {
+                &.user-navigation-page {
+                    list-style: none;
+                    border-bottom: 1px solid #ffffff75;
+                    padding: 20px 0;
+                    margin-bottom: 20px;
+
+                    a {
+                        display: flex;
+                        flex-direction: row;
+                        flex-wrap: nowrap;
+                        justify-content: space-between;
+                        align-items: center;
+
+                        color: #fff;
+                    }
+                }
+
+                &.user-navigation-profile {
+                    list-style: none;
+                    border-bottom: 1px solid #ffffff75;
+                    padding: 20px 0;
+                    margin-bottom: 20px;
+
+                    img {
+                        width: 75px;
+                        height: 75px;
+                        margin-right: 50px;
+                    }
+
+                    a {
+                        display: flex;
+                        flex-direction: row;
+                        flex-wrap: nowrap;
+                        justify-content: space-between;
+                        align-items: center;
+                        color: #fff;
+                    }
+
+                    .user-navigation-profile-title {
+                        display: flex;
+                        align-items: center;
+
+                    }
+                }
+            }
+        }
+    }
+}
+
+.page-edit-profile {
+    margin: 60px 0 0 60px;
+
+    h2 {
+        font-family: "Righteous";
+        font-style: normal;
+        font-weight: 400;
+        font-size: 32px;
+        line-height: 40px;
+        text-transform: uppercase;
+        margin-bottom: 40px;
+    }
+    h3{
+        margin-top: 60px;
+    }
+    h4{
+        margin : 20px 0;
+    }
+
+    .profile-update-container,
+    .profile-action-container {
+        margin-left : 20px;
+        display: flex;
+        flex-direction: row;
+
+        .profile-update-username,
+        .profile-update-password,
+        .profile-destroy,
+        .profile-disconnect {
+            width: 50%;
+        }
+
+        .profile-update-username,
+        .profile-update-password {
+            form {
+                width: 40%;
+            }
+        }
+
+        .update-firstname,
+        .update-lastname,
+        .current-password,
+        .new-password,
+        .new-password-confirmation {
+            display: flex;
+            flex-direction: column;
+            margin-top: 10px;
+
+            input {
+                width: 100%;
+                padding: 15px;
+                border-radius: 8px;
+                font-size: 18px;
+            }
+        }
+
+        button[type=submit] {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .profile-destroy {
+            p {
+                margin: 10px 0;
+            }
+
+            .current-password {
+                margin: 30px 0;
+                display: flex;
+                flex-direction: column;
+
+                input {
+                    width: 250px;
+                    padding: 15px;
+                    border-radius: 8px;
+                    font-size: 18px;
+                }
+            }
+
+            button[type=submit] {
+                margin-top: 10px;
+                padding: 10px;
+                border-radius: 8px;
+                background-color: #D93321;
+                color: white;
+            }
+        }
+
+        .profile-disconnect {
+            .disconnect-text {
+                font-style: italic;
+            }
+
+            input[type=submit] {
+                margin-top: 10px;
+                padding: 10px;
+                border-radius: 8px;
+            }
+        }
+    }
+}

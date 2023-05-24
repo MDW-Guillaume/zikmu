@@ -17,7 +17,8 @@ class UserSeeder extends Seeder
     {
         User::firstOrCreate(
             ['email' => 'guillaume.couvidou@live.fr',
-            'password' => bcrypt('Guillaume2784')
+            'password' => bcrypt('Guillaume2784'),
+            'is_admin' => true
         ]);
     }
 }

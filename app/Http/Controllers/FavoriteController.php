@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class FavoriteController extends Controller
 {
-    public function index()
+    public function show()
     {
         $user = Auth::user();
 
@@ -55,7 +55,7 @@ class FavoriteController extends Controller
 
         // dd($user_favorite_array);
 
-        return view('favorite.index')->with([
+        return view('favorite.show')->with([
             'user' => $user,
             'songs' => $user_favorite_array,
             'length' => $show_length,

@@ -3,15 +3,50 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Carbon\Carbon;
 
 class ProfileController extends Controller
 {
-    public function index(){
-        return view('profile.index');
+    public function index()
+    {
+        $user = Auth::user();
+
+        $user_info = User::find($user->id);
+
+        if ($user_info) {
+            if (isset($user->firstname)) {
+                $username = $user_info->firstname . ' ' . $user_info->lastname;
+            } else {
+                $username = $user_info->username;
+            }
+        }
+        return view('profile.index')->with(['username' => $username]);
     }
+
+    public function show()
+    {
+        $user = Auth::user();
+
+        $user_info = User::find($user->id);
+
+        if ($user_info) {
+            if (isset($user->firstname)) {
+                $username = $user_info->firstname . ' ' . $user_info->lastname;
+            } else {
+                $username = $user_info->username;
+            }
+        }
+
+        // $registered_date = $user_info
+        $formattedDate = Carbon::createFromFormat('Y-m-d H:i:s', $user_info->created_at)->format('d/m/Y');
+
+        return view('profile.show')->with(['username' => $username, 'user' => $user, 'user_regitered' => $formattedDate]);
+    }
+
     /**
      * Display the user's profile form.
      *
@@ -33,15 +68,23 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request)
     {
+        $user = $request->user();
+
+        $user->firstname = $request->input('firstname');
+
+        $user->lastname = $request->input('lastname');
+
         $request->user()->fill($request->validated());
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
+        // dd($request);
+
+        // if ($request->user()->isDirty('email')) {
+        //     $request->user()->email_verified_at = null;
+        // }
 
         $request->user()->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return Redirect::route('profile.show')->with('status', 'profile-updated');
     }
 
     /**

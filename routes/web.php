@@ -15,6 +15,7 @@ use App\Http\Controllers\SongController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\PlayAlbumController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,13 +37,14 @@ Route::middleware('guest')->group(function(){
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::get('/my-profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile-edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('/disconnect', [AuthenticatedSessionController::class, 'destroy']);
-    Route::get('/logout', [AuthenticatedSessionController::class, 'destroy']);
+    Route::get('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('profile.logout');
 
     Route::get('/artist', [ArtistController::class, 'index'])->name('artist.index');
     Route::get('/artist/{slug}', [ArtistController::class, 'show'])->name('artist.show');
@@ -57,7 +59,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/style', [StyleController::class, 'index'])->name('style.index');
     Route::get('/style/{slug}', [StyleController::class, 'show'])->name('style.show');
 
-    Route::get('/favorite', [FavoriteController::class, 'index'])->name('favorite.index');
+    Route::get('/favorite-songs', [FavoriteController::class, 'show'])->name('favorite.show');
     Route::post('/favorite', [SongsUsersController::class, 'store'])->name('favorite.store');
 
     Route::get('/waiting', [SongController::class, 'index'])->name('waiting.index');

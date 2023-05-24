@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('username')->nullable()->default('user' . rand(100000, 999999))->unique();
             $table->string('email')->unique();
             $table->string('password');
+            $table->boolean('is_admin')->default(false);
             $table->string('remember_token', 100)->default('');
             $table->timestamps();
         });
