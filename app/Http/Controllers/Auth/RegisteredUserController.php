@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Support\Str;
 
 class RegisteredUserController extends Controller
 {
@@ -41,10 +42,17 @@ class RegisteredUserController extends Controller
             'password' => ['required', Rules\Password::defaults()],
         ]);
 
+        $username = 'user' . mt_rand(100000, 999999);
+        while (User::where('username', $username)->exists()) {
+            $username = 'user' . mt_rand(100000, 999999);
+        }
+
+        // dd($username);
+
         $user = User::create([
-            'firstname' => '',
-            'lastname' => '',
-            'username' => '',
+            'firstname' => $request->firstname,
+            'lastname' => $request->lastname,
+            'username' => $username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
