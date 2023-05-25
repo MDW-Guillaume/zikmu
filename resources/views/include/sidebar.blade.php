@@ -72,8 +72,9 @@
                 </div>
                 <div class="music-player-command-controllers">
                     <div class="music-player-command-controllers-rewind">
-                        <img src="{{ URL::to('/img/repeatOnce.svg') }}" class="repeat-icon" id="repeatOnce" alt="">
-                        <img src="{{ URL::to('/img/repeat.svg') }}" class="repeat-icon" id="repeat" alt="">
+                        {{-- <img src="{{ URL::to('/img/repeatOnce.svg') }}" class="repeat-icon" id="repeatOnce" alt="">
+                        <img src="{{ URL::to('/img/repeat.svg') }}" class="repeat-icon" id="repeat" alt=""> --}}
+                        <img src="{{ URL::to('/img/repeat.svg') }}" class="repeat-icon" id="repeat" data-status="initial" alt="">
                     </div>
                     <div class="music-player-command-controllers-player">
                         <img src="{{ URL::to('/img/previous.svg') }}" class="repeat-icon" id="playerPrevious"

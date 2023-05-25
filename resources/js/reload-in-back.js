@@ -9,7 +9,7 @@
 //                 url: url,
 //                 type: 'GET',
 //                 success: function (data) {
-//                     // console.log(data)
+//                     //
 //                     $('#content').html($(data).find('#content').html());
 //                     // $('#content').html($(data).find('#content'));
 //                 }
@@ -51,7 +51,7 @@
 //                             var selection = null;
 //                         }
 
-// console.log('####', response);
+//
 //                         var lastSong = null;
 //                         var playlist = []; // List of songs
 //                         var clickedSongPath = '';
@@ -184,13 +184,13 @@
 //                         playerNext.addEventListener('click', playNext);
 
 //                         function playNext() {
-//                             console.log('***', typeof(audioDuration), audioDuration)
+//
 //                             if (audioDuration > 1) {
 //                                 currentStep = localStorage.getItem("playlist-placement-i");
-//                                 // console.log(currentStep);
+//                                 //
 //                                 let nextStep = parseInt(currentStep) + 1;
-//                                 // console.log(nextStep);
-//                                 // console.log( nextStep, playlist.length, nextStep != playlist.length);
+//                                 //
+//                                 //
 //                             if (nextStep != playlist.length) {
 //                                 player.pause();
 //                                 currentStep = nextStep;
@@ -198,7 +198,7 @@
 //                                 playSong(currentStep);
 //                             }
 //                             audioDuration = 0
-//                             console.log(player.currentTime)
+//
 //                             }
 //                         }
 
@@ -220,17 +220,17 @@
 //                             if (randomBtn.getAttribute('data-active') !== 'active') {
 //                                 randomBtn.setAttribute('data-active', 'active')
 //                                 // let currentTrackIndex = playlist.indexOf(playlist[currentIndex]);
-//                                 // console.log(playlist[currentIndex], currentTrackIndex)
+//                                 //
 //                                 // let currentTrack = playlist[currentTrackIndex];
-//                                 // console.log(currentTrack)
+//                                 //
 
 //                                 // function shuffleArray(array) {
 //                                 //     for (let i = array.length - 1; i > 0; i--) {
 //                                 //         let j = Math.floor(Math.random() * (i));
-//                                 //         // console.log(j);
-//                                 //         // console.log(i);
+//                                 //         //
+//                                 //         //
 //                                 //         [array[i], array[j]] = [array[j], array[i]];
-//                                 //         console.log(array);
+//                                 //
 //                                 //     }
 //                                 // }
 
@@ -243,7 +243,7 @@
 //                                     let randomAlbum = []
 //                                     let randomSongName = []
 //                                     let playerAudioSrcIndex = ''
-//                                     console.log(coverArray)
+//
 //                                     if (player.hasAttribute("src") && player.getAttribute("src") !== "") {
 //                                         let audioSrc = player.getAttribute("src");
 //                                         playerAudioSrcIndex = array.indexOf(audioSrc);
@@ -305,7 +305,7 @@
 //                                 randomBtn.removeAttribute('data-active')
 //                                 let currentTrackIndex = playlist.indexOf(playlist[currentIndex]);
 
-//                                 console.log('currentIndex', currentTrackIndex)
+//
 
 //                                 // Object.entries(songsArray).forEach(([key, songArray]) => {
 //                                 //     playlist = []
@@ -328,8 +328,8 @@
 //                             }
 //                             // On reinitialise la variable stepSong pour continuer la lecture de la playlist
 //                             stepSong = null
-//                             console.log(clickedSongIndex)
-//                             console.log(selection)
+//
+//
 //                             localStorage.setItem("playlist-placement-i", selection)
 
 //                             lastSong = selection; // Remember the last song
@@ -367,7 +367,7 @@
 //                                     localStorage.removeItem("playlist-placement-i")
 //                                     player.removeAttribute('src', 'autoplay')
 //                                     bottomSidebar.style.height = "70px"
-//                                     console.log('unique-song-play / player ended')
+//
 //                                 }
 //                             });
 //                         }
@@ -403,7 +403,7 @@ let lastPage;
 
 // Affichage de la file d'attente
 function showSongQueue(status = null) {
-    console.log(status)
+
     let songQueuePage = document.getElementById('songQueuePage')
     if (songQueuePage) {
         let token = document.getElementById('csrfToken').value
@@ -430,7 +430,7 @@ function showSongQueue(status = null) {
             contentType: 'application/json',
             dataType: 'json',
             success: function (response) {
-                console.log('showQueuePage', response)
+
                 let playerPosition = player.getAttribute('position')
                 let request = response.request
 
@@ -449,7 +449,7 @@ function showSongQueue(status = null) {
                 let songQueueLength = document.getElementById('songQueueLength')
                 let waitingLength = 0
                 // Le nombre de titres dans la file d'attente - la position du la file d'attente + le son joué
-                // console.log(request)
+                //
                 songQueueTitles.innerHTML = parseInt(request.length)
 
                 for (let i = 0; i < request.length; i++) {
@@ -473,7 +473,7 @@ function showSongQueue(status = null) {
                 let container = document.getElementById('songQueueContainer');
                 if (document.querySelector('.title-list-element') || document.querySelector('.empty-queue-container')) {
                     container.innerHTML = '';
-                    console.log('je vide container')
+
                 }
                 if (request.length == 1) {
                     let emptyQueueContainer = document.createElement('div');
@@ -488,6 +488,7 @@ function showSongQueue(status = null) {
                 } else {
                     // Boucle pour générer la liste
                     for (let i = 1; i <= request.length - 1; i++) {
+
                         // Création d'un formulaire avec les informations de chaque titre
                         let formContainer = document.createElement('div')
                         formContainer.classList.add('title-list-element')
@@ -534,7 +535,8 @@ function showSongQueue(status = null) {
                         let songIdInput = document.createElement('input');
                         songIdInput.setAttribute('type', 'hidden');
                         songIdInput.setAttribute('name', 'song_id');
-                        songIdInput.setAttribute('value', i);
+                        // songIdInput.setAttribute('value', i);
+                        songIdInput.setAttribute('value', request[i].song_id);
                         titleElement.appendChild(songIdInput);
 
                         let positionInput = document.createElement('input');
@@ -604,25 +606,29 @@ function showSongQueue(status = null) {
     }
 }
 function playWaitingSong() {
-    // Je récupère tous les form et au submit j'execute playSong
     let waitingSongForms = document.querySelectorAll('.waitingSong');
     if (waitingSongForms) {
         for (let i = 0; i < waitingSongForms.length; i++) {
             let waitingSongForm = waitingSongForms[i];
             waitingSongForm.addEventListener('submit', function (e) {
                 e.preventDefault();
-                console.log(waitingSongForm)
-                var formData = $(waitingSongForm).serialize();
-                let url = '/play-queued-element'
+
+                let formData = new FormData(waitingSongForm);
+                let url = '/play-queued-element';
+                let status = randomBtn.classList.contains('active') ? 'random' : 'normal';
+
+                formData.append('status', status);
 
                 $.ajax({
                     url: url,
                     type: 'post',
                     processData: false,
+                    contentType: false, // Ajout de cette ligne pour éviter le traitement automatique du contenu
                     data: formData,
                     dataType: 'json',
                     success: function (response) {
-                        console.log('success')
+
+
                         let playerInformations = []
                         playerInformations['cover'] = response.cover_url
                         playerInformations['artist'] = response.artist_name
@@ -630,44 +636,13 @@ function playWaitingSong() {
                         playerInformations['song'] = response.song_name
                         // Je lance la lecture du premier titre.
                         playSentSong(response.song_url, response.position, playerInformations);
+                        showSongQueue(status)
                     }
                 })
             })
         }
     }
 }
-// function songQueueRandomizer() {
-//     let randomPlaylistAction = document.getElementById('randomPlaylistAction')
-
-//     if (randomPlaylistAction) {
-//         randomPlaylistAction.addEventListener('click', function () {
-//             if (randomBtn) {
-//                 console.log('je suis bien la')
-//                 if (randomBtn.classList.contains('active')) {
-//                     randomBtn.classList.remove('active')
-//                     const observer = new MutationObserver((mutationsList) => {
-//                         // Parcourez les mutations observées
-//                         for (const mutation of mutationsList) {
-//                             // Vérifiez si l'attribut modifié est "position"
-//                             if (mutation.attributeName === 'position') {
-//                                 // Faites quelque chose lorsque l'attribut "position" change
-//                                 console.log('fonction')
-//                                 showSongQueue()
-//                                 console.log('La position a changé');
-//                             }
-//                         }
-//                     });
-//                     observer.observe(player, { attributes: true });
-//                     randomizeQueuedSong('normal')
-//                 } else {
-//                     randomBtn.classList.add('active')
-//                     randomizeQueuedSong('random')
-//                     showSongQueue()
-//                 }
-//             }
-//         })
-//     }
-// }
 
 function randomFromWaitingPageEvent() {
     let randomPlaylistAction = document.getElementById('randomPlaylistAction')
@@ -686,9 +661,9 @@ function randomFromWaitingPage() {
     let randomPlaylistAction = document.getElementById('randomPlaylistAction')
 
     if (randomPlaylistAction) {
-        console.log(randomPlaylistAction)
+
         randomPlaylistAction.addEventListener('click', function () {
-            console.log('je clique')
+
             randomBtnEvent()
         })
     }
@@ -755,7 +730,7 @@ function playNextQueuedSong() {
             cache: false,
             success: function (response) {
                 if (response.success) {
-                    //     console.log(response);
+                    //
                     // Regroupement des informations visuelles du lecteur
                     let playerInformations = []
                     playerInformations['cover'] = response.cover_url
@@ -826,7 +801,7 @@ function playPreviousQueuedSong() {
             cache: false,
             success: function (response) {
                 if (response.success) {
-                    //     console.log(response);
+                    //
                     // Regroupement des informations visuelles du lecteur
                     let playerInformations = []
                     playerInformations['cover'] = response.cover_url
@@ -873,21 +848,21 @@ function randomizeQueuedSong(status = null) {
         dataType: 'json',
         cache: false,
         success: function (response) {
-            console.log(response.shuffled_queue_song)
+
             player.setAttribute('position', response.position)
-            console.log('Success')
-            console.log(response.position)
+
+
             showSongQueue(status);
         }
     })
 }
 function loopQueuedSong(status) {
 
-    if (status == 'replayPlaylist') {
+    if (status == 'loop') {
         player.setAttribute('replay', 'all')
-    } else if (status == 'replayOne') {
+    } else if (status == 'loopOnce') {
         player.setAttribute('replay', 'one')
-    } else if (status == 'normalPlay') {
+    } else if (status == 'initial') {
         player.removeAttribute('replay')
     }
 }
@@ -925,9 +900,9 @@ function playAlbumFromTitle() {
 }
 function fastPlayAlbum() {
     let fastPlayAlbumForm = document.querySelectorAll('.fast-play-album')
-    console.log('dehors')
+
     if (fastPlayAlbumForm) {
-        console.log('dedans')
+
         fastPlayAlbumForm.forEach(fastPlayAlbumElement => {
             fastPlayAlbumElement.addEventListener('submit', function (e) {
                 e.preventDefault()
@@ -1063,7 +1038,7 @@ function afficheAlbumAvecFavoris() {
         for (let i = 0; i < form.length - 1; i++) {
             $(document).ready(function () {
                 form[i].addEventListener('submit', function (e) {
-                    console.log('Y a des btn fav')
+
                     e.preventDefault(); // Empêcher l'envoi par défaut du formulaire
                     var formData = $(form[i]).serialize(); // Récupérer les données du formulaire
                     $.ajax({
@@ -1397,45 +1372,79 @@ function randomBtnEvent() {
 
     if (randomBtn.classList.contains('active')) {
         randomBtn.classList.remove('active')
-        if (randomPlaylistAction.classList.contains('active')) {
+        if (randomPlaylistAction && randomPlaylistAction.classList.contains('active')) {
             randomPlaylistAction.classList.remove('active')
         }
-        console.log('off')
+
         randomFromWaitingPageEvent()
         randomizeQueuedSong('normal')
     } else {
         randomBtn.classList.add('active')
-        if (randomPlaylistAction.classList.contains('active')) {
+        if (randomPlaylistAction && randomPlaylistAction.classList.contains('active')) {
             randomPlaylistAction.classList.add('active')
         }
-        console.log('on')
+
         randomFromWaitingPageEvent()
         randomizeQueuedSong('random')
     }
 }
 
+// function playerLoop() {
+//     let repeatButton = document.getElementById('repeat')
+//     let repeatOnceButton = document.getElementById('repeatOnce')
+
+//     repeatButton.addEventListener('click', function () {
+//         if (repeatButton.classList.contains('active')) {
+//             repeatButton.classList.remove('active')
+//             repeatButton.classList.add('hide')
+//             repeatOnceButton.classList.add('active')
+//             loopQueuedSong('replayOne')
+//         } else {
+//             repeatButton.classList.add('active')
+//             loopQueuedSong('replayPlaylist')
+//         }
+//     })
+
+//     repeatOnceButton.addEventListener('click', function () {
+//         repeatOnceButton.classList.remove('active')
+//         repeatButton.classList.remove('hide')
+//         loopQueuedSong('normalPlay')
+//     })
+// }
+
 function playerLoop() {
     let repeatButton = document.getElementById('repeat')
-    let repeatOnceButton = document.getElementById('repeatOnce')
 
-    repeatButton.addEventListener('click', function () {
-        if (repeatButton.classList.contains('active')) {
-            repeatButton.classList.remove('active')
-            repeatButton.classList.add('hide')
-            repeatOnceButton.classList.add('active')
-            loopQueuedSong('replayOne')
-        } else {
-            repeatButton.classList.add('active')
-            loopQueuedSong('replayPlaylist')
-        }
-    })
-
-    repeatOnceButton.addEventListener('click', function () {
-        repeatOnceButton.classList.remove('active')
-        repeatButton.classList.remove('hide')
-        loopQueuedSong('normalPlay')
-    })
+    if (repeatButton) {
+        repeatButton.addEventListener('click', function () {
+            loopBtnEvent(repeatButton)
+        })
+    }
 }
+
+function loopBtnEvent(repeatButton) {
+    let repeatButtonStatus = repeatButton.dataset.status
+
+    switch (repeatButtonStatus) {
+        case 'initial':
+            repeatButton.dataset.status = 'loop'
+            repeatButton.src = "/img/repeat.svg"
+            break;
+        case 'loop':
+            repeatButton.dataset.status = 'loopOnce'
+            repeatButton.src = "/img/repeatOnce.svg"
+            break;
+        case 'loopOnce':
+            repeatButton.dataset.status = 'initial'
+            repeatButton.src = "/img/repeat.svg"
+            break;
+        default:
+            break;
+    }
+    loopQueuedSong(repeatButton.dataset.status)
+
+}
+
 
 /* Search Events */
 function showAndHideSearchPage() {
@@ -1465,7 +1474,7 @@ function showAndHideSearchPage() {
                     success: function (response) {
                         $('#content').html($(response.data).find('#content').html());
                         if (window.location.href.split('/').pop() != 'search') {
-                            console.log('je suis pas encore dans /search')
+
                             lastPage = new URL(window.location.href).pathname;
                             history.replaceState(null, '', url);
                         }
@@ -1496,7 +1505,7 @@ function showAndHideSearchPage() {
                 })
                 lastPage = null
             }
-            console.log(lastPage)
+
         }
 
         if (letterCount > 0) {
@@ -1514,7 +1523,7 @@ $(document).ready(function () {
 
         var url = $(this).attr('href');
 
-        console.log('****', url);
+
 
         $.ajax({
             url: url,
@@ -1539,7 +1548,6 @@ $(document).ready(function () {
                 playerPauseAndResume();
                 playerNext();
                 playerPrevious();
-                playerLoop();
                 showAndHideSearchPage()
                 // reloadScript();
                 // index = 0;

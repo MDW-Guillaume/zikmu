@@ -52,17 +52,17 @@ h1 {
     }
 
     #sidebarSearch.typing {
-        + .search-icon {
-          display: none;
+        +.search-icon {
+            display: none;
         }
-      }
+    }
 }
 
 .middle-sidebar {
     width: 100%;
     margin: 20px 0 0 0;
 
-    &.hide{
+    &.hide {
         display: none;
     }
 
@@ -109,7 +109,7 @@ h1 {
     &.active {
         height: auto;
         position: absolute;
-        bottom : 0;
+        bottom: 0;
 
         .music-player-cover-container {
             position: relative;
@@ -135,7 +135,7 @@ h1 {
         }
 
         #showPlayer {
-            display : block;
+            display: block;
             margin-left: auto;
             margin-bottom: 10px;
         }
@@ -317,26 +317,41 @@ audio {
         #repeatOnce,
         #repeat,
         #randomBtn {
-            height : 20px;
+            height: 20px;
         }
 
-        #randomBtn,
-        #repeat{
-            filter : brightness(0.50);
-            &.active{
-                filter : brightness(1);
+        #randomBtn {
+            filter: brightness(0.50);
+
+            &.active {
+                filter: brightness(1);
             }
+
             &.hide {
-                display : none;
+                display: none;
+            }
+        }
+
+        #repeat {
+            filter: brightness(0.5);
+
+            &[data-status=loop] {
+                filter: brightness(1);
+            }
+
+            &[data-status=loopOnce]{
+                filter: brightness(1);
             }
         }
 
         .music-player-command-controllers-rewind {
-            height : 20px;
+            height: 20px;
+
             #repeatOnce {
                 display: none;
-                &.active{
-                    display : block;
+
+                &.active {
+                    display: block;
                 }
             }
         }

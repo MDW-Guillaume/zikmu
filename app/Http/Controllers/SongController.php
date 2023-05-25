@@ -88,8 +88,10 @@ class SongController extends Controller
                     $songs_array[$i]['song_position'] = $get_song_queue_position->position;
                 }
             }
+
             $i++;
         }
+        // dd($songs_array);
 
         // dd($songs_array);
         // $titles_url_array = $request->data;

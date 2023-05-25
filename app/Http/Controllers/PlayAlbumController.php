@@ -541,8 +541,14 @@ class PlayAlbumController extends Controller
 
         $position = $request->position;
 
-        // Récupération du son en fontion de la position de la file d'attente
-        $song_position_id = DB::table('songs_queues')->where(['user_id' => $user_id->id, 'position' => $position])->select('song_id')->first();
+
+        if($request->status == 'random'){
+            // Récupération du son en fontion de la position de la file d'attente
+            $song_position_id = DB::table('songs_queues')->where(['user_id' => $user_id->id, 'random_position' => $position])->select('song_id')->first();
+        }else{
+            // Récupération du son en fontion de la position de la file d'attente
+            $song_position_id = DB::table('songs_queues')->where(['user_id' => $user_id->id, 'position' => $position])->select('song_id')->first();
+        }
 
         if ($song_position_id) {
             // Récuération des informations relatives au son et création d'une URL à renvoyer en JSON
