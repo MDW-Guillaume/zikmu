@@ -18,5 +18,5 @@ class SongsQueue extends Model
         return $this->hasMany(Song::class);
     }
 
-    protected $fillable = ['user_id', 'song_id', 'position'];
+    protected $fillable = ['user_id', 'song_id', 'position', 'random_position'];
 }

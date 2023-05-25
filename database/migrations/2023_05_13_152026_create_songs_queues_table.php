@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('song_id');
             $table->unsignedBigInteger('position');
+            $table->unsignedBigInteger('random_position')->nullable()->default(null);
             $table->timestamps();
 
             $table->foreign('user_id')

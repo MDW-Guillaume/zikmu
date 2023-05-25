@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Collection;
 
 
 class SongController extends Controller
@@ -20,21 +21,42 @@ class SongController extends Controller
         $songs_array = [];
         $i = 0;
         $user = Auth::user();
-        $get_all_songs = DB::table('songs_queues')->where('user_id', $user->id)->where('position', '>=', $request->position)->get();
+        if ($request->status == 'random') {
+            // Récupération du son en fontion de la position de la file d'attente
+            // $get_all_songs = DB::table('songs_queues')->where('user_id', $user->id)->where('random_position', '>=', $request->position)->orderBy('random_position')->get();
+            $get_all_songs = DB::table('songs_queues')
+            ->where('random_position', '>=', $request->position)
+            ->where('user_id', $user->id)
+            ->orderByRaw('random_position')
+            ->get();
+
+            $get_all_songs = $get_all_songs->sortBy('random_position')->values()->toArray();
+
+            // $get_all_songs = $get_all_songs->sortBy('random_position');
+
+        } else {
+            // Récupération du son en fontion de la position de la file d'attente
+            $get_all_songs = DB::table('songs_queues')->where('user_id', $user->id)->where('position', '>=', $request->position)->get();
+        }
 
         foreach ($get_all_songs as $unique_song) {
             if ($i == 0) {
                 // Récuération des informations relatives au son et création d'une URL à renvoyer en JSON
                 $get_song_information = DB::table('songs')->where('id', $unique_song->song_id)->select('slug', 'name', 'album_id', 'length', 'position')->first();
-                $get_song_queue_position = DB::table('songs_queues')->where('song_id', $unique_song->song_id)->select('position')->first();
                 $get_album_information = DB::table('albums')->where('id', $get_song_information->album_id)->select('artist_id', 'slug', 'name', 'cover')->first();
                 $get_artist_information = DB::table('artists')->where('id', $get_album_information->artist_id)->select('slug', 'name')->first();
 
                 $songs_array[$i]['song_name'] = $get_song_information->name;
                 $songs_array[$i]['song_length'] = $get_song_information->length;
-                $songs_array[$i]['song_position'] = $get_song_queue_position->position;
                 $songs_array[$i]['album_name'] = $get_album_information->name;
                 $songs_array[$i]['artist_name'] = $get_artist_information->name;
+                if ($request->status == 'random') {
+                    $get_song_queue_position = DB::table('songs_queues')->where(['song_id' => $unique_song->song_id, 'user_id' => $user->id])->select('random_position')->first();
+                    $songs_array[$i]['song_position'] = $get_song_queue_position->random_position;
+                } else {
+                    $get_song_queue_position = DB::table('songs_queues')->where(['song_id' => $unique_song->song_id, 'user_id' => $user->id])->select('position')->first();
+                    $songs_array[$i]['song_position'] = $get_song_queue_position->position;
+                }
 
                 $song_slug = $get_song_information->slug;
                 $album_slug = $get_album_information->slug;
@@ -46,25 +68,30 @@ class SongController extends Controller
                 } else {
                     $songs_array[$i]['cover_url'] = '/img/unknown_cover.png';
                 }
-            }else{
+            } else {
                 $get_song_information = DB::table('songs')->where('id', $unique_song->song_id)->select('name', 'length', 'album_id')->first();
-                $get_song_queue_position = DB::table('songs_queues')->where('song_id', $unique_song->song_id)->select('position')->first();
                 $get_favorite_status_song = DB::table('songs_users')->where(['user_id' => $user->id, 'song_id' => $unique_song->song_id])->first();
 
-                if($get_favorite_status_song){
+                if ($get_favorite_status_song) {
                     $songs_array[$i]['is_favorite'] = true;
-                }else{
+                } else {
                     $songs_array[$i]['is_favorite'] = false;
                 }
                 $songs_array[$i]['song_id'] = $unique_song->song_id;
                 $songs_array[$i]['song_name'] = $get_song_information->name;
                 $songs_array[$i]['song_length'] = $get_song_information->length;
-                $songs_array[$i]['song_position'] = $get_song_queue_position->position;
-
+                if ($request->status == 'random') {
+                    $get_song_queue_position = DB::table('songs_queues')->where(['song_id' => $unique_song->song_id, 'user_id' => $user->id])->select('random_position')->first();
+                    $songs_array[$i]['song_position'] = $get_song_queue_position->random_position;
+                } else {
+                    $get_song_queue_position = DB::table('songs_queues')->where(['song_id' => $unique_song->song_id, 'user_id' => $user->id])->select('position')->first();
+                    $songs_array[$i]['song_position'] = $get_song_queue_position->position;
+                }
             }
             $i++;
         }
 
+        // dd($songs_array);
         // $titles_url_array = $request->data;
         // $song_name_array = [];
 

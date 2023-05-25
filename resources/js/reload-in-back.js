@@ -21,7 +21,6 @@
 //     if ($('.unique-song-form')[0] != 'undefined') {
 //         var playSongForm = $('.unique-song-form')
 //     }
-
 //     if (typeof (playSongForm) != 'undefined') {
 //         for (let i = 0; i < playSongForm.length; i++) {
 //             playSongForm[i].addEventListener('submit', function (e) {
@@ -397,12 +396,14 @@ const bottomSidebar = document.querySelector('.bottom-sidebar');
 let pauseBtn = document.getElementById('playerPause')
 let resumeBtn = document.getElementById('playerPlay')
 let randomBtn = document.getElementById('randomBtn')
+let randomPlaylistAction = document.getElementById('randomPlaylistAction')
 let lastPage;
 
 
 
 // Affichage de la file d'attente
-function showSongQueue() {
+function showSongQueue(status = null) {
+    console.log(status)
     let songQueuePage = document.getElementById('songQueuePage')
     if (songQueuePage) {
         let token = document.getElementById('csrfToken').value
@@ -411,7 +412,8 @@ function showSongQueue() {
         // crée un objet avec le tableau de données
         var jsonData = {
             position: playerPosition,
-            csrf_token: token
+            csrf_token: token,
+            status: status
         };
 
         // convertit l'objet en chaîne JSON
@@ -428,7 +430,7 @@ function showSongQueue() {
             contentType: 'application/json',
             dataType: 'json',
             success: function (response) {
-
+                console.log('showQueuePage', response)
                 let playerPosition = player.getAttribute('position')
                 let request = response.request
 
@@ -447,7 +449,7 @@ function showSongQueue() {
                 let songQueueLength = document.getElementById('songQueueLength')
                 let waitingLength = 0
                 // Le nombre de titres dans la file d'attente - la position du la file d'attente + le son joué
-                console.log(request)
+                // console.log(request)
                 songQueueTitles.innerHTML = parseInt(request.length)
 
                 for (let i = 0; i < request.length; i++) {
@@ -471,6 +473,7 @@ function showSongQueue() {
                 let container = document.getElementById('songQueueContainer');
                 if (document.querySelector('.title-list-element') || document.querySelector('.empty-queue-container')) {
                     container.innerHTML = '';
+                    console.log('je vide container')
                 }
                 if (request.length == 1) {
                     let emptyQueueContainer = document.createElement('div');
@@ -633,38 +636,64 @@ function playWaitingSong() {
         }
     }
 }
-function songQueueRandomizer() {
+// function songQueueRandomizer() {
+//     let randomPlaylistAction = document.getElementById('randomPlaylistAction')
+
+//     if (randomPlaylistAction) {
+//         randomPlaylistAction.addEventListener('click', function () {
+//             if (randomBtn) {
+//                 console.log('je suis bien la')
+//                 if (randomBtn.classList.contains('active')) {
+//                     randomBtn.classList.remove('active')
+//                     const observer = new MutationObserver((mutationsList) => {
+//                         // Parcourez les mutations observées
+//                         for (const mutation of mutationsList) {
+//                             // Vérifiez si l'attribut modifié est "position"
+//                             if (mutation.attributeName === 'position') {
+//                                 // Faites quelque chose lorsque l'attribut "position" change
+//                                 console.log('fonction')
+//                                 showSongQueue()
+//                                 console.log('La position a changé');
+//                             }
+//                         }
+//                     });
+//                     observer.observe(player, { attributes: true });
+//                     randomizeQueuedSong('normal')
+//                 } else {
+//                     randomBtn.classList.add('active')
+//                     randomizeQueuedSong('random')
+//                     showSongQueue()
+//                 }
+//             }
+//         })
+//     }
+// }
+
+function randomFromWaitingPageEvent() {
+    let randomPlaylistAction = document.getElementById('randomPlaylistAction')
+    if (randomPlaylistAction) {
+        if (randomBtn.classList.contains('active')) {
+            randomPlaylistAction.classList.add('active')
+        } else {
+            if (randomPlaylistAction.classList.contains('active')) {
+                randomPlaylistAction.classList.remove('active')
+            }
+        }
+
+    }
+}
+function randomFromWaitingPage() {
     let randomPlaylistAction = document.getElementById('randomPlaylistAction')
 
     if (randomPlaylistAction) {
+        console.log(randomPlaylistAction)
         randomPlaylistAction.addEventListener('click', function () {
-            if (randomBtn) {
-                console.log('je suis bien la')
-                if (randomBtn.classList.contains('active')) {
-                    randomBtn.classList.remove('active')
-                    const observer = new MutationObserver((mutationsList) => {
-                        // Parcourez les mutations observées
-                        for (const mutation of mutationsList) {
-                            // Vérifiez si l'attribut modifié est "position"
-                            if (mutation.attributeName === 'position') {
-                                // Faites quelque chose lorsque l'attribut "position" change
-                                console.log('fonction')
-                                showSongQueue()
-                                console.log('La position a changé');
-                            }
-                        }
-                    });
-                    observer.observe(player, { attributes: true });
-                    randomizeQueuedSong('normal')
-                } else {
-                    randomBtn.classList.add('active')
-                    randomizeQueuedSong('random')
-                    showSongQueue()
-                }
-            }
+            console.log('je clique')
+            randomBtnEvent()
         })
     }
 }
+
 function playSentSong(url, position, informations) {
     if (bottomSidebar.classList.contains('reduce')) {
         bottomSidebar.classList.remove('reduce')
@@ -678,7 +707,7 @@ function playSentSong(url, position, informations) {
     playerAlbumName.innerHTML = informations['album']
     player.play();
     player.setAttribute("position", position)
-    showSongQueue();
+
     player.addEventListener('loadedmetadata', function () {
         // J'attend que le média soit chargé pour mettre un écouteur sur la fin d'un son
         player.addEventListener('ended', playNextQueuedSong);
@@ -696,12 +725,21 @@ function playNextQueuedSong() {
         }
         let url = '/play-next-song'
 
+        let playerrandom;
+
+        if (randomBtn.classList.contains('active')) {
+            playerrandom = 'random'
+        } else {
+            playerrandom = 'normal'
+        }
+
         // Je me sers du cookie XSRF-TOKEN pour eviter d'obtenir une erreur 419
         const csrfToken = Cookies.get('XSRF-TOKEN');
 
         let formData = {
             _token: $('meta[name="csrf-token"]').attr('content'),
             position: nextSong,
+            status: playerrandom
         }
 
         let jsonData = JSON.stringify(formData);
@@ -726,6 +764,7 @@ function playNextQueuedSong() {
                     playerInformations['song'] = response.song_name
                     // Je lance la lecture du premier titre.
                     playSentSong(response.song_url, response.position, playerInformations);
+                    showSongQueue(playerrandom)
                 } else {
                     if (player.hasAttribute('replay') && player.getAttribute('replay') == 'all') {
                         // On met la position à 0 pour relancer la fonction et passer la position de 0 à 1
@@ -757,12 +796,21 @@ function playPreviousQueuedSong() {
         }
         let url = '/play-previous-song'
 
+        let playerrandom;
+
+        if (randomBtn.classList.contains('active')) {
+            playerrandom = 'random'
+        } else {
+            playerrandom = 'normal'
+        }
+
         // Je me sers du cookie XSRF-TOKEN pour eviter d'obtenir une erreur 419
         const csrfToken = Cookies.get('XSRF-TOKEN');
 
         let formData = {
             _token: $('meta[name="csrf-token"]').attr('content'),
             position: previousSong,
+            status: playerrandom
         }
 
         let jsonData = JSON.stringify(formData);
@@ -787,6 +835,7 @@ function playPreviousQueuedSong() {
                     playerInformations['song'] = response.song_name
                     // Je lance la lecture du premier titre.
                     playSentSong(response.song_url, response.position, playerInformations);
+                    showSongQueue(playerrandom)
                 } else {
                     if (player.hasAttribute('replay') && player.getAttribute('replay') == 'all') {
                         // On récupère la position du titre précédent + 1 grâce à response.position pour relancer la fonction et passer la position de x à x-1
@@ -798,7 +847,7 @@ function playPreviousQueuedSong() {
         })
     }
 }
-function randomizeQueuedSong(status) {
+function randomizeQueuedSong(status = null) {
     playerPosition = player.getAttribute('position')
 
     let url = '/randomize-queued-songs'
@@ -824,8 +873,11 @@ function randomizeQueuedSong(status) {
         dataType: 'json',
         cache: false,
         success: function (response) {
+            console.log(response.shuffled_queue_song)
             player.setAttribute('position', response.position)
+            console.log('Success')
             console.log(response.position)
+            showSongQueue(status);
         }
     })
 }
@@ -1047,7 +1099,7 @@ function fastSongPlaySearch() {
     let fastSongPlay = document.querySelectorAll('.play-title')
 
     fastSongPlay.forEach(songPlay => {
-        songPlay.addEventListener('submit', function(e){
+        songPlay.addEventListener('submit', function (e) {
             e.preventDefault();
 
             var formData = $(songPlay).serialize();
@@ -1336,19 +1388,32 @@ function playerPrevious() {
 }
 function playerRandom() {
     if (randomBtn) {
-        randomBtn.addEventListener('click', function (e) {
-            if (randomBtn.classList.contains('active')) {
-                randomBtn.classList.remove('active')
-                randomizeQueuedSong('normal')
-            } else {
-                randomBtn.classList.add('active')
-                randomizeQueuedSong('random')
-            }
+        randomBtn.addEventListener('click', function () {
+            randomBtnEvent()
         })
     }
-
-    // Si l'url est la file d'attente, actualiser la page
 }
+function randomBtnEvent() {
+
+    if (randomBtn.classList.contains('active')) {
+        randomBtn.classList.remove('active')
+        if (randomPlaylistAction.classList.contains('active')) {
+            randomPlaylistAction.classList.remove('active')
+        }
+        console.log('off')
+        randomFromWaitingPageEvent()
+        randomizeQueuedSong('normal')
+    } else {
+        randomBtn.classList.add('active')
+        if (randomPlaylistAction.classList.contains('active')) {
+            randomPlaylistAction.classList.add('active')
+        }
+        console.log('on')
+        randomFromWaitingPageEvent()
+        randomizeQueuedSong('random')
+    }
+}
+
 function playerLoop() {
     let repeatButton = document.getElementById('repeat')
     let repeatOnceButton = document.getElementById('repeatOnce')
@@ -1434,9 +1499,9 @@ function showAndHideSearchPage() {
             console.log(lastPage)
         }
 
-        if(letterCount > 0){
+        if (letterCount > 0) {
             searchBarInput.classList.add('typing')
-        }else if(letterCount = 0 && searchBarInput.classList.contains('typing')){
+        } else if (letterCount = 0 && searchBarInput.classList.contains('typing')) {
             searchBarInput.classList.remove('typing')
         }
     })
@@ -1458,7 +1523,9 @@ $(document).ready(function () {
                 $('#content').html($(data).find('#content').html());
                 history.replaceState(null, '', url);
                 showSongQueue();
-                songQueueRandomizer();
+                // songQueueRandomizer();
+                randomFromWaitingPageEvent();
+                randomFromWaitingPage();
                 afficheAlbumAvecFavoris();
                 favoriteDelete();
                 playAlbumFromTitle();
@@ -1472,7 +1539,6 @@ $(document).ready(function () {
                 playerPauseAndResume();
                 playerNext();
                 playerPrevious();
-                playerRandom();
                 playerLoop();
                 showAndHideSearchPage()
                 // reloadScript();
@@ -1481,7 +1547,9 @@ $(document).ready(function () {
         });
     });
     showSongQueue();
-    songQueueRandomizer();
+    // songQueueRandomizer();
+    randomFromWaitingPageEvent();
+    randomFromWaitingPage();
     afficheAlbumAvecFavoris();
     playAlbumFromTitle()
     favoriteDelete();
