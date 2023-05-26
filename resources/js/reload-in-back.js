@@ -25,7 +25,6 @@
 //         for (let i = 0; i < playSongForm.length; i++) {
 //             playSongForm[i].addEventListener('submit', function (e) {
 //                 e.preventDefault();
-
 //                 var formData = $(playSongForm[i]).serialize();
 
 //                 if (playSongForm[i].classList.contains('favorite-unique-song-form')) {
@@ -430,169 +429,184 @@ function showSongQueue(status = null) {
             contentType: 'application/json',
             dataType: 'json',
             success: function (response) {
+                console.log(response);
+                if (1 == response.redirect) {
 
-                let playerPosition = player.getAttribute('position')
-                let request = response.request
+                    var url = response.url;
 
-                // Modification de l'affichage du titre en cours de lecture
-                let coverSongPlayed = document.getElementById('coverSongPlayed')
-                let NameSongPlayed = document.getElementById('NameSongPlayed')
-                let NameAlbumPlayed = document.getElementById('NameAlbumPlayed')
-                let NameArtistPlayed = document.getElementById('NameArtistPlayed')
-                NameAlbumPlayed.innerHTML = request[0].album_name
-                NameArtistPlayed.innerHTML = request[0].artist_name
-                NameSongPlayed.innerHTML = request[0].song_name
-                coverSongPlayed.src = request[0].cover_url;
-
-                // Modifications du nombre de titres et du temps total de la file d'attente
-                let songQueueTitles = document.getElementById('songQueueTitles')
-                let songQueueLength = document.getElementById('songQueueLength')
-                let waitingLength = 0
-                // Le nombre de titres dans la file d'attente - la position du la file d'attente + le son joué
-                //
-                songQueueTitles.innerHTML = parseInt(request.length)
-
-                for (let i = 0; i < request.length; i++) {
-                    const element = request[i];
-
-                    waitingLength = waitingLength + parseInt(element.song_length)
-                }
-
-                const minutes = Math.floor(waitingLength / 60); // On divise par 60 et on arrondit à l'entier inférieur
-                const remainingSeconds = waitingLength % 60;
-
-                if (minutes >= 1) {
-                    songQueueLength.innerHTML = minutes + ' min ' + remainingSeconds + ' sec'
-                } else {
-                    songQueueLength.innerHTML = waitingLength + ' sec'
-                }
-
-                // Création de la file d'attente dans un container
-
-                // Sélection de l'élément HTML dans lequel insérer la liste
-                let container = document.getElementById('songQueueContainer');
-                if (document.querySelector('.title-list-element') || document.querySelector('.empty-queue-container')) {
-                    container.innerHTML = '';
-
-                }
-                if (request.length == 1) {
-                    let emptyQueueContainer = document.createElement('div');
-                    emptyQueueContainer.classList.add('empty-queue-container');
-                    container.appendChild(emptyQueueContainer);
-
-                    let emptyQueueMessage = document.createElement('p');
-                    emptyQueueMessage.classList.add('empty-queue-message');
-                    emptyQueueMessage.innerHTML = 'La file d\'attente est vide... <br> Et vous, qu\'attendez vous pour la remplir ?';
-                    emptyQueueContainer.appendChild(emptyQueueMessage);
-
-                } else {
-                    // Boucle pour générer la liste
-                    for (let i = 1; i <= request.length - 1; i++) {
-
-                        // Création d'un formulaire avec les informations de chaque titre
-                        let formContainer = document.createElement('div')
-                        formContainer.classList.add('title-list-element')
-
-                        let form = document.createElement('form');
-                        form.setAttribute('action', '/play-queued-element');
-                        form.setAttribute('method', 'post');
-                        form.classList.add('waitingSong');
-                        formContainer.appendChild(form);
-
-                        let csrfInput = document.createElement('input');
-                        csrfInput.setAttribute('type', 'hidden');
-                        csrfInput.setAttribute('name', '_token');
-                        csrfInput.setAttribute('value', token);
-                        form.appendChild(csrfInput);
-
-                        let titleElement = document.createElement('div');
-                        titleElement.classList.add('title-element');
-
-                        let titlePosition = document.createElement('div');
-                        titlePosition.classList.add('title-position');
-                        let titlePositionSpan = document.createElement('span');
-                        titlePositionSpan.classList.add('title-position-span');
-                        titlePositionSpan.style.color = 'white';
-                        titlePositionSpan.innerText = parseInt(playerPosition) + i;
-                        titlePosition.appendChild(titlePositionSpan);
-                        titleElement.appendChild(titlePosition);
-
-                        let titleName = document.createElement('div');
-                        titleName.classList.add('title-name');
-                        titleName.innerText = request[i].song_name;
-                        titleElement.appendChild(titleName);
-
-                        let titleFavorite = document.createElement('div');
-                        titleFavorite.classList.add('title-favorite');
-                        titleElement.appendChild(titleFavorite);
-
-                        let submitInput = document.createElement('input');
-                        submitInput.setAttribute('type', 'submit');
-                        submitInput.classList.add('play-song-submit');
-                        submitInput.setAttribute('value', '');
-                        titleElement.appendChild(submitInput);
-
-                        let songIdInput = document.createElement('input');
-                        songIdInput.setAttribute('type', 'hidden');
-                        songIdInput.setAttribute('name', 'song_id');
-                        // songIdInput.setAttribute('value', i);
-                        songIdInput.setAttribute('value', request[i].song_id);
-                        titleElement.appendChild(songIdInput);
-
-                        let positionInput = document.createElement('input');
-                        positionInput.setAttribute('type', 'hidden');
-                        positionInput.setAttribute('name', 'position');
-                        positionInput.setAttribute('value', request[i].song_position);
-                        titleElement.appendChild(positionInput);
-
-                        form.appendChild(titleElement);
-
-
-
-                        let addFavorite = document.createElement('form');
-                        addFavorite.setAttribute('action', '/favorite');
-                        addFavorite.classList.add('actionFavorite');
-                        addFavorite.classList.add('favorite-delete');
-                        addFavorite.setAttribute('method', 'post');
-
-                        let inputCsrf = document.createElement('input')
-                        inputCsrf.setAttribute('name', "_token")
-                        inputCsrf.setAttribute('value', token)
-                        inputCsrf.setAttribute('type', 'hidden')
-                        addFavorite.appendChild(inputCsrf)
-
-                        let inputSongId = document.createElement('input')
-                        inputSongId.setAttribute('name', "title")
-                        inputSongId.setAttribute('value', request[i].song_id)
-                        inputSongId.setAttribute('type', 'hidden')
-                        addFavorite.appendChild(inputSongId)
-
-                        let submitBtn = document.createElement('button')
-                        submitBtn.setAttribute('type', 'submit')
-                        submitBtn.setAttribute('id', 'favoriteButton')
-                        submitBtn.classList.add('favorite-button')
-                        if (request[i].is_favorite) {
-                            submitBtn.classList.add('is-favorite')
+                    $.ajax({
+                        url: url,
+                        type: 'GET',
+                        success: function (data) {
+                            $('#content').html($(data).find('#content').html());
+                            history.replaceState(null, '', url);
                         }
-                        addFavorite.appendChild(submitBtn)
+                    })
+                } else {
 
-                        let noFavImg = document.createElement('img')
-                        noFavImg.src = '/img/fav-not-fill.svg'
-                        noFavImg.setAttribute('alt', 'Ajouter aux favoris')
-                        noFavImg.setAttribute('title', 'Ajouter aux favoris')
-                        noFavImg.classList.add('no-favorite-img')
-                        submitBtn.appendChild(noFavImg)
+                    let playerPosition = player.getAttribute('position')
+                    let request = response.request
 
-                        let FavImg = document.createElement('img')
-                        FavImg.src = '/img/fav-fill.svg'
-                        FavImg.setAttribute('alt', 'Supprimer aux favoris')
-                        FavImg.setAttribute('title', 'Supprimer aux favoris')
-                        FavImg.classList.add('favorite-img')
-                        submitBtn.appendChild(FavImg)
+                    // Modification de l'affichage du titre en cours de lecture
+                    let coverSongPlayed = document.getElementById('coverSongPlayed')
+                    let NameSongPlayed = document.getElementById('NameSongPlayed')
+                    let NameAlbumPlayed = document.getElementById('NameAlbumPlayed')
+                    let NameArtistPlayed = document.getElementById('NameArtistPlayed')
+                    NameAlbumPlayed.innerHTML = request[0].album_name
+                    NameArtistPlayed.innerHTML = request[0].artist_name
+                    NameSongPlayed.innerHTML = request[0].song_name
+                    coverSongPlayed.src = request[0].cover_url;
 
-                        formContainer.appendChild(addFavorite);
+                    // Modifications du nombre de titres et du temps total de la file d'attente
+                    let songQueueTitles = document.getElementById('songQueueTitles')
+                    let songQueueLength = document.getElementById('songQueueLength')
+                    let waitingLength = 0
+                    // Le nombre de titres dans la file d'attente - la position du la file d'attente + le son joué
+                    //
+                    songQueueTitles.innerHTML = parseInt(request.length)
 
-                        container.appendChild(formContainer);
+                    for (let i = 0; i < request.length; i++) {
+                        const element = request[i];
+
+                        waitingLength = waitingLength + parseInt(element.song_length)
+                    }
+
+                    const minutes = Math.floor(waitingLength / 60); // On divise par 60 et on arrondit à l'entier inférieur
+                    const remainingSeconds = waitingLength % 60;
+
+                    if (minutes >= 1) {
+                        songQueueLength.innerHTML = minutes + ' min ' + remainingSeconds + ' sec'
+                    } else {
+                        songQueueLength.innerHTML = waitingLength + ' sec'
+                    }
+
+                    // Création de la file d'attente dans un container
+
+                    // Sélection de l'élément HTML dans lequel insérer la liste
+                    let container = document.getElementById('songQueueContainer');
+                    if (document.querySelector('.title-list-element') || document.querySelector('.empty-queue-container')) {
+                        container.innerHTML = '';
+
+                    }
+                    if (request.length == 1) {
+                        let emptyQueueContainer = document.createElement('div');
+                        emptyQueueContainer.classList.add('empty-queue-container');
+                        container.appendChild(emptyQueueContainer);
+
+                        let emptyQueueMessage = document.createElement('p');
+                        emptyQueueMessage.classList.add('empty-queue-message');
+                        emptyQueueMessage.innerHTML = 'La file d\'attente est vide... <br> Et vous, qu\'attendez vous pour la remplir ?';
+                        emptyQueueContainer.appendChild(emptyQueueMessage);
+
+                    } else {
+                        // Boucle pour générer la liste
+                        for (let i = 1; i <= request.length - 1; i++) {
+
+                            // Création d'un formulaire avec les informations de chaque titre
+                            let formContainer = document.createElement('div')
+                            formContainer.classList.add('title-list-element')
+
+                            let form = document.createElement('form');
+                            form.setAttribute('action', '/play-queued-element');
+                            form.setAttribute('method', 'post');
+                            form.classList.add('waitingSong');
+                            formContainer.appendChild(form);
+
+                            let csrfInput = document.createElement('input');
+                            csrfInput.setAttribute('type', 'hidden');
+                            csrfInput.setAttribute('name', '_token');
+                            csrfInput.setAttribute('value', token);
+                            form.appendChild(csrfInput);
+
+                            let titleElement = document.createElement('div');
+                            titleElement.classList.add('title-element');
+
+                            let titlePosition = document.createElement('div');
+                            titlePosition.classList.add('title-position');
+                            let titlePositionSpan = document.createElement('span');
+                            titlePositionSpan.classList.add('title-position-span');
+                            titlePositionSpan.style.color = 'white';
+                            titlePositionSpan.innerText = parseInt(playerPosition) + i;
+                            titlePosition.appendChild(titlePositionSpan);
+                            titleElement.appendChild(titlePosition);
+
+                            let titleName = document.createElement('div');
+                            titleName.classList.add('title-name');
+                            titleName.innerText = request[i].song_name;
+                            titleElement.appendChild(titleName);
+
+                            let titleFavorite = document.createElement('div');
+                            titleFavorite.classList.add('title-favorite');
+                            titleElement.appendChild(titleFavorite);
+
+                            let submitInput = document.createElement('input');
+                            submitInput.setAttribute('type', 'submit');
+                            submitInput.classList.add('play-song-submit');
+                            submitInput.setAttribute('value', '');
+                            titleElement.appendChild(submitInput);
+
+                            let songIdInput = document.createElement('input');
+                            songIdInput.setAttribute('type', 'hidden');
+                            songIdInput.setAttribute('name', 'song_id');
+                            // songIdInput.setAttribute('value', i);
+                            songIdInput.setAttribute('value', request[i].song_id);
+                            titleElement.appendChild(songIdInput);
+
+                            let positionInput = document.createElement('input');
+                            positionInput.setAttribute('type', 'hidden');
+                            positionInput.setAttribute('name', 'position');
+                            positionInput.setAttribute('value', request[i].song_position);
+                            titleElement.appendChild(positionInput);
+
+                            form.appendChild(titleElement);
+
+
+
+                            let addFavorite = document.createElement('form');
+                            addFavorite.setAttribute('action', '/favorite');
+                            addFavorite.classList.add('actionFavorite');
+                            addFavorite.classList.add('favorite-delete');
+                            addFavorite.setAttribute('method', 'post');
+
+                            let inputCsrf = document.createElement('input')
+                            inputCsrf.setAttribute('name', "_token")
+                            inputCsrf.setAttribute('value', token)
+                            inputCsrf.setAttribute('type', 'hidden')
+                            addFavorite.appendChild(inputCsrf)
+
+                            let inputSongId = document.createElement('input')
+                            inputSongId.setAttribute('name', "title")
+                            inputSongId.setAttribute('value', request[i].song_id)
+                            inputSongId.setAttribute('type', 'hidden')
+                            addFavorite.appendChild(inputSongId)
+
+                            let submitBtn = document.createElement('button')
+                            submitBtn.setAttribute('type', 'submit')
+                            submitBtn.setAttribute('id', 'favoriteButton')
+                            submitBtn.classList.add('favorite-button')
+                            if (request[i].is_favorite) {
+                                submitBtn.classList.add('is-favorite')
+                            }
+                            addFavorite.appendChild(submitBtn)
+
+                            let noFavImg = document.createElement('img')
+                            noFavImg.src = '/img/fav-not-fill.svg'
+                            noFavImg.setAttribute('alt', 'Ajouter aux favoris')
+                            noFavImg.setAttribute('title', 'Ajouter aux favoris')
+                            noFavImg.classList.add('no-favorite-img')
+                            submitBtn.appendChild(noFavImg)
+
+                            let FavImg = document.createElement('img')
+                            FavImg.src = '/img/fav-fill.svg'
+                            FavImg.setAttribute('alt', 'Supprimer aux favoris')
+                            FavImg.setAttribute('title', 'Supprimer aux favoris')
+                            FavImg.classList.add('favorite-img')
+                            submitBtn.appendChild(FavImg)
+
+                            formContainer.appendChild(addFavorite);
+
+                            container.appendChild(formContainer);
+                        }
                     }
                 }
                 playWaitingSong()

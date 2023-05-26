@@ -18,9 +18,18 @@ class SongController extends Controller
 
     public function songQueue(Request $request)
     {
+
+        if($request->position === null){
+            return response()->json([
+                'success' => true,
+                'redirect' => 1,
+                'url' => "/home"
+                ]);
+        }
         $songs_array = [];
         $i = 0;
         $user = Auth::user();
+
         if ($request->status == 'random') {
             // Récupération du son en fontion de la position de la file d'attente
             // $get_all_songs = DB::table('songs_queues')->where('user_id', $user->id)->where('random_position', '>=', $request->position)->orderBy('random_position')->get();
@@ -38,6 +47,7 @@ class SongController extends Controller
             // Récupération du son en fontion de la position de la file d'attente
             $get_all_songs = DB::table('songs_queues')->where('user_id', $user->id)->where('position', '>=', $request->position)->get();
         }
+
 
         foreach ($get_all_songs as $unique_song) {
             if ($i == 0) {
@@ -91,38 +101,6 @@ class SongController extends Controller
 
             $i++;
         }
-        // dd($songs_array);
-
-        // dd($songs_array);
-        // $titles_url_array = $request->data;
-        // $song_name_array = [];
-
-        // foreach ($titles_url_array as $title_url) {
-        //     $filename = basename($title_url); // récupère le nom du fichier avec l'extension : "recomposed-by-max-richter-vivaldi-the-four-seasons-spring-1.mp3"
-        //     $name = pathinfo($filename, PATHINFO_FILENAME) . '.' . pathinfo($filename, PATHINFO_EXTENSION); // récupère le nom du fichier sans l'extension : "recomposed-by-max-richter-vivaldi-the-four-seasons-spring-1"
-        //     $song_name_array[] = $name;
-        // }
-
-
-        // $i = 0;
-        // foreach ($song_name_array as $song_name) {
-        //     $song_info = DB::table('songs')->where('slug', $song_name)->select('id', 'name', 'slug', 'album_id', 'listenUniqueFavorite')->first();
-        //     $album_info = DB::table('albums')->where('id', $song_info->album_id)->select('name', 'slug', 'release', 'length', 'artist_id')->first();
-        //     $artist_info = DB::table('artists')->where('id', $album_info->artist_id)->select('slug', 'name')->first();
-
-        //     $length = $song_info->length;
-        //     $artist = $artist_info->name;
-        //     $album = $album_info->name;
-        //     $song_title = $song_info->name;
-        //     $cover = 'albums/' . $artist_info->slug . '/' . $album_info->slug;
-
-        //     $song_array[$i]['song'] = $song_title;
-        //     $song_array[$i]['album'] = $album;
-        //     $song_array[$i]['artist'] = $artist;
-        //     $song_array[$i]['length'] = $length;
-        //     $song_array[$i]['cover'] = $cover;
-        //     $i++;
-        // }
         return response()->json(['success' => true, 'request' => $songs_array]);
     }
     /*
