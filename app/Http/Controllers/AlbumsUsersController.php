@@ -22,6 +22,7 @@ class AlbumsUsersController extends Controller
 
             $album_db->artist_slug = $artist->slug;
             $album_db->artist_name = $artist->name;
+            $album_db->cover = '/storage/files/music/' . $artist->slug . '/' . $album_db->slug . '/' . $album_db->cover;
 
             // if(!is_null($album_db->style_id)){
                 //     $album_style = DB::table('styles')->where('id', $album_db->style_id)->first();
