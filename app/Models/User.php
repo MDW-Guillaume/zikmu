@@ -14,6 +14,15 @@ class User extends Authenticatable
     use CrudTrait;
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($user) {
+            $user->username = 'user' . rand(100000, 999999);
+        });
+    }
+
     /**
      * The attributes that are mass assignable.
      *
@@ -22,7 +31,7 @@ class User extends Authenticatable
     protected $fillable = [
         'email',
         'password',
-        'username'
+        'username',
     ];
 
     /**

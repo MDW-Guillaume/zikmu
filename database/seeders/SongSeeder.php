@@ -58,7 +58,6 @@ class SongSeeder extends Seeder
                 }
 
                 $songs = scandir(public_path('origin') . '/music-20s/' . $artist_album);
-                // $songs = scandir(public_path('origin') . '/music-20s/' . '2020 - 288 - Danny Elfman - 100% Danny Elfman');
                 $songs = array_diff($songs, ['.', '..', '.DS_Store']);
 
                 $imageExtensions = ['jpg', 'jpeg', 'png', 'gif'];
@@ -138,8 +137,9 @@ class SongSeeder extends Seeder
         if (!is_dir(public_path('origin') . '/public')) {
             File::makeDirectory(public_path('origin') . '/public');
 
-            File::makeDirectory(public_path('storage') . '/files');
-            File::makeDirectory(public_path('storage') . '/files/music');
+            File::makeDirectory(public_path('origin') . '/public/files');
+            File::makeDirectory(public_path('origin') . '/public/files/music');
+
         }
 
         foreach ($artists as $artist => $artist_content) {
@@ -151,13 +151,13 @@ class SongSeeder extends Seeder
             );
 
             $artist_id = $current_artist->id;
-            if (!is_dir(public_path('storage') . '/files/music/' . $artist_content['slug'])) {
-                File::makeDirectory(public_path('storage') . '/files/music/' . $artist_content['slug']);
+
+            if (!is_dir(public_path('origin') . '/public/files/music/' . $artist_content['slug'])) {
+                File::makeDirectory(public_path('origin') . '/public/files/music/' . $artist_content['slug']);
             }
 
             foreach ($artist_content['albums'] as $album => $album_content) {
-                // dd($album_content);
-                // dd(gettype($album_content['cover']));
+
                 $current_album = Album::firstOrCreate(
                     [
                         'name' => $album,
@@ -172,18 +172,18 @@ class SongSeeder extends Seeder
                 $album_id = $current_album->id;
 
                 $initial_path = $album_content['release'] . ' - ' . $album_content['length'] . ' - ' . $artist . ' - ' . $album;
-                if (!is_dir(public_path('storage') . '/files/music/' . $artist_content['slug'] . '/' . $album_content['slug'])) {
-                    File::makeDirectory(public_path('storage') . '/files/music/' . $artist_content['slug'] . '/' . $album_content['slug']);
+                if (!is_dir(public_path('origin') . '/public/files/music/' . $artist_content['slug'] . '/' . $album_content['slug'])) {
+                    File::makeDirectory(public_path('origin') . '/public/files/music/' . $artist_content['slug'] . '/' . $album_content['slug']);
                 }
 
                 if (
                     file_exists(public_path('origin') . '/music-20s/' . $initial_path . '/' . $album_content['cover'])
                     &&
-                    !file_exists(public_path('storage') . '/files/music/' . $artist_content['slug'] . '/' . $album_content['slug'] . '/' . $album_content['cover'])
+                    !file_exists(public_path('origin') . '/public/files/music/' . $artist_content['slug'] . '/' . $album_content['slug'] . '/' . $album_content['cover'])
                 ) {
                     copy(
                         public_path('origin') . '/music-20s/' . $initial_path . '/' . $album_content['cover'],
-                        public_path('storage') . '/files/music/' . $artist_content['slug'] . '/' . $album_content['slug'] . '/' . $album_content['cover']
+                        public_path('origin') . '/public/files/music/' . $artist_content['slug'] . '/' . $album_content['slug'] . '/' . $album_content['cover']
                     );
                 }
 
@@ -203,22 +203,22 @@ class SongSeeder extends Seeder
                         if (
                             file_exists(public_path('origin') . '/music-20s/' . $initial_path . '/' . $song_content['initial_name'])
                             &&
-                            !file_exists(public_path('storage') . '/files/music/' . $artist_content['slug'] . '/' . $album_content['slug'] . '/' . $song_content['slug'])
+                            !file_exists(public_path('origin') . '/public/files/music/' . $artist_content['slug'] . '/' . $album_content['slug'] . '/' . $song_content['slug'])
                         ) {
                             copy(
                                 public_path('origin') . '/music-20s/' . $initial_path . '/' . $song_content['initial_name'],
-                                public_path('storage') . '/files/music/' . $artist_content['slug'] . '/' . $album_content['slug'] . '/' . $song_content['slug']
+                                public_path('origin') . '/public/files/music/' . $artist_content['slug'] . '/' . $album_content['slug'] . '/' . $song_content['slug']
                             );
                         }
 
                         if (
                             file_exists(public_path('origin') . '/music-20s/' . $initial_path . '/' . $song_content['initial_name'])
                             &&
-                            !file_exists(public_path('storage') . '/files/music/' . $artist_content['slug'] . '/' . $album_content['slug'] . '/' . $song_content['slug'])
+                            !file_exists(public_path('origin') . '/public/files/music/' . $artist_content['slug'] . '/' . $album_content['slug'] . '/' . $song_content['slug'])
                         ) {
                             copy(
                                 public_path('origin') . '/music-20s/' . $initial_path . '/' . $song_content['initial_name'],
-                                public_path('storage') . '/files/music/' . $artist_content['slug'] . '/' . $album_content['slug'] . '/' . $song_content['slug']
+                                public_path('origin') . '/public/files/music/' . $artist_content['slug'] . '/' . $album_content['slug'] . '/' . $song_content['slug']
                             );
                         }
                     }
@@ -241,16 +241,14 @@ class SongSeeder extends Seeder
                     $artist->style_id = $style_id; // Remplacez $style_id par la valeur à assigner à la colonne style_id
                     $artist->cover = $cover; // Remplacez $style_id par la valeur à assigner à la colonne style_id
                     $artist->save();
-                    var_dump($artist->slug);
                     if (
                         file_exists(public_path('origin') . '/artistes/' . $style . '/' . $artist->cover)
                         &&
-                        !file_exists(public_path('storage') . '/files/music/' . $artist->slug . '/' . $artist->cover)
+                        !file_exists(public_path('origin') . '/public/files/music/' . $artist->slug . '/' . $artist->cover)
                     ) {
-                        var_dump('j\'ajoute');
                         copy(
                             public_path('origin') . '/artistes/' . $style . '/' . $artist->cover,
-                            public_path('storage') . '/files/music/' . $artist->slug . '/' . $artist->cover
+                            public_path('origin') . '/public/files/music/' . $artist->slug . '/' . $artist->cover
                         );
                     }
                 }

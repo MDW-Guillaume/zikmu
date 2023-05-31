@@ -15,10 +15,12 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        User::firstOrCreate(
-            ['email' => 'guillaume.couvidou@live.fr',
-            'password' => bcrypt('Guillaume2784'),
-            'is_admin' => true
-        ]);
+        $user = User::firstOrCreate(
+            ['email' => 'guillaume.couvidou@live.fr'],
+            [
+                'password' => bcrypt('Guillaume2784'),
+                'is_admin' => true
+            ]
+        );
     }
 }
