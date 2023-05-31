@@ -29,31 +29,20 @@ class HomeController extends Controller
             $artists[$i]['id'] = $db_artists[$i]->id;
             $artists[$i]['name'] = $db_artists[$i]->name;
             $artists[$i]['slug'] = $db_artists[$i]->slug;
-            $style_name = DB::table('styles')->select('slug')->where('id', $db_artists[$i]->style_id)->first();
 
 
 
-            if (!is_null($style_name)) {
-                if (!is_null($db_artists[$i]->cover)) {
-                    if (file_exists(storage_path() . '/app/public/files/artistes/' . $style_name->slug . '/' . $db_artists[$i]->cover)) {
-                        $artists[$i]['cover'] = $db_artists[$i]->cover;
-                        $artists[$i]['style_slug'] = $style_name->slug;
-                    } else {
-                        $artists[$i]['cover'] = 'unfinded.jpg';
-                        $artists[$i]['style_slug'] = 'unfinded';
-                    }
+            if (!is_null($db_artists[$i]->cover)) {
+                if (file_exists(public_path('storage') . '/files/music/' . $db_artists[$i]->slug . '/' . $db_artists[$i]->cover)) {
+                    $artists[$i]['cover'] = $db_artists[$i]->cover;
                 } else {
                     $artists[$i]['cover'] = 'unfinded.jpg';
-                    $artists[$i]['style_slug'] = 'unfinded';
                 }
             } else {
                 $artists[$i]['cover'] = 'unfinded.jpg';
-                $artists[$i]['style_slug'] = 'unfinded';
             }
             $artists[$i]['follow'] = $db_artists[$i]->follow;
-
         }
-        // dd($artists);
 
         return view('home')->with([
             'music' => $zikmu,

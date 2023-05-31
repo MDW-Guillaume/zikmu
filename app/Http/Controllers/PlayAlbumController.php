@@ -42,12 +42,12 @@ class PlayAlbumController extends Controller
             $song_name = $get_song_information->name;
 
             if ($album_cover) {
-                $cover_url = '/storage/files/albums/' . $artist_slug . '/' . $album_cover;
+                $cover_url = '/storage/files/music/' . $artist_slug . '/' . $album_slug . '/' . $album_cover;
             } else {
                 $cover_url = '/img/unknown_cover.png';
             }
 
-            $song_url = '/storage/files/music/' . $release . '-' . $length . '-' . $artist_slug . '-' . $album_slug . '/' . $song_slug;
+            $song_url = '/storage/files/music/' . $artist_slug . '/' . $album_slug . '/' . $song_slug;
 
             return response()->json(['success' => true, 'position' => $position, 'song_url' => $song_url, 'cover_url' => $cover_url,  'song_name' => $song_name, 'album_name' => $album_name, 'artist_name' => $artist_name]);
         } else {
@@ -87,12 +87,12 @@ class PlayAlbumController extends Controller
             $song_name = $get_song_information->name;
 
             if ($album_cover) {
-                $cover_url = '/storage/files/albums/' . $artist_slug . '/' . $album_cover;
+                $cover_url = '/storage/files/music/' . $artist_slug . '/' . $album_slug . '/' . $album_cover;
             } else {
                 $cover_url = '/img/unknown_cover.png';
             }
 
-            $song_url = '/storage/files/music/' . $release . '-' . $length . '-' . $artist_slug . '-' . $album_slug . '/' . $song_slug;
+            $song_url = '/storage/files/music/' . $artist_slug . '/' . $album_slug . '/' . $song_slug;
 
             return response()->json(['success' => true, 'position' => $position, 'song_url' => $song_url, 'cover_url' => $cover_url,  'song_name' => $song_name, 'album_name' => $album_name, 'artist_name' => $artist_name]);
         } else {
@@ -294,12 +294,12 @@ class PlayAlbumController extends Controller
         $song_name = $get_song_information->name;
 
         if ($album_cover) {
-            $cover_url = '/storage/files/albums/' . $artist_slug . '/' . $album_cover;
+            $cover_url = '/storage/files/music/' . $artist_slug . '/' . $album_slug . '/' . $album_cover;
         } else {
             $cover_url = '/img/unknown_cover.png';
         }
 
-        $song_url = '/storage/files/music/' . $release . '-' . $length . '-' . $artist_slug . '-' . $album_slug . '/' . $song_slug;
+        $song_url = '/storage/files/music/' . $artist_slug . '/' . $album_slug . '/' . $song_slug;
 
         return response()->json(['success' => true, 'position' => $position, 'song_url' => $song_url, 'cover_url' => $cover_url, 'song_name' => $song_name, 'album_name' => $album_name, 'artist_name' => $artist_name]);
     }
@@ -348,11 +348,11 @@ class PlayAlbumController extends Controller
         $song_name = $song_info->name;
 
         if ($album_cover) {
-            $cover_url = '/storage/files/albums/' . $artist_slug . '/' . $album_cover;
+            $cover_url = '/storage/files/music/' . $artist_slug . '/' . $album_slug . '/' . $album_cover;
         } else {
             $cover_url = '/img/unknown_cover.png';
         }
-        $song_url = '/storage/files/music/' . $release . '-' . $length . '-' . $artist_slug . '-' . $album_slug . '/' . $song_slug;
+        $song_url = '/storage/files/music/' . $artist_slug . '/' . $album_slug . '/' . $song_slug;
 
         return response()->json(['success' => true, 'position' => $song_info->position, 'song_url' => $song_url, 'cover_url' => $cover_url, 'song_name' => $song_name, 'album_name' => $album_name, 'artist_name' => $artist_name]);
     }
@@ -406,11 +406,11 @@ class PlayAlbumController extends Controller
         $song_name = $song_info->name;
 
         if ($album_cover) {
-            $cover_url = '/storage/files/albums/' . $artist_slug . '/' . $album_cover;
+            $cover_url = '/storage/files/music/' . $artist_slug . '/' . $album_slug . '/' . $album_cover;
         } else {
             $cover_url = '/img/unknown_cover.png';
         }
-        $song_url = '/storage/files/music/' . $release . '-' . $length . '-' . $artist_slug . '-' . $album_slug . '/' . $song_slug;
+        $song_url = '/storage/files/music/' . $artist_slug . '/' . $album_slug . '/' . $song_slug;
 
         return response()->json(['success' => true, 'position' => $song_clicked_position->position, 'song_url' => $song_url, 'cover_url' => $cover_url, 'song_name' => $song_name, 'album_name' => $album_name, 'artist_name' => $artist_name]);
     }
@@ -465,11 +465,11 @@ class PlayAlbumController extends Controller
         $song_name = $song_info->name;
 
         if ($album_cover) {
-            $cover_url = '/storage/files/albums/' . $artist_slug . '/' . $album_cover;
+            $cover_url = '/storage/files/music/' . $artist_slug . '/' . $album_slug . '/' . $album_cover;
         } else {
             $cover_url = '/img/unknown_cover.png';
         }
-        $song_url = '/storage/files/music/' . $release . '-' . $length . '-' . $artist_slug . '-' . $album_slug . '/' . $song_slug;
+        $song_url = '/storage/files/music/' . $artist_slug . '/' . $album_slug . '/' . $song_slug;
 
         return response()->json(['success' => true, 'position' => $position, 'song_url' => $song_url, 'cover_url' => $cover_url, 'song_name' => $song_name, 'album_name' => $album_name, 'artist_name' => $artist_name]);
     }
@@ -526,11 +526,11 @@ class PlayAlbumController extends Controller
         $song_name = $song_info->name;
 
         if ($album_cover) {
-            $cover_url = '/storage/files/albums/' . $artist_slug . '/' . $album_cover;
+            $cover_url = '/storage/files/music/' . $artist_slug . '/' . $album_slug . '/' . $album_cover;
         } else {
             $cover_url = '/img/unknown_cover.png';
         }
-        $song_url = '/storage/files/music/' . $release . '-' . $length . '-' . $artist_slug . '-' . $album_slug . '/' . $song_slug;
+        $song_url = '/storage/files/music/' . $artist_slug . '/' . $album_slug . '/' . $song_slug;
 
         return response()->json(['success' => true, 'position' => $position, 'song_url' => $song_url, 'cover_url' => $cover_url, 'song_name' => $song_name, 'album_name' => $album_name, 'artist_name' => $artist_name]);
     }
@@ -568,12 +568,12 @@ class PlayAlbumController extends Controller
             $song_name = $get_song_information->name;
 
             if ($album_cover) {
-                $cover_url = '/storage/files/albums/' . $artist_slug . '/' . $album_cover;
+                $cover_url = '/storage/files/music/' . $artist_slug . '/' . $album_slug . '/' . $album_cover;
             } else {
                 $cover_url = '/img/unknown_cover.png';
             }
 
-            $song_url = '/storage/files/music/' . $release . '-' . $length . '-' . $artist_slug . '-' . $album_slug . '/' . $song_slug;
+            $song_url = '/storage/files/music/' . $artist_slug . '/' . $album_slug . '/' . $song_slug;
 
             return response()->json(['success' => true, 'position' => $position, 'song_url' => $song_url, 'cover_url' => $cover_url,  'song_name' => $song_name, 'album_name' => $album_name, 'artist_name' => $artist_name]);
         }
@@ -620,11 +620,11 @@ class PlayAlbumController extends Controller
         $song_name = $song_info->name;
 
         if ($album_cover) {
-            $cover_url = '/storage/files/albums/' . $artist_slug . '/' . $album_cover;
+            $cover_url = '/storage/files/music/' . $artist_slug . '/' . $album_slug . '/' . $album_cover;
         } else {
             $cover_url = '/img/unknown_cover.png';
         }
-        $song_url = '/storage/files/music/' . $release . '-' . $length . '-' . $artist_slug . '-' . $album_slug . '/' . $song_slug;
+        $song_url = '/storage/files/music/' . $artist_slug . '/' . $album_slug . '/' . $song_slug;
 
         return response()->json(['success' => true, 'position' => $position, 'song_url' => $song_url, 'cover_url' => $cover_url, 'song_name' => $song_name, 'album_name' => $album_name, 'artist_name' => $artist_name]);
     }

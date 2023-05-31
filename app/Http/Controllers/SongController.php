@@ -74,7 +74,7 @@ class SongController extends Controller
                 $artist_slug = $get_artist_information->slug;
 
                 if ($album_cover) {
-                    $songs_array[$i]['cover_url'] = '/storage/files/albums/' . $artist_slug . '/' . $album_cover;
+                    $songs_array[$i]['cover_url'] = '/storage/files/music/' . $artist_slug . '/' . $album_slug . '/' . $album_cover;
                 } else {
                     $songs_array[$i]['cover_url'] = '/img/unknown_cover.png';
                 }

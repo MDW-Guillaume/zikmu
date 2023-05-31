@@ -16,7 +16,7 @@
                     style="background-image :
                     @if (is_null($artist->cover)) url('{{ URL::to('/img') }}/unknow.png')
                     @else
-                    url('{{ URL::to('storage/files/artistes') }}/{{ $style->slug }}/{{ $artist->cover }}') @endif
+                    url({{asset('storage/files/music/' . $artist->slug . '/' . $artist->cover)}}) @endif
                     ">
                 </div>
                 <div class="artist-details">
@@ -41,13 +41,7 @@
                         <div class="album-element">
                             <div class="album-cover" style="border : 2px solid black;">
                                 <a href="{{ route('album.show', $album->slug) }}">
-                                    <img src="
-                                    @if (is_null($album->cover))
-                                    {{ URL::to('/img') }}/unknown_cover.png
-                                    @else
-                                    {{ URL::to('storage/files/albums') }}/{{ $artist->slug }}/{{ $album->cover }}
-                                    @endif
-                                    " alt="">
+                                    <img src="{{$album->cover}}">
                                 </a>
 
                                 <form action="{{ route('play.album') }}" class="play-album fast-play-album" method="post">
