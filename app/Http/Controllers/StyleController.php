@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\DB;
 
 class StyleController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $styles = DB::table('styles')->get();
 
         return view('style.index')->with([
@@ -15,22 +16,39 @@ class StyleController extends Controller
         ]);
     }
 
-    public function show($slug){
+    public function show($slug)
+    {
         $style = DB::table('styles')->where('slug', $slug)->first();
 
         $artists = DB::table('artists')->where('style_id', $style->id)->orderByDesc('follow')->get();
-        
+
         $albums = array();
 
-        foreach($artists as $artist){
+        foreach ($artists as $artist) {
             $albums_of_artist = DB::table('albums')->where('artist_id', $artist->id)->inRandomOrder()->get();
-            foreach($albums_of_artist as $unique_album){
-                $albums[$unique_album->slug] = $unique_album; 
-                $albums[$unique_album->slug]->artist = $artist->name; 
-                $albums[$unique_album->slug]->artist_slug = $artist->slug; 
-
+            foreach ($albums_of_artist as $unique_album) {
+                $albums[$unique_album->slug] = $unique_album;
+                $albums[$unique_album->slug]->artist = $artist->name;
+                $albums[$unique_album->slug]->artist_slug = $artist->slug;
+                if ($unique_album->cover) {
+                    if (file_exists(public_path('storage') . '/files/music/' . $artist->slug . '/' . $unique_album->slug . '/' . $unique_album->cover)) {
+                        $albums[$unique_album->slug]->cover = '/storage/files/music/' . $artist->slug . '/' . $unique_album->slug . '/' . $unique_album->cover;
+                    } else {
+                        $albums[$unique_album->slug]->cover = 'undefined.jpg';
+                    }
+                } else {
+                    $albums[$unique_album->slug]->cover = 'undefined.jpg';
+                }
             }
-            
+            if ($artist->cover) {
+                if (file_exists(public_path('storage') . '/files/music/' . $artist->slug . '/' . $artist->cover)) {
+                    $artist->cover = '/storage/files/music/' . $artist->slug . '/' . $artist->cover;
+                } else {
+                    $artist->cover = 'undefined.jpg';
+                }
+            } else {
+                $artist->cover = 'undefined.jpg';
+            }
         }
 
         // dd($albums);

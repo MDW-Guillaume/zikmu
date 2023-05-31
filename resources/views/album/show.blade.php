@@ -17,10 +17,8 @@
         <div class="page-album">
             <div class="album-card">
                 <div class="album-cover"
-                    style="background-image :
-                    @if (is_null($album->cover)) url('{{ URL::to('/img') }}/unknown_cover.png')
-                    @else
-                    url('{{ URL::to('storage/files/albums') }}/{{ $artist->slug }}/{{ $album->cover }}') @endif
+                    style="background-image :@if (is_null($album->cover)) url('{{ URL::to('/img') }}/unknow-cover.png')
+                    @else url({{$album->cover}}) @endif
                     ">
                 </div>
                 <div class="album-details">

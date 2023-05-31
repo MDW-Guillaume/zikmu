@@ -56,12 +56,7 @@
                     @csrf
                     <div class="favorite-element">
                         <div class="favorite-cover">
-                            @if (is_null($song->album_cover))
-                                <img src="{{ URL::to('/img') }}/unknown_cover.png" alt="">
-                            @else
-                                <img src="{{ URL::to('storage/files/albums') }}/{{ $song->artist_slug }}/{{ $song->album_cover }}"
-                                    alt="">
-                            @endif
+                            <img src="{{$song->album_cover}}">
                         </div>
                         <div class="favorite-info">
                             <div class="favorite-title">

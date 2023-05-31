@@ -23,15 +23,11 @@
                             {{-- {{ dd($album) }} --}}
                             <div class="album-element">
                                 <div class="album-cover" style="border : 2px solid black;">
-                                    @if (is_null($album->cover))
-                                        <a href="{{ route('album.show', $album->slug) }}"><img
-                                                src="{{ URL::to('/img') }}/unknown_cover.png" alt=""></a>
-                                    @else
-                                        <a href="{{ route('album.show', $album->slug) }}"><img
-                                                src="{{ URL::to('storage/files/albums') }}/{{ $album->artist_slug }}/{{ $album->cover }}"
-                                                alt=""></a>
-                                    @endif
-                                    <form action="{{ route('play.album') }}" class="play-album fast-play-album" method="post">
+                                    <a href="{{ route('album.show', $album->slug) }}">
+                                        <img src="{{ $album->cover }}">
+                                    </a>
+                                    <form action="{{ route('play.album') }}" class="play-album fast-play-album"
+                                        method="post">
                                         @csrf
                                         <input type="hidden" name="album_id" value="{{ $album->id }}">
                                         <input type="hidden" name="position" value="1">
@@ -60,11 +56,8 @@
                         @foreach ($artists as $artist)
                             <a href="{{ route('artist.show', $artist->slug) }}" class="artist-element">
                                 <div class="artist-cover"
-                                    style="background-image :
-                            @if ($artist->cover == 'unfinded.jpg') url('{{ URL::to('/img') }}/unknow.png')
-                            @else
-                            url('{{ URL::to('storage/files/artistes') }}/{{ $style->slug }}/{{ $artist->cover }}') @endif
-                            ">
+                                    style="background-image :@if (is_null($artist->cover)) url('{{ URL::to('/img') }}/unknow-cover.png')
+                                    @else url({{ $artist->cover }}) @endif">
                                 </div>
 
                                 <div class="artist-name">

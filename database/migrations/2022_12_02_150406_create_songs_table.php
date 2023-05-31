@@ -19,11 +19,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug');
             $table->integer('length');
-            $table->integer('listened')->default(0);
             $table->integer('position');
             $table->unsignedBigInteger('album_id');
             $table->timestamps();
-
             $table->foreign('album_id')
                 ->references('id')
                 ->on('albums')

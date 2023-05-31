@@ -27,43 +27,44 @@ class SongSeeder extends Seeder
         # Le public path 'music' renvoie vers storage/app
 
         # Analyse des fichiers de musique dans le dossier music-20s
-        $musical_path = scandir(public_path('music') . '/music-20s');
+        $musical_path = scandir(public_path('origin') . '/music-20s');
 
-        # Création d'un répertoire pour formater le nom des dossiers par le slug
-        if (!is_dir(public_path('music') . '/public')) {
-            File::makeDirectory(public_path('music') . '/public');
+        $artists = [];
 
-            File::makeDirectory(public_path('storage') . '/files');
-            File::makeDirectory(public_path('storage') . '/files/music');
-        }
+        // Récupération des artistes et de toutes les informations relatives
+        foreach ($musical_path as $artist_album) {
+            if ($artist_album != "." && $artist_album != '..' && $artist_album != '.DS_Store') {
+                $musical_explode = explode(' - ', $artist_album);
 
-        # Pour chaque album du répertoire /music-20s
-        for ($i = 0; $i < count($musical_path); $i++) {
-            # Si le fichier/dossier n'est pas un chemin
-            if ($musical_path[$i] != "." && $musical_path[$i] != '..' && $musical_path[$i] != '.DS_Store') {
+                $artist = $musical_explode[2];
+                $artist_slug = Str::slug($artist);
+                $albums = [];
+                $album = $musical_explode[3];
+                $album_slug = Str::slug($album);
 
-                # transformation du nom de dossier en slug
-                $folder_slug_name = Str::slug($musical_path[$i]);
-
-                # Séparation des informations comprises dans le nom du dossier
-                $musical_explode = explode(' - ', $musical_path[$i]);
-
-                $artist_name = $musical_explode[2];
-                $artist_slug = Str::slug($musical_explode[2]);
-                $album_name = $musical_explode[3];
-                $album_slug = Str::slug($musical_explode[3]);
-                $album_length = $musical_explode[1];
-                $album_release = $musical_explode[0];
-
-                # Création du dossier de l'album nommé par un slug
-                if (!is_dir(public_path('storage') . '/files/music/' . $folder_slug_name)) {
-                    File::makeDirectory(public_path('storage') . '/files/music/' . $folder_slug_name);
+                if (!isset($artists[$artist])) {
+                    $artists[$artist] = [
+                        'slug' => $artist_slug,
+                        'albums' => [],
+                    ];
                 }
 
-                # Récupération des éléments compris dans le dossier de l'album $i
-                $album_content = scandir(public_path('music') . '/music-20s/' . $musical_path[$i]);
+                if (!isset($artists[$artist]['albums'][$album])) {
+                    $artists[$artist]['albums'][$album] = [
+                        'slug' => $album_slug,
+                        'release' => $musical_explode[0],
+                        'length' => $musical_explode[1],
+                    ];
+                }
+
+                $songs = scandir(public_path('origin') . '/music-20s/' . $artist_album);
+                // $songs = scandir(public_path('origin') . '/music-20s/' . '2020 - 288 - Danny Elfman - 100% Danny Elfman');
+                $songs = array_diff($songs, ['.', '..', '.DS_Store']);
+
+                $imageExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+
                 // Filtrer les fichiers musicaux uniquement (ignorer les dossiers "." et "..")
-                usort($album_content, function ($a, $b) {
+                usort($songs, function ($a, $b) {
                     $pattern = '/\d+/'; // Expression régulière pour extraire le numéro de titre
                     preg_match($pattern, $a, $aMatches);
                     preg_match($pattern, $b, $bMatches);
@@ -74,171 +75,183 @@ class SongSeeder extends Seeder
                     return $aNumber - $bNumber;
                 });
 
+                foreach ($songs as $song) {
 
-                # Ajout de l'artiste en base de donnée si celui-ci n'existe pas
-                # et récupération de son id pour l'ajout dans la table Albums
-                Artist::firstOrCreate(
+                    if ($song != "." && $song != '..' && $song != '.DS_Store' && count($songs) != 0) {
+                        $extension = pathinfo($song, PATHINFO_EXTENSION);
+                        if (!in_array(strtolower($extension), $imageExtensions)) {
+
+                            $audio = new Mp3Info(public_path('origin') . '/music-20s/' . $artist_album . '/' . $song, true);
+                            $song_length = intval($audio->duration);
+
+                            $song_explode = explode(' - ', $song);
+                            $song_position = $song_explode[0];
+                            $song_name = pathinfo($song_explode[1], PATHINFO_FILENAME);
+                            $song_slug = preg_replace('/[^a-z0-9]+/', '-', strtolower(pathinfo($song_name, PATHINFO_FILENAME)));
+
+                            if (!isset($artists[$artist]['albums'][$album]['songs'][$song_name])) {
+                                $artists[$artist]['albums'][$album]['songs'][$song_name] = [
+                                    'slug' => $song_slug . '.' . $extension,
+                                    'position' => $song_position,
+                                    'length' => $song_length,
+                                    'initial_name' => $song
+                                ];
+                            }
+                        } else {
+                            if (!isset($artists[$artist]['albums'][$album]['cover'])) {
+                                $artists[$artist]['albums'][$album]['cover'] = $song;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        $all_styles_path = scandir(public_path('origin') . '/artistes');
+
+        // Récupération des styles pour chaque artistes
+        foreach ($all_styles_path as $style) {
+            if ($style != "." && $style != '..' && $style != '.DS_Store') {
+                $style_slug = Str::slug($style);
+                $style_path = scandir(public_path('origin') . '/artistes/' . $style);
+                if (!isset($styles[$style])) {
+                    $styles[$style] = [
+                        'slug' => $style_slug,
+                        'artists' => [],
+                    ];
+                }
+                foreach ($style_path as $style_content) {
+                    if ($style_content != "." && $style_content != '..' && $style_content != '.DS_Store') {
+                        $artist_slug = pathinfo($style_content, PATHINFO_FILENAME);
+                        if (!isset($styles[$style]['artist'][$artist_slug])) {
+                            $styles[$style]['artists'][$artist_slug] = $style_content;
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+
+        // Insertion en base de données et création des fichiers dans le dossier public
+        if (!is_dir(public_path('origin') . '/public')) {
+            File::makeDirectory(public_path('origin') . '/public');
+
+            File::makeDirectory(public_path('storage') . '/files');
+            File::makeDirectory(public_path('storage') . '/files/music');
+        }
+
+        foreach ($artists as $artist => $artist_content) {
+            $current_artist = Artist::firstOrCreate(
+                [
+                    'name' => $artist,
+                    'slug' => $artist_content['slug']
+                ]
+            );
+
+            $artist_id = $current_artist->id;
+            if (!is_dir(public_path('storage') . '/files/music/' . $artist_content['slug'])) {
+                File::makeDirectory(public_path('storage') . '/files/music/' . $artist_content['slug']);
+            }
+
+            foreach ($artist_content['albums'] as $album => $album_content) {
+                // dd($album_content);
+                // dd(gettype($album_content['cover']));
+                $current_album = Album::firstOrCreate(
                     [
-                        'name' => $artist_name,
-                        'slug' => $artist_slug
+                        'name' => $album,
+                        'slug' => $album_content['slug'],
+                        'cover' => $album_content['cover'],
+                        'length' => $album_content['length'],
+                        'release' => $album_content['release'],
+                        'artist_id' => $artist_id
                     ]
                 );
-                $artist_id = DB::table('artists')
-                    ->select('id')
-                    ->where('slug', '=', $artist_slug)
-                    ->get();
 
-                # Ajout de l'album en base de donnée si celui-ci n'existe pas
-                # Et récupération de son id pour l'ajout dans la table Song
-                Album::firstOrCreate(
-                    [
-                        'name' => $album_name,
-                        'slug' => $album_slug,
-                        'length' => $album_length,
-                        'release' => $album_release,
-                        'artist_id' => $artist_id[0]->id
-                    ]
-                );
-                $album_id = DB::table('albums')
-                    ->select('id')
-                    ->where('slug', '=', $album_slug)
-                    ->get();
+                $album_id = $current_album->id;
 
-                # Pour chaque titres compris dans l'album
-                for ($j = 0; $j < count($album_content); $j++) {
-                    if ($album_content[$j] != "." && $album_content[$j] != '..' && $album_content[$j] != '.DS_Store' && $album_content[$j] != 'cover.jpg') {
+                $initial_path = $album_content['release'] . ' - ' . $album_content['length'] . ' - ' . $artist . ' - ' . $album;
+                if (!is_dir(public_path('storage') . '/files/music/' . $artist_content['slug'] . '/' . $album_content['slug'])) {
+                    File::makeDirectory(public_path('storage') . '/files/music/' . $artist_content['slug'] . '/' . $album_content['slug']);
+                }
 
-                        # On récupère les informations comprises dans le nom du fichier
-                        $title_explode = explode(' - ', $album_content[$j]);
+                if (
+                    file_exists(public_path('origin') . '/music-20s/' . $initial_path . '/' . $album_content['cover'])
+                    &&
+                    !file_exists(public_path('storage') . '/files/music/' . $artist_content['slug'] . '/' . $album_content['slug'] . '/' . $album_content['cover'])
+                ) {
+                    copy(
+                        public_path('origin') . '/music-20s/' . $initial_path . '/' . $album_content['cover'],
+                        public_path('storage') . '/files/music/' . $artist_content['slug'] . '/' . $album_content['slug'] . '/' . $album_content['cover']
+                    );
+                }
 
-
-                        $title_position = $title_explode[0];
-                        $title_info = pathinfo($title_explode[1]);
-                        $title_name = $title_info['filename'];
-
-                        # On transforme le nom du fichier en slug
-                        $pathinfo_extention_length = strlen(pathinfo($title_explode[1], PATHINFO_EXTENSION));
-                        $slug_filename = Str::substrReplace(Str::slug($title_explode[1]), '.', -$pathinfo_extention_length, 0);
-
-                        # Avec le composant Mp3Info, on récupère la longueur du titre
-                        $audio = new Mp3Info(public_path('music') . '/music-20s/' . $musical_path[$i] . '/' . $album_content[$j], true);
-                        $title_length = intval($audio->duration);
-
-                        # On copie le fichier original dans le répertoire crée précedement en le renommant par son slug
-                        copy(public_path('music') . '/music-20s/' . $musical_path[$i] . '/' . $album_content[$j], public_path('storage') . '/files/music/' . $folder_slug_name . '/' . $album_content[$j]);
-                        rename(public_path('storage') . '/files/music/' . $folder_slug_name . '/' . $album_content[$j], public_path('storage') . '/files/music/' . $folder_slug_name . '/' . $slug_filename);
-
-                        # On insère les informations récupérées en base de données dans la table Song
+                if (isset($album_content['songs'])) {
+                    foreach ($album_content['songs'] as $song => $song_content) {
                         Song::firstOrCreate(
                             [
-                                "name" =>  $title_name,
-                                "slug" => $slug_filename,
-                                "position" => $title_position,
-                                "length" => $title_length,
-                                "album_id" => $album_id[0]->id
+                                "name" =>  $song,
+                                "slug" => $song_content['slug'],
+                                "position" => $song_content['position'],
+                                "length" => $song_content['length'],
+                                "album_id" => $album_id
                             ]
                         );
+
+                        # On copie le fichier original dans le répertoire crée précedement en le renommant par son slug
+                        if (
+                            file_exists(public_path('origin') . '/music-20s/' . $initial_path . '/' . $song_content['initial_name'])
+                            &&
+                            !file_exists(public_path('storage') . '/files/music/' . $artist_content['slug'] . '/' . $album_content['slug'] . '/' . $song_content['slug'])
+                        ) {
+                            copy(
+                                public_path('origin') . '/music-20s/' . $initial_path . '/' . $song_content['initial_name'],
+                                public_path('storage') . '/files/music/' . $artist_content['slug'] . '/' . $album_content['slug'] . '/' . $song_content['slug']
+                            );
+                        }
+
+                        if (
+                            file_exists(public_path('origin') . '/music-20s/' . $initial_path . '/' . $song_content['initial_name'])
+                            &&
+                            !file_exists(public_path('storage') . '/files/music/' . $artist_content['slug'] . '/' . $album_content['slug'] . '/' . $song_content['slug'])
+                        ) {
+                            copy(
+                                public_path('origin') . '/music-20s/' . $initial_path . '/' . $song_content['initial_name'],
+                                public_path('storage') . '/files/music/' . $artist_content['slug'] . '/' . $album_content['slug'] . '/' . $song_content['slug']
+                            );
+                        }
                     }
                 }
             }
         }
 
-        # Récupération des genres par artistes
+        foreach ($styles as $style => $style_content) {
+            $current_style = Style::firstOrCreate(
+                [
+                    'name' => $style,
+                    'slug' => $style_content['slug'],
+                ]
+            );
 
-        $style_path = scandir(public_path('music') . '/artistes');
-
-        # On crée le dossier si celui ci n'existe pas déjà
-        if (!is_dir(public_path('storage') . '/files/artistes')) {
-            File::makeDirectory(public_path('storage') . '/files/artistes');
-        }
-
-        for ($i = 0; $i < count($style_path); $i++) {
-            if ($style_path[$i] != "." && $style_path[$i] != '..' && $style_path[$i] != '.DS_Store') {
-
-                # Stockage et formatage des informations des dossiers dans des variables
-                $style_name = $style_path[$i];
-                $style_slug = Str::slug($style_path[$i]);
-
-                # Création du dossier du genre actuel
-                if (!file_exists(public_path('storage') . '/files/artistes/' . $style_slug)) {
-                    File::makeDirectory(public_path('storage') . '/files/artistes/' . $style_slug);
-                }
-
-                # Ajout du style en base de données
-                Style::firstOrCreate(
-                    [
-                        'name' => $style_name,
-                        'slug' => $style_slug,
-                    ]
-                );
-
-                $style_id = DB::table('styles')
-                    ->select('id')
-                    ->where('slug', '=', Str::slug($style_path[$i]))
-                    ->get();
-
-                $style_artist_path = scandir(public_path('music') . '/artistes/' . $style_name);
-
-                # Parcours de chaque dossier de genre
-                for ($j = 0; $j < count($style_artist_path); $j++) {
-                    if ($style_artist_path[$j] != "." && $style_artist_path[$j] != '..' && $style_artist_path[$j] != '.DS_Store') {
-
-                        # Récupération du nom de fichier pour le transformer en slug.
-                        # Stockage du nom du fichier avec son extention, et ce peut importe la longueur de celle-ci.
-                        $filename = pathinfo($style_artist_path[$j], PATHINFO_FILENAME);
-                        $pathinfo_extention_length = strlen(pathinfo($style_artist_path[$j], PATHINFO_EXTENSION));
-                        $slug_filename = Str::substrReplace(Str::slug($style_artist_path[$j]), '.', -$pathinfo_extention_length, 0);
-
-                        # Copie du fichier du dossier original vers le dossier crée par nos soins
-                        if (!file_exists(public_path('storage') . '/files/artistes/' . $style_slug . '/' . $style_artist_path[$j])) {
-                            copy(public_path('music') . '/artistes/' . $style_path[$i] . '/' . $style_artist_path[$j], public_path('storage') . '/files/artistes/' . $style_slug . '/' . $style_artist_path[$j]);
-                            rename(public_path('storage') . '/files/artistes/' . $style_slug . '/' . $style_artist_path[$j], public_path('storage') . '/files/artistes/' . $style_slug . '/' . $slug_filename);
-                        }
-
-                        # Update du style de chaque artiste ainsi que du nom du fichier de leur cover
-                        DB::table('artists')->where('slug', $filename)->update(['style_id' => $style_id[0]->id, 'cover' => $slug_filename]);
-                    }
-                }
-            }
-        }
-
-        # Récupération des cover d'albums
-        $album_path = scandir(public_path('music') . '/albums');
-
-        # Création du dossier de cover d'albums
-        if (!file_exists(public_path('storage') . '/files/albums')) {
-            File::makeDirectory(public_path('storage') . '/files/albums/');
-        }
-        for ($i = 0; $i < count($album_path); $i++) {
-            if ($album_path[$i] != "." && $album_path[$i] != '..' && $album_path[$i] != '.DS_Store') {
-                $artist_form_album_path = $album_path[$i];
-                $artist_slug_form_album_path = Str::slug($album_path[$i]);
-
-                # Création du dossier du genre actuel
-                if (!file_exists(public_path('storage') . '/files/albums/' . $artist_slug_form_album_path)) {
-                    File::makeDirectory(public_path('storage') . '/files/albums/' . $artist_slug_form_album_path);
-                }
-
-                $artist_album_path = scandir(public_path('music') . '/albums/' . $artist_form_album_path);
-
-                for ($j = 0; $j < count($artist_album_path); $j++) {
-                    if ($artist_album_path[$j] != "." && $artist_album_path[$j] != '..' && $artist_album_path[$j] != '.DS_Store') {
-                        $album_cover = $artist_album_path[$j];
-                        $slug_album_no_ext = pathinfo($artist_album_path[$j], PATHINFO_FILENAME);
-
-                        $pathinfo_extention_length = strlen(pathinfo($album_cover, PATHINFO_EXTENSION));
-                        $slug_filename = Str::substrReplace(Str::slug($album_cover), '.', -$pathinfo_extention_length, 0);
-
-                        # Copie et renommage du fichier dans un format slug
-                        if (!file_exists(public_path('storage') . '/files/albums/' . $artist_slug_form_album_path . '/' . $slug_filename)) {
-                            copy(public_path('music') . '/albums/' . $artist_form_album_path . '/' . $album_cover, public_path('storage') . '/files/albums/' . $artist_slug_form_album_path . '/' . $album_cover);
-                            rename(public_path('storage') . '/files/albums/' . $artist_slug_form_album_path . '/' . $album_cover, public_path('storage') . '/files/albums/' . $artist_slug_form_album_path . '/' . $slug_filename);
-                        }
-
-
-                        $id_artist = DB::table('artists')->select('id')->where('slug', '=', $artist_form_album_path)->get();
-
-                        DB::table('albums')->where('slug', $slug_album_no_ext)->update(['cover' => $slug_filename]);
+            $style_id = $current_style->id;
+            foreach ($style_content['artists'] as $artist_slug => $cover) {
+                $artist = Artist::where('slug', $artist_slug)->first();
+                if ($artist) {
+                    $artist->style_id = $style_id; // Remplacez $style_id par la valeur à assigner à la colonne style_id
+                    $artist->cover = $cover; // Remplacez $style_id par la valeur à assigner à la colonne style_id
+                    $artist->save();
+                    var_dump($artist->slug);
+                    if (
+                        file_exists(public_path('origin') . '/artistes/' . $style . '/' . $artist->cover)
+                        &&
+                        !file_exists(public_path('storage') . '/files/music/' . $artist->slug . '/' . $artist->cover)
+                    ) {
+                        var_dump('j\'ajoute');
+                        copy(
+                            public_path('origin') . '/artistes/' . $style . '/' . $artist->cover,
+                            public_path('storage') . '/files/music/' . $artist->slug . '/' . $artist->cover
+                        );
                     }
                 }
             }

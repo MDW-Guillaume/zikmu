@@ -30,7 +30,8 @@
                             style="background-image :
                     @if ($artist['cover'] == 'unfinded.jpg') url('{{ URL::to('/img') }}/unknow.png')
                     @else
-                    url('{{ URL::to('storage/files/artistes') }}/{{ $artist['style_slug'] }}/{{ $artist['cover'] }}') @endif
+                    {{-- url('{{ URL::to(public_path("storage") . "/files/music/" . $artist['slug'] . '/' . $artist['cover']) }}') @endif --}}
+                    url({{ asset('storage/files/music/' . $artist['slug'] . '/' . $artist['cover'])}}) @endif
                     ">
                         </div>
 
