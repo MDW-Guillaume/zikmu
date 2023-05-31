@@ -31,8 +31,8 @@ class StyleController extends Controller
                 $albums[$unique_album->slug]->artist = $artist->name;
                 $albums[$unique_album->slug]->artist_slug = $artist->slug;
                 if ($unique_album->cover) {
-                    if (file_exists(public_path('storage') . '/files/music/' . $artist->slug . '/' . $unique_album->slug . '/' . $unique_album->cover)) {
-                        $albums[$unique_album->slug]->cover = '/storage/files/music/' . $artist->slug . '/' . $unique_album->slug . '/' . $unique_album->cover;
+                    if (file_exists(public_path('origin') . '/public/files/music/' . $artist->slug . '/' . $unique_album->slug . '/' . $unique_album->cover)) {
+                        $albums[$unique_album->slug]->cover = '/origin/public/files/music/' . $artist->slug . '/' . $unique_album->slug . '/' . $unique_album->cover;
                     } else {
                         $albums[$unique_album->slug]->cover = 'undefined.jpg';
                     }
@@ -41,8 +41,8 @@ class StyleController extends Controller
                 }
             }
             if ($artist->cover) {
-                if (file_exists(public_path('storage') . '/files/music/' . $artist->slug . '/' . $artist->cover)) {
-                    $artist->cover = '/storage/files/music/' . $artist->slug . '/' . $artist->cover;
+                if (file_exists(public_path('origin') . '/public/files/music/' . $artist->slug . '/' . $artist->cover)) {
+                    $artist->cover = '/origin/public/files/music/' . $artist->slug . '/' . $artist->cover;
                 } else {
                     $artist->cover = 'undefined.jpg';
                 }

@@ -31,7 +31,7 @@
                     @if ($artist['cover'] == 'unfinded.jpg') url('{{ URL::to('/img') }}/unknow.png')
                     @else
                     {{-- url('{{ URL::to(public_path("storage") . "/files/music/" . $artist['slug'] . '/' . $artist['cover']) }}') @endif --}}
-                    url({{ asset('storage/files/music/' . $artist['slug'] . '/' . $artist['cover'])}}) @endif
+                    url({{ asset('origin/public/files/music/' . $artist['slug'] . '/' . $artist['cover'])}}) @endif
                     ">
                         </div>
 

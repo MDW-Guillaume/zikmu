@@ -19,7 +19,7 @@
                             style="background-image :
                     @if (is_null($artist->cover)) url('{{ URL::to('/img') }}/unknow.png')
                     @else
-                    url({{ asset('storage/files/music/' . $artist->slug . '/' . $artist->cover) }}) @endif
+                    url({{ asset('origin/public/files/music/' . $artist->slug . '/' . $artist->cover) }}) @endif
                     ">
                         </div>
 

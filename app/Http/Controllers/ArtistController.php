@@ -18,7 +18,7 @@ class ArtistController extends Controller
             if (!is_null($artist->style_id)) {
                 $artist_style = DB::table('styles')->where('id', $artist->style_id)->first();
                 $artist->style = $artist_style->slug;
-                $artist->cover = '/storage/files/music/' . $artist->slug . '/' . $artist->cover;
+                $artist->cover = '/origin/public/files/music/' . $artist->slug . '/' . $artist->cover;
             }
         }
         // dd($artists);
@@ -48,10 +48,10 @@ class ArtistController extends Controller
             if($album->cover){
 
                 // dd(
-                //     file_exists(public_path('storage') . '/files/music/' . $artist_info->slug . '/' . $album->slug . '/' . $album->cover),
-                //     public_path('storage') . '/files/music/' . $artist_info->slug . '/' . $album->slug . '/' . $album->cover);
-                if (file_exists(public_path('storage') . '/files/music/' . $artist_info->slug . '/' . $album->slug . '/' . $album->cover)) {
-                    $album->cover = '/storage/files/music/' . $artist_info->slug . '/' . $album->slug . '/' . $album->cover;
+                //     file_exists(public_path('origin') . '/public/files/music/' . $artist_info->slug . '/' . $album->slug . '/' . $album->cover),
+                //     public_path('origin') . '/public/files/music/' . $artist_info->slug . '/' . $album->slug . '/' . $album->cover);
+                if (file_exists(public_path('origin') . '/public/files/music/' . $artist_info->slug . '/' . $album->slug . '/' . $album->cover)) {
+                    $album->cover = '/origin/public/files/music/' . $artist_info->slug . '/' . $album->slug . '/' . $album->cover;
                 }else{
                     $album->cover = 'undefined.jpg';
                 }

@@ -51,8 +51,8 @@ class AlbumController extends Controller
 
         if($album->cover){
 
-            if (file_exists(public_path('storage') . '/files/music/' . $artist->slug . '/' . $album->slug . '/' . $album->cover)) {
-                $album->cover = '/storage/files/music/' . $artist->slug . '/' . $album->slug . '/' . $album->cover;
+            if (file_exists(public_path('origin') . '/public/files/music/' . $artist->slug . '/' . $album->slug . '/' . $album->cover)) {
+                $album->cover = '/origin/public/files/music/' . $artist->slug . '/' . $album->slug . '/' . $album->cover;
             }else{
                 $album->cover = 'undefined.jpg';
             }

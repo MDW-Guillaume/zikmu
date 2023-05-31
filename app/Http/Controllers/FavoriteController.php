@@ -32,7 +32,7 @@ class FavoriteController extends Controller
 
             $artist = DB::table('artists')->where('id', $album->artist_id)->first();
 
-            $user_favorite_array[$i]->album_cover = '/storage/files/music/' . $artist->slug . '/' . $album->slug . '/' . $album->cover;
+            $user_favorite_array[$i]->album_cover = '/origin/public/files/music/' . $artist->slug . '/' . $album->slug . '/' . $album->cover;
             $user_favorite_array[$i]->artist_name = $artist->name;
             $user_favorite_array[$i]->artist_slug = $artist->slug;
 

@@ -36,11 +36,12 @@ class SearchController extends Controller
             $get_artist_information = DB::table('artists')->where('id', $get_album_information->artist_id)->select('slug', 'name')->first();
 
             $album_cover = $get_album_information->cover;
+            $album_slug = $get_album_information->slug;
             $artist_slug = $get_artist_information->slug;
 
 
             if ($album_cover) {
-                $cover_url = '/storage/files/albums/' . $artist_slug . '/' . $album_cover;
+                $cover_url = '/origin/public/files/music/' . $artist_slug . '/' . $album_slug . '/' . $album_cover;
             } else {
                 $cover_url = '/img/unknown_cover.png';
             }
@@ -62,7 +63,7 @@ class SearchController extends Controller
 
 
             if ($album_cover) {
-                $cover_url = '/storage/files/albums/' . $artist_slug . '/' . $album_cover;
+                $cover_url = '/origin/public/files/music/' . $artist_slug . '/' . $album_slug . '/' . $album_cover;
             } else {
                 $cover_url = '/img/unknown_cover.png';
             }

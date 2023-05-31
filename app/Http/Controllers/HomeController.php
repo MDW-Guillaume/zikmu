@@ -33,7 +33,7 @@ class HomeController extends Controller
 
 
             if (!is_null($db_artists[$i]->cover)) {
-                if (file_exists(public_path('storage') . '/files/music/' . $db_artists[$i]->slug . '/' . $db_artists[$i]->cover)) {
+                if (file_exists(public_path('origin') . '/public/files/music/' . $db_artists[$i]->slug . '/' . $db_artists[$i]->cover)) {
                     $artists[$i]['cover'] = $db_artists[$i]->cover;
                 } else {
                     $artists[$i]['cover'] = 'unfinded.jpg';
