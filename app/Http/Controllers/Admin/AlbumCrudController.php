@@ -21,7 +21,7 @@ class AlbumCrudController extends CrudController
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
-     * 
+     *
      * @return void
      */
     public function setup()
@@ -33,7 +33,7 @@ class AlbumCrudController extends CrudController
 
     /**
      * Define what happens when the List operation is loaded.
-     * 
+     *
      * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
      * @return void
      */
@@ -44,20 +44,31 @@ class AlbumCrudController extends CrudController
         CRUD::column('cover');
         CRUD::column('length');
         CRUD::column('release');
-        CRUD::column('artist_id');
+        CRUD::addColumn([
+            'name' => 'artist_id',
+            'label' => 'Artiste',
+            'type' => 'closure',
+            'orderable' => true,
+            'escaped'   => false,
+            'function'  => function($entry) {
+                // dd($entry); die;
+                $artist = \App\Models\Artist::find($entry->artist_id);
+                return ($entry->artist_id) ? '<a href="' . backpack_url('artist', $entry->artist_id) . '/show">' . $artist->name. '</a>' : '<small>N/A</small>';
+            },
+        ]);
         CRUD::column('created_at');
         CRUD::column('updated_at');
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
          * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']); 
+         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
          */
     }
 
     /**
      * Define what happens when the Create operation is loaded.
-     * 
+     *
      * @see https://backpackforlaravel.com/docs/crud-operation-create
      * @return void
      */
@@ -69,17 +80,28 @@ class AlbumCrudController extends CrudController
         CRUD::field('length');
         CRUD::field('release');
         CRUD::field('artist_id');
+        // CRUD::addField([
+        //     'name' => 'artist_id',
+        //     'label' => 'Artiste',
+        //     'type' => 'select',
+        //     'entity' => 'artists', // Remplacez "style" par le nom de votre entité liée
+        //     'attribute' => 'name', // Remplacez "name" par l'attribut que vous souhaitez afficher dans le champ select
+        //     'model' => "App\Models\Artist", // Remplacez "App\Models\Style" par le modèle correspondant à votre entité liée
+        //     'options' => [
+        //         'order' => ['name', 'asc'], // Tri par le nom dans l'ordre croissant
+        //     ],
+        // ]);
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
          * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
+         * - CRUD::addField(['name' => 'price', 'type' => 'number']));
          */
     }
 
     /**
      * Define what happens when the Update operation is loaded.
-     * 
+     *
      * @see https://backpackforlaravel.com/docs/crud-operation-update
      * @return void
      */

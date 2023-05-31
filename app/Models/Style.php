@@ -11,11 +11,13 @@ class Style extends Model
     use CrudTrait;
     use HasFactory;
 
-    public function albums() {
+    public function albums()
+    {
         return $this->hasMany(Album::class);
     }
 
-    public function artists() {
-        return $this->hasMany(Artist::class);
+    public function artists()
+    {
+        return $this->hasMany(Artist::class, 'style_id');
     }
 }

@@ -12,7 +12,7 @@ class Album extends Model
     use HasFactory;
 
     public function artists(){
-        return $this->belongsTo(Artist::class);
+        return $this->belongsTo(Artist::class, 'artist_id');
     }
 
     public function songs(){

@@ -21,7 +21,7 @@ class ArtistCrudController extends CrudController
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
-     * 
+     *
      * @return void
      */
     public function setup()
@@ -33,7 +33,7 @@ class ArtistCrudController extends CrudController
 
     /**
      * Define what happens when the List operation is loaded.
-     * 
+     *
      * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
      * @return void
      */
@@ -42,21 +42,40 @@ class ArtistCrudController extends CrudController
         CRUD::column('name');
         CRUD::column('slug');
         CRUD::column('follow');
-        CRUD::column('cover');
-        CRUD::column('style_id');
+        // CRUD::column('style_id');  // Besoin de récupérer le nom du style
+        // CRUD::addColumn([
+        //     'name' => 'style_id',
+        //     'label' => 'Style',
+        //     'type' => 'select',
+        //     'entity' => 'styles', // Nom de l'entité dans la base de données (tableau styles)
+        //     'attribute' => 'name', // Attribut à afficher (nom du style)
+        //     'model' => "App\Models\Style" // Modèle correspondant à l'entité style
+        // ]);
+        CRUD::addColumn([
+            'name' => 'style_id',
+            'label' => 'Style',
+            'type' => 'closure',
+            'orderable' => true,
+            'escaped'   => false,
+            'function'  => function($entry) {
+                // dd($entry); die;
+                $style = \App\Models\Style::find($entry->style_id);
+                return ($entry->style_id) ? '<a href="' . backpack_url('style', $entry->style_id) . '/show">' . $style->name. '</a>' : '<small>N/A</small>';
+            },
+        ]);
         CRUD::column('created_at');
         CRUD::column('updated_at');
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
          * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']); 
+         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
          */
     }
 
     /**
      * Define what happens when the Create operation is loaded.
-     * 
+     *
      * @see https://backpackforlaravel.com/docs/crud-operation-create
      * @return void
      */
@@ -65,19 +84,33 @@ class ArtistCrudController extends CrudController
         CRUD::field('name');
         CRUD::field('slug');
         CRUD::field('follow');
-        CRUD::field('cover');
-        CRUD::field('style_id');
-
+        // CRUD::field('cover');
+        CRUD::addField([
+            'name' => 'cover',
+            'label' => 'Cover',
+            'type' => 'upload',
+            'upload' => true,
+            'disk' => 'public' // Remplacez "public" par le nom de votre disque de stockage approprié
+        ]);
+        // CRUD::field('style_id');
+        CRUD::addField([
+            'name' => 'style_id',
+            'label' => 'Style',
+            'type' => 'select',
+            'entity' => 'styles', // Remplacez "style" par le nom de votre entité liée
+            'attribute' => 'name', // Remplacez "name" par l'attribut que vous souhaitez afficher dans le champ select
+            'model' => "App\Models\Style" // Remplacez "App\Models\Style" par le modèle correspondant à votre entité liée
+        ]);
         /**
          * Fields can be defined using the fluent syntax or array syntax:
          * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
+         * - CRUD::addField(['name' => 'price', 'type' => 'number']));
          */
     }
 
     /**
      * Define what happens when the Update operation is loaded.
-     * 
+     *
      * @see https://backpackforlaravel.com/docs/crud-operation-update
      * @return void
      */
