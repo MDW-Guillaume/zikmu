@@ -73,6 +73,13 @@ class ArtistCrudController extends CrudController
          */
     }
 
+    protected function setupShowOperation()
+    {
+        $this->setupListOperation();
+
+        $this->crud->setShowView('artist.crud.show');
+    }
+
     /**
      * Define what happens when the Create operation is loaded.
      *
@@ -82,15 +89,18 @@ class ArtistCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::field('name');
-        CRUD::field('slug');
-        CRUD::field('follow');
+        // CRUD::field('follow');
         // CRUD::field('cover');
         CRUD::addField([
             'name' => 'cover',
             'label' => 'Cover',
             'type' => 'upload',
             'upload' => true,
-            'disk' => 'public' // Remplacez "public" par le nom de votre disque de stockage approprié
+            'disk' => 'public', // Remplacez "public" par le nom de votre disque de stockage approprié
+            'validationRules' => 'mimetypes:image/jpeg,image/png', // Règle de validation pour les fichiers image
+            'validationMessages' => [
+                'mimetypes' => 'Le fichier doit être au format image (JPG, PNG, JPEG).',
+            ]
         ]);
         // CRUD::field('style_id');
         CRUD::addField([

@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Foundation\Vite;
+
 return [
 
     /*
@@ -51,7 +53,6 @@ return [
     'styles' => [
         'packages/backpack/base/css/bundle.css', // has primary color electric purple (backpack default)
         // 'packages/backpack/base/css/blue-bundle.css', // has primary color blue
-
         // Here's what's inside the bundle:
         // 'packages/@digitallyhappy/backstrap/css/style.min.css',
         // 'packages/animate.css/animate.min.css',
@@ -159,6 +160,7 @@ return [
     // JS files that are loaded in all pages, using Laravel's @vite() helper
     'vite_scripts' => [ // resource file_path
         // 'resources/js/app.js',
+        'resources/js/showpassword.js'
     ],
 
     // -------------

@@ -13,6 +13,7 @@
         <div class="page-album page-index page-artist">
             <h2>Mes albums</h2>
             <div class="albums-list d-flex">
+                @if(count($albums) > 0)
                 @foreach ($albums as $album)
                     {{-- {{ dd($album) }} --}}
                     <div class="album-element">
@@ -38,6 +39,9 @@
                         </a>
                     </div>
                 @endforeach
+                @else
+                <p>Vous n'avez aucun album en favoris...<br>Et pourtant il y a des classiques !<p>
+                @endif
             </div>
         </div>
     </div>

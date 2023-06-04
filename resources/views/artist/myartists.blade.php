@@ -13,6 +13,7 @@
         <div class="page-artist page-index">
             <h2>Mes artistes</h2>
             <div class="artists-list d-flex">
+                @if(count($artists) > 0)
                 @foreach ($artists as $artist)
                     <a href="{{ route('artist.show', $artist->slug) }}" class="artist-element">
                         <div class="artist-cover"
@@ -31,6 +32,9 @@
                         </div>
                     </a>
                 @endforeach
+                @else
+                <p>Vous n'avez aucun artiste en favoris...<br>Il faut vite remédier à cette situation !<p>
+                @endif
             </div>
         </div>
     </div>

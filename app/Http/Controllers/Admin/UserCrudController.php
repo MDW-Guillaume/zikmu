@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\UserRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Validation\ValidationException;
 /**
  * Class UserCrudController
  * @package App\Http\Controllers\Admin
@@ -40,10 +41,10 @@ class UserCrudController extends CrudController
     protected function setupListOperation()
     {
         CRUD::column('email');
-        CRUD::column('password');
         CRUD::column('username');
         CRUD::column('firstname');
         CRUD::column('lastname');
+        CRUD::column('created_at');
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
@@ -61,10 +62,19 @@ class UserCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::field('email');
-        CRUD::field('password');
-        CRUD::field('username');
+        CRUD::addField([
+            'name' => 'username',
+            'label' => 'Nom d\'utilisateur',
+            'type' => 'text',
+            'default' => 'user' . rand(100000, 999999),
+        ]);
         CRUD::field('firstname');
         CRUD::field('lastname');
+        CRUD::addField([
+            'name' => 'is_admin',
+            'label' => 'Définir en tant qu\'administrateur ?',
+            'type' => 'checkbox',
+        ]);
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
@@ -81,6 +91,29 @@ class UserCrudController extends CrudController
      */
     protected function setupUpdateOperation()
     {
-        $this->setupCreateOperation();
+        CRUD::addField([
+            'name' => 'username',
+            'label' => 'Nom d\'utilisateur',
+            'type' => 'text',
+            'default' => 'user' . rand(100000, 999999),
+        ]);
+        CRUD::addField([
+            'name' => 'password',
+            'label' => 'Mot de passe',
+            'type' => 'password',
+            'default' => '',
+            'suffix' => '<span toggle="#password" class="la la-fw la-eye field-icon toggle-password"></span>',
+            'attributes' => [
+                'id' => 'password',
+                'class' => 'form-control',
+            ],
+        ]);
+        CRUD::field('firstname');
+        CRUD::field('lastname');
+        CRUD::addField([
+            'name' => 'is_admin',
+            'label' => 'Définir en tant qu\'administrateur ?',
+            'type' => 'checkbox',
+        ]);
     }
 }

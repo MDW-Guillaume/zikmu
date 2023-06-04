@@ -1120,6 +1120,7 @@ function favoriteDelete() {
 
     for (let i = 0; i < deleteDiv.length; i++) {
         var lebtn = $(deleteDiv[i]).find('.favorite-button')[0];
+        console.log(lebtn)
         //  var csrf = $(this).siblings('input[name="csrf"]').val();
         var csrf = $('input[name="csrf"]').val();
         $(deleteDiv[i]).on('click', '.favorite-button', function (e) {

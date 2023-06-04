@@ -18,7 +18,6 @@ class SearchController extends Controller
 
     public function show(Request $request)
     {
-
         $search_array = [];
         $songs_similar = Song::where('name', 'LIKE', $request->search . '%')
             ->orWhere('name', 'LIKE', '%' . $request->search . '%')

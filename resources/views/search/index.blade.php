@@ -3,7 +3,14 @@
 @section('title')
     Recherche
 @endsection
-
+@if (!isset($search_array))
+    {
+    @php
+        header('Location: /home');
+        exit();
+    @endphp
+    }
+@endif
 @section('content')
     <div id="content">
         <div class="page-search page-artist">
@@ -56,12 +63,12 @@
                                 @foreach ($search_array['albums'] as $album)
                                     <div class="album-element">
                                         <div class="album-cover" style="border : 2px solid black;">
-                                            <a href="{{route('album.show', $album['slug'])}}">
+                                            <a href="{{ route('album.show', $album['slug']) }}">
                                                 <img src="{{ $album['cover'] }}" alt="">
                                             </a>
 
-                                            <form action="{{ route('play.fastplayalbum') }}" class="play-album fast-play-album"
-                                                method="post">
+                                            <form action="{{ route('play.fastplayalbum') }}"
+                                                class="play-album fast-play-album" method="post">
                                                 @csrf
                                                 <input type="hidden" name="album_id" value="{{ $album['id'] }}">
                                                 <input type="hidden" name="position" value="1">
@@ -96,7 +103,8 @@
                                             <h3>{{ $artist['name'] }}</h3>
                                         </div>
                                         <div class="artist-follow">
-                                            <p><img src="{{ URL::to('/img') }}/fav-fill.svg" alt="">{{ $artist['follow'] }}</p>
+                                            <p><img src="{{ URL::to('/img') }}/fav-fill.svg"
+                                                    alt="">{{ $artist['follow'] }}</p>
                                         </div>
                                     </a>
                                 @endforeach

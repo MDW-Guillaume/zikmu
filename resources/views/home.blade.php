@@ -19,10 +19,10 @@
             </div>
         </div>
 
+        <a href="{{ route('artist.index') }}">
+            <h2 class="home-title"><span>Artistes</span><span>&rsaquo;</span></h2>
+        </a>
         <div class="artists-container">
-            <a href="{{ route('artist.index') }}">
-                <h2 class="home-title"><span>Artistes</span><span>&rsaquo;</span></h2>
-            </a>
             <div class="artists-list d-flex">
                 @foreach ($artists as $artist)
                     <a href="{{ route('artist.show', $artist['slug']) }}" class="artist-element">
@@ -30,7 +30,6 @@
                             style="background-image :
                     @if ($artist['cover'] == 'unfinded.jpg') url('{{ URL::to('/img') }}/unknow.png')
                     @else
-                    {{-- url('{{ URL::to(public_path("storage") . "/files/music/" . $artist['slug'] . '/' . $artist['cover']) }}') @endif --}}
                     url({{ asset('origin/public/files/music/' . $artist['slug'] . '/' . $artist['cover'])}}) @endif
                     ">
                         </div>

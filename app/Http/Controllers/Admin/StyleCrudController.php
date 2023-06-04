@@ -60,7 +60,6 @@ class StyleCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::field('name');
-        CRUD::field('slug');
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:

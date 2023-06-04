@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\SongRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-
+use Illuminate\Validation\Validator;
 /**
  * Class SongCrudController
  * @package App\Http\Controllers\Admin
@@ -49,10 +49,10 @@ class SongCrudController extends CrudController
             'type' => 'closure',
             'orderable' => true,
             'escaped'   => false,
-            'function'  => function($entry) {
+            'function'  => function ($entry) {
                 // dd($entry); die;
                 $album = \App\Models\Album::find($entry->album_id);
-                return ($entry->album_id) ? '<a href="' . backpack_url('album', $entry->album_id) . '/show">' . $album->name. '</a>' : '<small>N/A</small>';
+                return ($entry->album_id) ? '<a href="' . backpack_url('album', $entry->album_id) . '/show">' . $album->name . '</a>' : '<small>N/A</small>';
             },
         ]);
         CRUD::column('created_at');
@@ -65,6 +65,13 @@ class SongCrudController extends CrudController
          */
     }
 
+    protected function setupShowOperation()
+    {
+        $this->setupListOperation();
+
+        $this->crud->setShowView('song.crud.show');
+    }
+
     /**
      * Define what happens when the Create operation is loaded.
      *
@@ -73,11 +80,37 @@ class SongCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::field('name');
-        CRUD::field('slug');
-        CRUD::field('length');
-        CRUD::field('position');
-        CRUD::field('album_id');
+        // CRUD::field('name')->attributes(['required' => 'required']);
+        CRUD::addField([
+            'name' => 'name',
+            'label' => 'Nom',
+            'type' => 'text',
+            'validationRules' => 'required',
+            'validationMessages' => [
+                'required' => 'Vous devez renseigner un nom pour le titre',
+            ]
+        ]);
+        CRUD::addField([
+            'name' => 'song_file',
+            'label' => 'Fichier',
+            'type' => 'upload',
+            'upload' => true,
+            'disk' => 'public',
+            // 'validationRules' => 'required',
+            'validationRules' => 'required|mimetypes:audio/mpeg,audio/x-wav,audio/mp3', // Règle de validation pour les fichiers audio
+            'validationMessages' => [
+                'required' => 'Vous devez ajouter un fichier audio',
+                'mimetypes' => 'Le fichier doit être au format audio (MP3, WAV, etc.).',
+            ]
+        ]);
+        CRUD::addField([
+            'name' => 'album_id',
+            'label' => 'Album',
+            'type' => 'select',
+            'entity' => 'albums', // Remplacez "style" par le nom de votre entité liée
+            'attribute' => 'name', // Remplacez "name" par l'attribut que vous souhaitez afficher dans le champ select
+            'model' => "App\Models\Album" // Remplacez "App\Models\Style" par le modèle correspondant à votre entité liée
+        ]);
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
@@ -94,6 +127,43 @@ class SongCrudController extends CrudController
      */
     protected function setupUpdateOperation()
     {
-        $this->setupCreateOperation();
+        CRUD::addField([
+            'name' => 'name',
+            'label' => 'Nom',
+            'type' => 'text',
+            'validationRules' => 'required',
+            'validationMessages' => [
+                'required' => 'Vous devez renseigner un nom pour le titre',
+            ]
+        ]);
+
+        CRUD::addField([
+            'name' => 'song_file',
+            'label' => 'Fichier',
+            'type' => 'upload',
+            'upload' => true,
+            'disk' => 'public',
+            // 'validationRules' => 'required',
+            'validationRules' => 'required|mimetypes:audio/mpeg,audio/x-wav,audio/mp3', // Règle de validation pour les fichiers audio
+            'validationMessages' => [
+                'required' => 'Vous devez ajouter un fichier audio',
+                'mimetypes' => 'Le fichier doit être au format audio (MP3, WAV, etc.).',
+            ]
+        ]);
+
+        // CRUD::addField([
+        //     'name' => 'position',
+        //     'label' => 'Position',
+        //     'type' => 'number',
+        // ]);
+
+        // CRUD::addField([
+        //     'name' => 'album_id',
+        //     'label' => 'Album',
+        //     'type' => 'select',
+        //     'entity' => 'albums', // Remplacez "style" par le nom de votre entité liée
+        //     'attribute' => 'name', // Remplacez "name" par l'attribut que vous souhaitez afficher dans le champ select
+        //     'model' => "App\Models\Album" // Remplacez "App\Models\Style" par le modèle correspondant à votre entité liée
+        // ]);
     }
 }

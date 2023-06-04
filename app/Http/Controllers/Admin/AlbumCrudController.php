@@ -66,6 +66,13 @@ class AlbumCrudController extends CrudController
          */
     }
 
+    protected function setupShowOperation()
+    {
+        $this->setupListOperation();
+
+        $this->crud->setShowView('album.crud.show');
+    }
+
     /**
      * Define what happens when the Create operation is loaded.
      *
@@ -75,11 +82,27 @@ class AlbumCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::field('name');
-        CRUD::field('slug');
-        CRUD::field('cover');
-        CRUD::field('length');
+        // CRUD::field('length');
         CRUD::field('release');
-        CRUD::field('artist_id');
+        CRUD::addField([
+            'name' => 'cover',
+            'label' => 'Cover',
+            'type' => 'upload',
+            'upload' => true,
+            'disk' => 'public', // Remplacez "public" par le nom de votre disque de stockage approprié
+            'validationRules' => 'mimetypes:image/jpeg,image/png', // Règle de validation pour les fichiers image
+            'validationMessages' => [
+                'mimetypes' => 'Le fichier doit être au format image (JPG, PNG, JPEG).',
+            ]
+        ]);
+        CRUD::addField([
+            'name' => 'artist_id',
+            'label' => 'Artist',
+            'type' => 'select',
+            'entity' => 'artists', // Remplacez "style" par le nom de votre entité liée
+            'attribute' => 'name', // Remplacez "name" par l'attribut que vous souhaitez afficher dans le champ select
+            'model' => "App\Models\Artist" // Remplacez "App\Models\Style" par le modèle correspondant à votre entité liée
+        ]);
         // CRUD::addField([
         //     'name' => 'artist_id',
         //     'label' => 'Artiste',
