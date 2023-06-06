@@ -131,10 +131,6 @@ class SongCrudController extends CrudController
             'name' => 'name',
             'label' => 'Nom',
             'type' => 'text',
-            'validationRules' => 'required',
-            'validationMessages' => [
-                'required' => 'Vous devez renseigner un nom pour le titre',
-            ]
         ]);
 
         CRUD::addField([
@@ -144,9 +140,8 @@ class SongCrudController extends CrudController
             'upload' => true,
             'disk' => 'public',
             // 'validationRules' => 'required',
-            'validationRules' => 'required|mimetypes:audio/mpeg,audio/x-wav,audio/mp3', // Règle de validation pour les fichiers audio
+            'validationRules' => 'mimetypes:audio/mpeg,audio/x-wav,audio/mp3', // Règle de validation pour les fichiers audio
             'validationMessages' => [
-                'required' => 'Vous devez ajouter un fichier audio',
                 'mimetypes' => 'Le fichier doit être au format audio (MP3, WAV, etc.).',
             ]
         ]);

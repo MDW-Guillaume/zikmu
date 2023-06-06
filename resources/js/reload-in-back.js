@@ -403,7 +403,7 @@ let lastPage;
 // Affichage de la file d'attente
 function showSongQueue(status = null) {
 
-    let songQueuePage = document.getElementById('songQueuePage')
+let songQueuePage = document.getElementById('songQueuePage')
     if (songQueuePage) {
         let token = document.getElementById('csrfToken').value
         let playerPosition = player.getAttribute('position')
@@ -1318,7 +1318,6 @@ function playerEvent() {
                 function setSelectedTime() {
                     let selectedTime = parseFloat(timeSlider.value)
                     player.currentTime = selectedTime
-                    // player.currentTime = parseFloat(selectedTime.toFixed(6))
                 }
 
                 player.addEventListener('loadeddata', function () {
@@ -1535,11 +1534,7 @@ function showAndHideSearchPage() {
 $(document).ready(function () {
     $(document).on('click', 'a', function reloadOnPageChange(event) {
         event.preventDefault();
-
         var url = $(this).attr('href');
-
-
-
         $.ajax({
             url: url,
             type: 'GET',
@@ -1547,7 +1542,6 @@ $(document).ready(function () {
                 $('#content').html($(data).find('#content').html());
                 history.replaceState(null, '', url);
                 showSongQueue();
-                // songQueueRandomizer();
                 randomFromWaitingPageEvent();
                 randomFromWaitingPage();
                 afficheAlbumAvecFavoris();
@@ -1564,13 +1558,10 @@ $(document).ready(function () {
                 playerNext();
                 playerPrevious();
                 showAndHideSearchPage()
-                // reloadScript();
-                // index = 0;
             }
         });
     });
     showSongQueue();
-    // songQueueRandomizer();
     randomFromWaitingPageEvent();
     randomFromWaitingPage();
     afficheAlbumAvecFavoris();

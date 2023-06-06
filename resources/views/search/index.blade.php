@@ -34,21 +34,21 @@
                                         <div class="song-element-cover album-cover" style="border : 2px solid black;">
                                             <img src="{{ $song['cover'] }}" alt="">
 
-                                            <form action="/play-song" class="play-title play-album fast-play-album"
+                                            <form action="/play-song" class="play-title"
                                                 method="post">
                                                 <input type="hidden" name="_token"
-                                                    value="od5RDmJdnLWUaHH7PM3RJXR0pz7mvelG0ERwC9nE">
+                                                    value="{{ csrf_token() }}">
                                                 <input type="hidden" name="song_id" value="{{ $song['id'] }}">
-                                                <input type="hidden" name="position" value="1">
+                                                <input type="hidden" name="position" value="{{ $song['position'] }}">
                                                 <input type="submit"
                                                     style="background-color : transparent; background-image : url(http://127.0.0.1:8000/img/play_song_btn.png); border : 0; cursor : pointer; border-radius : 50%;"
                                                     value="">
                                             </form>
                                         </div>
-                                        <a href="http://127.0.0.1:8000/album/gorillaz" class="album-details">
+                                        <a href="http://127.0.0.1:8000/album/{{ $song['album_slug'] }}" class="album-details">
                                             <h3 class="song-name">{{ $song['name'] }}</h3>
-                                            <span>par Gorillaz</span>
-                                            <span>2001</span>
+                                            <span>par {{ $song['artist'] }}</span>
+                                            <span>{{ $song['release'] }}</span>
                                         </a>
                                     </div>
                                 @endforeach
