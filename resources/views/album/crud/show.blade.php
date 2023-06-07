@@ -15,7 +15,8 @@
                 <tr>
                     <td><i>ID</i></td>
                     <td><i>Nom</i></td>
-                    <td><i>slug</i></td>
+                    <td><i>Slug</i></td>
+                    <td><i>Position</i></td>
                     <td><i>Actions</i></td>
                 </tr>
             </thead>
@@ -30,6 +31,9 @@
                         </td>
                         <td>
                             {{ $song->slug }}
+                        </td>
+                        <td>
+                            {{ $song->position }}
                         </td>
                         <td>
                             <a href="/admin/song/{{ $song->id }}/show" class="btn btn-sm btn-link"><i

@@ -45,14 +45,7 @@ class Album extends Model
                 $query->slug = Str::slug($query->name) . '-' . $i;
                 $i++;
             }
-            // if (Album::where('name', $query->name)->count() == 0) {
-            // }else{
-            //     $i = 2;
-            //     $query->slug = Str::slug($query->name) . '-' . $i;
 
-            // }
-
-            // dd($query);
             if (isset($query->cover)) {
                 $artist = Artist::where('id', $query->artist_id)->first();
 
@@ -76,10 +69,7 @@ class Album extends Model
             // dd();
 
             // Vérification si la cover est modifiée
-            if ($query->cover != $album->cover) {
-                // dd($query->cover->getClientOriginalName());
-
-
+            if ($query->cover) {
                 // Supprimer l'ancienne couverture
                 File::delete($destinationPath . $album->cover);
 
@@ -90,6 +80,12 @@ class Album extends Model
 
                 // Mettre à jour la valeur de la colonne 'cover'
                 $query->cover = $filename;
+            } else {
+                // Supprimer l'ancienne couverture
+                File::delete($destinationPath . $album->cover);
+
+                // Mettre à jour la valeur de la colonne 'cover'
+                $query->cover = null;
             }
 
             if ($artist->id != $query->artist_id) {
@@ -109,30 +105,12 @@ class Album extends Model
 
             File::deleteDirectory($destinationPath);
 
-            // $all_album_songs = Song::where('album_id', $query->id)->get();
-            // foreach ($all_album_songs as $album_song) {
-
-            //     $all_favorites = SongsUser::where('song_id', $album_song->id)->get();
-
-            //     foreach ($all_favorites as $favorite) {
-            //         SongsUser::where('id', $favorite->id)->delete();
-            //     }
-
-            //     AlbumsUser::where('id', $favorite->id)->delete();
-            // }
-
-            // $all_songs = Song::where('album_id', $query->id)->get();
-
-            // foreach ($all_songs as $song) {
-            //     Song::where('id', $song->id)->delete();
-            // }
             $all_album_songs = Song::where('album_id', $query->id)->get();
             foreach ($all_album_songs as $album_song) {
                 $all_favorites = SongsUser::where('song_id', $album_song->id)->get();
                 foreach ($all_favorites as $favorite) {
                     SongsUser::where('id', $favorite->id)->delete();
                 }
-                // Notez que la suppression de AlbumsUser est déplacée à l'intérieur de la boucle interne
                 AlbumsUser::where('album_id', $album_song->album_id)->delete();
             }
 
@@ -141,7 +119,6 @@ class Album extends Model
                 Song::where('id', $song->id)->delete();
             }
 
-            // Enfin, vous pouvez supprimer l'album lui-même
             Album::where('id', $query->id)->delete();
         });
     }

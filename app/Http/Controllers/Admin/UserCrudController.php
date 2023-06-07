@@ -7,6 +7,7 @@ use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Validation\ValidationException;
+
 /**
  * Class UserCrudController
  * @package App\Http\Controllers\Admin
@@ -61,7 +62,17 @@ class UserCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::field('email');
+        // CRUD::field('email');
+        CRUD::addField([
+            'name' => 'email',
+            'label' => 'E-mail',
+            'type' => 'email',
+            'validationRules' => 'required',
+            'validationMessages' => [
+                'required' => 'Vous devez renseigner un email.',
+            ]
+
+        ]);
         CRUD::addField([
             'name' => 'username',
             'label' => 'Nom d\'utilisateur',
@@ -102,7 +113,7 @@ class UserCrudController extends CrudController
             'label' => 'Mot de passe',
             'type' => 'password',
             'default' => '',
-            'suffix' => '<span toggle="#password" class="la la-fw la-eye field-icon toggle-password"></span>',
+            'suffix' => '<span toggle="#password" class="la la-fw la-sync field-icon generate-password"></span></span><span class="input-group-text"><span toggle="#password" class="la la-fw la-eye field-icon toggle-password"></span>',
             'attributes' => [
                 'id' => 'password',
                 'class' => 'form-control',

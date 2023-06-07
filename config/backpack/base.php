@@ -26,7 +26,7 @@ return [
     // ----
 
     // Project name. Shown in the window title.
-    'project_name' => 'Backpack Admin Panel',
+    'project_name' => 'Zik&Mu Administration',
 
     // When clicking on the admin panel's top-left logo/name,
     // where should the user be redirected?
@@ -160,7 +160,8 @@ return [
     // JS files that are loaded in all pages, using Laravel's @vite() helper
     'vite_scripts' => [ // resource file_path
         // 'resources/js/app.js',
-        'resources/js/showpassword.js'
+        'resources/js/showpassword.js',
+        'resources/js/randompassword.js'
     ],
 
     // -------------

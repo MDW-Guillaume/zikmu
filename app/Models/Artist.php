@@ -34,7 +34,6 @@ class Artist extends Model
         parent::boot();
         // auto-sets values on creation
         static::creating(function ($query) {
-
             $query->slug = Str::slug($query->name);
 
             $i = 2;
@@ -43,75 +42,45 @@ class Artist extends Model
                 $i++;
             }
             $destinationPath = public_path('origin') . '/public/files/music/' . $query->slug . '/';
-            $filename = $query->cover->getClientOriginalName();
-            $filename = Str::slug(pathinfo($filename, PATHINFO_FILENAME)) . '.' . pathinfo($filename, PATHINFO_EXTENSION);
-            $query->cover->move($destinationPath, $filename);
+            File::makeDirectory($destinationPath, 0755, true, true);
+            if (isset($query->cover)) {
+                $filename = $query->cover->getClientOriginalName();
+                $filename = Str::slug(pathinfo($filename, PATHINFO_FILENAME)) . '.' . pathinfo($filename, PATHINFO_EXTENSION);
+                $query->cover->move($destinationPath, $filename);
 
-            $query->cover = $filename;
-
-
-            if (!isset($query->follow)) {
-                $query->follow = 0;
+                $query->cover = $filename;
             }
+
+            $query->follow = 0;
         });
 
         static::updating(function ($query) {
 
             $oldArtist = Artist::where('id', $query->id)->first();
-            // dd($query->cover->getClientOriginalName());
-
             $destinationPath = public_path('origin') . '/public/files/music/' . $oldArtist->slug . '/';
 
-            // Supprimer l'ancienne couverture
-            File::delete($destinationPath . $oldArtist->cover);
+            if ($query->cover) {
 
-            // Déplacer le fichier vers le nouvel emplacement
-            $filename = $query->cover->getClientOriginalName();
-            $filename = Str::slug(pathinfo($filename, PATHINFO_FILENAME)) . '.' . pathinfo($filename, PATHINFO_EXTENSION);
-            $query->cover->move($destinationPath, $filename);
+                // Supprimer l'ancienne couverture
+                File::delete($destinationPath . $oldArtist->cover);
 
-            // Mettre à jour la valeur de la colonne 'cover'
-            $query->cover = $filename;
+                // Déplacer le fichier vers le nouvel emplacement
+                $filename = $query->cover->getClientOriginalName();
+                $filename = Str::slug(pathinfo($filename, PATHINFO_FILENAME)) . '.' . pathinfo($filename, PATHINFO_EXTENSION);
+                $query->cover->move($destinationPath, $filename);
+
+                // Mettre à jour la valeur de la colonne 'cover'
+                $query->cover = $filename;
+            } else {
+                // Supprimer l'ancienne couverture
+                File::delete($destinationPath . $oldArtist->cover);
+
+                // Mettre à jour la valeur de la colonne 'cover'
+                $query->cover = null;
+            }
         });
 
         static::deleting(function ($query) {
-            // $destinationPath = public_path('origin') . '/public/files/music/' . $query->slug;
-            // $albums = Album::where('artist_id', $query->id)->get();
-
-            // $all_artist_favorites = ArtistsUser::where('artist_id', $query->id)->get();
-
-
-            // foreach ($all_artist_favorites as $artist_favorite) {
-            //     $artist_favorite->delete();
-            // }
-
-            // foreach ($albums as $album) {
-            //     $all_albums_favorites = AlbumsUser::where('album_id', $album->id)->get();
-            //     foreach ($all_albums_favorites as $albums_favorites) {
-            //         $albums_favorites->delete();
-            //     }
-
-            //     $all_album_songs = Song::where('album_id', $album->id)->get();
-
-            //     foreach($all_album_songs as $album_song){
-            //         $all_songs_favorites = SongsUser::where('song_id', $album_song->id)->get();
-            //         foreach ($all_songs_favorites as $songs_favorites) {
-            //             $songs_favorites->delete();
-            //         }
-            //     }
-            // }
-
-
-            // foreach ($albums as $album) {
-            //     $all_songs = Song::where('album_id', $album->id)->get();
-            //     foreach ($all_songs as $song) {
-            //         Song::where('id', $song->id)->delete();
-            //     }
-            //     Album::where('id', $album->id)->delete();
-            // }
-
-            // File::deleteDirectory($destinationPath);
-
             $destinationPath = public_path('origin') . '/public/files/music/' . $query->slug;
 
             $all_artist_favorites = ArtistsUser::where('artist_id', $query->id)->get();

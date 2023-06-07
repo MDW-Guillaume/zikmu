@@ -42,15 +42,6 @@ class ArtistCrudController extends CrudController
         CRUD::column('name');
         CRUD::column('slug');
         CRUD::column('follow');
-        // CRUD::column('style_id');  // Besoin de récupérer le nom du style
-        // CRUD::addColumn([
-        //     'name' => 'style_id',
-        //     'label' => 'Style',
-        //     'type' => 'select',
-        //     'entity' => 'styles', // Nom de l'entité dans la base de données (tableau styles)
-        //     'attribute' => 'name', // Attribut à afficher (nom du style)
-        //     'model' => "App\Models\Style" // Modèle correspondant à l'entité style
-        // ]);
         CRUD::addColumn([
             'name' => 'style_id',
             'label' => 'Style',

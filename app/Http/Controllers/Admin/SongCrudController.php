@@ -139,8 +139,8 @@ class SongCrudController extends CrudController
             'type' => 'upload',
             'upload' => true,
             'disk' => 'public',
-            // 'validationRules' => 'required',
-            'validationRules' => 'mimetypes:audio/mpeg,audio/x-wav,audio/mp3', // Règle de validation pour les fichiers audio
+            // Règle de validation pour les fichiers audio
+            'validationRules' => 'mimetypes:audio/mpeg,audio/x-wav,audio/mp3',
             'validationMessages' => [
                 'mimetypes' => 'Le fichier doit être au format audio (MP3, WAV, etc.).',
             ]
@@ -152,13 +152,13 @@ class SongCrudController extends CrudController
         //     'type' => 'number',
         // ]);
 
-        // CRUD::addField([
-        //     'name' => 'album_id',
-        //     'label' => 'Album',
-        //     'type' => 'select',
-        //     'entity' => 'albums', // Remplacez "style" par le nom de votre entité liée
-        //     'attribute' => 'name', // Remplacez "name" par l'attribut que vous souhaitez afficher dans le champ select
-        //     'model' => "App\Models\Album" // Remplacez "App\Models\Style" par le modèle correspondant à votre entité liée
-        // ]);
+        CRUD::addField([
+            'name' => 'album_id',
+            'label' => 'Album',
+            'type' => 'select',
+            'entity' => 'albums', // Remplacez "style" par le nom de votre entité liée
+            'attribute' => 'name', // Remplacez "name" par l'attribut que vous souhaitez afficher dans le champ select
+            'model' => "App\Models\Album" // Remplacez "App\Models\Style" par le modèle correspondant à votre entité liée
+        ]);
     }
 }

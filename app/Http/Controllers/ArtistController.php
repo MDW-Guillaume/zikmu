@@ -18,10 +18,12 @@ class ArtistController extends Controller
             if (!is_null($artist->style_id)) {
                 $artist_style = DB::table('styles')->where('id', $artist->style_id)->first();
                 $artist->style = $artist_style->slug;
+                if(!is_null($artist->cover)){
                 $artist->cover = '/origin/public/files/music/' . $artist->slug . '/' . $artist->cover;
-            }
+            }else{
+                $artist->cover = '/img/unknow.png';
+            }}
         }
-        // dd($artists);
 
         return view('artist.index')->with([
             'artists' => $artists
@@ -46,10 +48,6 @@ class ArtistController extends Controller
 
         foreach($albums as $album){
             if($album->cover){
-
-                // dd(
-                //     file_exists(public_path('origin') . '/public/files/music/' . $artist_info->slug . '/' . $album->slug . '/' . $album->cover),
-                //     public_path('origin') . '/public/files/music/' . $artist_info->slug . '/' . $album->slug . '/' . $album->cover);
                 if (file_exists(public_path('origin') . '/public/files/music/' . $artist_info->slug . '/' . $album->slug . '/' . $album->cover)) {
                     $album->cover = '/origin/public/files/music/' . $artist_info->slug . '/' . $album->slug . '/' . $album->cover;
                 }else{

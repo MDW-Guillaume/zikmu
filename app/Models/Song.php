@@ -36,7 +36,6 @@ class Song extends Model
             $song_slug = Str::slug($query->name);
 
             $filePath = $query->song_file->getPathname();
-
             $audio = new Mp3Info($filePath, true);
             $query->length = intval($audio->duration);
 
@@ -58,7 +57,7 @@ class Song extends Model
         });
 
         static::updating(function ($query) {
-            $album_has_changed = false;
+
             $album = Album::where('id', $query->original['album_id'])->first();
             $artist = Artist::where('id', $album->artist_id)->first();
             $destinationPath = public_path('origin') . '/public/files/music/' . $artist->slug . '/' . $album->slug . '/';
@@ -78,23 +77,23 @@ class Song extends Model
                     $query->song_file->move($destinationPath, $filename);
                 }
             }
-
-            // Gestion de la position compliquée avec le changement d'album
-            // Une v2 sera à prévoir pour ajouter cette fonctionnalité
-
-            /* if ($query->album_id != $query->original['album_id']) {
+            if ($query->album_id != $query->original['album_id']) {
                 $new_album = Album::where('id', $query->album_id)->first();
                 $new_artist = Artist::where('id', $new_album->artist_id)->first();
+                $new_songs_count = Song::where('album_id', $query->album_id)->count();
                 $new_path = public_path('origin') . '/public/files/music/' . $new_artist->slug . '/' . $new_album->slug . '/' . $query->slug;
+
+                $new_songs_count++;
+                $query->position = $new_songs_count;
 
                 File::copy($destinationPath . $query->slug, $new_path);
 
                 File::delete($destinationPath . $query->slug);
-
-                $album_has_changed = true;
-            }*/
+            }
             unset($query->song_file);
         });
+        // Gestion de la position complexe avec le changement d'album
+
 
         static::deleting(function ($query) {
 
@@ -116,7 +115,7 @@ class Song extends Model
 
             $all_favorites = SongsUser::where('song_id', $query->id)->get();
 
-            foreach($all_favorites as $favorite){
+            foreach ($all_favorites as $favorite) {
                 SongsUser::where('id', $favorite->id)->delete();
             }
         });
