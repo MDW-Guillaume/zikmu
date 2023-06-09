@@ -19,7 +19,8 @@ class UserSeeder extends Seeder
             ['email' => 'guillaume.couvidou@live.fr'],
             [
                 'password' => bcrypt('Guillaume2784'),
-                'is_admin' => true
+                'is_admin' => true,
+                'seeder' => true
             ]
         );
     }
