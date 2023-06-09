@@ -38,7 +38,10 @@ class ArtistController extends Controller
 
         $albums = DB::table('albums')->where('artist_id', $artist_info->id)->orderByDesc('release')->get();
 
-        $favorites = DB::table('artists_users')->where('user_id', Auth::user()->id)->select('artist_id')->get();
+        $favorites = DB::table('artists_users')
+        ->where('user_id', Auth::user()->id)
+        ->select('artist_id')
+        ->get();
 
         foreach ($favorites as $favorite) {
             if ($artist_info->id == $favorite->artist_id) {

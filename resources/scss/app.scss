@@ -121,7 +121,7 @@ html {
     background: linear-gradient(0deg, hsla(259, 69%, 44%, 0.6) 0%, hsla(323, 86%, 37%, 1) 100%), url('/public/img/vinyle.png');
     background-repeat: no-repeat, no-repeat;
     background-size: cover;
-    min-height : 100%;
+    min-height: 100%;
     height: max-content;
     font-family: 'Roboto', sans-serif;
     font-size: 20px;
@@ -131,7 +131,7 @@ html {
     color: white;
 
     &.login {
-        width: 800px;
+        width: 700px;
         margin: auto;
 
         h1 {
@@ -156,6 +156,36 @@ html {
             text-align: center;
             width: 630px;
             margin: 0 auto;
+        }
+
+        @media screen and (max-width : 768px) {
+            width: 500px;
+
+            h2 {
+                margin: 50px 0 80px 0;
+            }
+
+            .description-text {
+                width: auto;
+            }
+        }
+
+        @media screen and (max-width : 576px) {
+            width: 300px;
+
+            h1 img{
+                width: 80%;
+            }
+
+            h2 {
+                font-size: 20px;
+                margin: 50px 0 50px 0;
+            }
+
+            .description-text {
+                font-size: 16px;
+                width: 100%;
+            }
         }
     }
 
@@ -182,7 +212,25 @@ html {
                 margin-bottom: 30px;
             }
 
+        }
+        @media screen and (max-width : 768px) {
+            flex-direction: column;
+            align-items: center;
 
+            .signup-method{
+                margin-bottom: 80px;
+            }
+        }
+
+        @media screen and (max-width : 576px) {
+            .signup-method{
+                margin-bottom: 50px;
+            }
+            .signup-method,
+            .signin-method{
+                font-size: 16px;
+                width: 100%;
+            }
         }
     }
 
@@ -222,14 +270,14 @@ html {
 
             .register-checkbox {
                 text-align: left;
-                display : flex;
-                align-items : center;
+                display: flex;
+                align-items: center;
                 margin: 0 0 30px 50px;
 
                 input[type=checkbox] {
                     width: 20px;
                     height: 20px;
-                    margin-right : 12px;
+                    margin-right: 12px;
                 }
 
                 span {
@@ -242,10 +290,29 @@ html {
             }
         }
 
-        .register-bottom-information{
-            margin-top : 10px;
-            .register-bottom-information-text{
-                text-align : center;
+        .register-bottom-information {
+            margin-top: 10px;
+
+            .register-bottom-information-text {
+                text-align: center;
+            }
+        }
+
+        @media screen and (max-width : 576px){
+            width: 100%;
+
+            .input-field .input-element{
+                padding: 20px 10px;
+            }
+
+            .register-button,
+            .connect-button{
+                width: 100%;
+            }
+
+            .register-text,
+            .register-bottom-information-text {
+                font-size: 18px;
             }
         }
     }

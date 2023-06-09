@@ -27,6 +27,7 @@
 </head>
 
 <body>
+    @include('include.header_phone')
     <div class="container">
         @include('include.sidebar')
 

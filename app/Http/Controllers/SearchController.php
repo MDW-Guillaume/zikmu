@@ -83,16 +83,15 @@ class SearchController extends Controller
 
         foreach ($artists_similar as $artist_similar) {
             $artist_info = DB::table('artists')->where('slug', $artist_similar->slug)->first();
-            $artist_style = DB::table('styles')->select('slug')->where('id', $artist_info->style_id)->first();
 
             $artist_followers = $artist_info->follow;
             $artist_cover = $artist_info->cover;
 
 
             if ($artist_cover) {
-                $cover_url = $artist_style->slug . '/' . $artist_cover;
+                $cover_url = '/origin/public/files/music/' . $artist_slug . '/' . $artist_cover;
             } else {
-                $cover_url = '/img/unknown.png';
+                $cover_url = '/img/unknown_cover.png';
             }
 
 

@@ -7,6 +7,11 @@
         img {
             width: 100px;
             height: 100px;
+
+            @media screen and (max-width:576px) {
+                width: 50px;
+                height: 50px;
+            }
         }
 
         p {
@@ -14,6 +19,14 @@
             font-size: 32px;
             line-height: 38px;
 
+            @media screen and (max-width:576px) {
+                font-size: 16px;
+                line-height: 18px;
+            }
+        }
+
+        @media screen and (max-width:768px) {
+            margin: 60px 100px 0 80px;
         }
     }
 
@@ -22,6 +35,10 @@
 
         ul {
             margin-top: 0;
+
+            @media screen and (max-width:576px) {
+                padding: 0 10px;
+            }
 
             li {
                 &.user-navigation-page {
@@ -39,6 +56,11 @@
 
                         color: #fff;
                     }
+
+                    @media screen and (max-width:576px) {
+                        padding: 15px 0;
+                        font-size: 16px;
+                    }
                 }
 
                 &.user-navigation-profile {
@@ -51,6 +73,12 @@
                         width: 75px;
                         height: 75px;
                         margin-right: 50px;
+
+                        @media screen and (max-width:576px) {
+                            width: 55px;
+                            height: 55px;
+                            margin-right: 15px;
+                        }
                     }
 
                     a {
@@ -67,8 +95,16 @@
                         align-items: center;
 
                     }
+
+                    @media screen and (max-width:576px) {
+                        font-size: 16px;
+                    }
                 }
             }
+        }
+
+        @media screen and (max-width:768px) {
+            margin: 60px 0 0 0;
         }
     }
 }
@@ -85,16 +121,18 @@
         text-transform: uppercase;
         margin-bottom: 40px;
     }
-    h3{
+
+    h3 {
         margin-top: 60px;
     }
-    h4{
-        margin : 20px 0;
+
+    h4 {
+        margin: 20px 0;
     }
 
     .profile-update-container,
     .profile-action-container {
-        margin-left : 20px;
+        margin-left: 20px;
         display: flex;
         flex-direction: row;
 
@@ -103,6 +141,11 @@
         .profile-destroy,
         .profile-disconnect {
             width: 50%;
+
+            @media screen and (max-width: 768px) {
+                width: 100%;
+                margin-bottom: 40px;
+            }
         }
 
         .profile-update-username,
@@ -173,5 +216,13 @@
                 border-radius: 8px;
             }
         }
+
+        @media screen and (max-width:768px) {
+            flex-direction: column;
+        }
+    }
+
+    @media screen and (max-width:576px) {
+        margin: 0;
     }
 }

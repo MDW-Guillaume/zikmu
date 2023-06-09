@@ -403,7 +403,7 @@ let lastPage;
 // Affichage de la file d'attente
 function showSongQueue(status = null) {
 
-let songQueuePage = document.getElementById('songQueuePage')
+    let songQueuePage = document.getElementById('songQueuePage')
     if (songQueuePage) {
         let token = document.getElementById('csrfToken').value
         let playerPosition = player.getAttribute('position')
@@ -1461,73 +1461,88 @@ function loopBtnEvent(repeatButton) {
 
 
 /* Search Events */
+function searchTogglePhone() {
+    let searchMobile = document.getElementById('searchMobile')
+    let searchBarForm = document.getElementById('searchbarFormMobile')
+
+    searchMobile.addEventListener('click', function (e) {
+        (searchBarForm.classList.contains('show')) ? searchBarForm.classList.remove('show') : searchBarForm.classList.add('show')
+    })
+
+}
+
 function showAndHideSearchPage() {
-    let searchBarForm = document.getElementById('searchBarForm')
-    let searchBarInput = document.getElementById('sidebarSearch')
+    let searchBarForm = document.querySelectorAll('.searchbar-form')
+    let searchBarInput = document.querySelectorAll('.sidebarSearch')
 
-    searchBarForm.addEventListener('submit', function (e) {
-        e.preventDefault();
-    })
+    for (let i = 0; i < searchBarForm.length; i++) {
+        console.log(searchBarForm[i])
+        searchBarForm[i].addEventListener('submit', function (e) {
+            e.preventDefault();
+        })
+        for (let j = 0; j < searchBarInput.length; j++) {
+            searchBarInput[j].addEventListener('keyup', function (e) {
+                console.log(searchBarInput[j].value, searchBarInput[j], searchBarForm[i])
+                let letters = searchBarInput[j].value;
+                let letterCount = searchBarInput[j].value.length;
 
-    searchBarInput.addEventListener('keyup', function (e) {
-        let letters = searchBarInput.value;
-        let letterCount = searchBarInput.value.length;
+                if (letterCount > 2 && letters.trim() != '') {
+                    var url = '/search'
+                    let searchTimeout;
 
-        if (letterCount > 2 && letters.trim() != '') {
-            var url = '/search'
-            let searchTimeout;
+                    // clearTimeout(searchTimeout);
+                    // searchTimeout = setTimeout(function () {
+                        let formData = $(searchBarForm[i]).serialize();
+                        $.ajax({
+                            url: url,
+                            type: 'POST',
+                            data: formData,
+                            dataType: 'json',
+                            success: function (response) {
+                                $('#content').html($(response.data).find('#content').html());
+                                if (window.location.href.split('/').pop() != 'search') {
 
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(function () {
-                let formData = $(searchBarForm).serialize();
-                $.ajax({
-                    url: url,
-                    type: 'POST',
-                    data: formData,
-                    dataType: 'json',
-                    success: function (response) {
-                        $('#content').html($(response.data).find('#content').html());
-                        if (window.location.href.split('/').pop() != 'search') {
+                                    lastPage = new URL(window.location.href).pathname;
+                                    history.replaceState(null, '', url);
+                                }
+                                let searchSpan = document.getElementById('searchRequested')
+                                searchSpan.innerHTML = letters
 
-                            lastPage = new URL(window.location.href).pathname;
-                            history.replaceState(null, '', url);
-                        }
-                        let searchSpan = document.getElementById('searchRequested')
-                        searchSpan.innerHTML = letters
+                                fastSongPlaySearch()
+                                fastPlayAlbum()
+                            }
+                        });
+                    // }, 500); // Délai de 500 ms avan
+                }
+                else {
+                    if (lastPage) {
+                        var url = lastPage;
+                        let searchTimeout;
 
-                        fastSongPlaySearch()
-                        fastPlayAlbum()
+                        clearTimeout(searchTimeout);
+                        searchTimeout = setTimeout(function () {
+                            $.ajax({
+                                url: url,
+                                type: 'GET',
+                                success: function (data) {
+                                    $('#content').html($(data).find('#content').html());
+                                    history.replaceState(null, '', url);
+                                }
+                            })
+                        })
+                        lastPage = null
                     }
-                });
-            }, 500); // Délai de 500 ms avan
-        }
-        else {
-            if (lastPage) {
-                var url = lastPage;
-                let searchTimeout;
 
-                clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(function () {
-                    $.ajax({
-                        url: url,
-                        type: 'GET',
-                        success: function (data) {
-                            $('#content').html($(data).find('#content').html());
-                            history.replaceState(null, '', url);
-                        }
-                    })
-                })
-                lastPage = null
-            }
+                }
 
+                if (letterCount > 0) {
+                    searchBarInput.classList.add('typing')
+                } else if (letterCount = 0 && searchBarInput.classList.contains('typing')) {
+                    searchBarInput.classList.remove('typing')
+                }
+            })
         }
-
-        if (letterCount > 0) {
-            searchBarInput.classList.add('typing')
-        } else if (letterCount = 0 && searchBarInput.classList.contains('typing')) {
-            searchBarInput.classList.remove('typing')
-        }
-    })
+    }
 }
 
 
@@ -1557,7 +1572,8 @@ $(document).ready(function () {
                 playerPauseAndResume();
                 playerNext();
                 playerPrevious();
-                showAndHideSearchPage()
+                showAndHideSearchPage();
+                searchTogglePhone();
             }
         });
     });
@@ -1579,7 +1595,8 @@ $(document).ready(function () {
     playerPrevious();
     playerRandom();
     playerLoop();
-    showAndHideSearchPage()
+    showAndHideSearchPage();
+    searchTogglePhone();
 });
 
 

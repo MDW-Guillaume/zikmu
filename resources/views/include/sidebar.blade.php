@@ -10,7 +10,7 @@
             <div class="search-bar">
                 <form action="/search" method="post" class="searchbar-form relative" id="searchBarForm">
                     {{ csrf_field() }}
-                    <input type="search" name="search" id="sidebarSearch"
+                    <input type="search" name="search" class="sidebarSearch"
                         placeholder="Artistes, titres, albums...">
                     <img src="{{ URL::to('/img/search.svg') }}" class="search-icon absolute" alt="">
                 </form>

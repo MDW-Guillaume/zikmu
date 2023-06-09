@@ -86,7 +86,7 @@ return [
     // ------
 
     // Menu logo. You can replace this with an <img> tag if you have a logo.
-    'project_logo'   => '<img width="140px" src="/img/logo.png">',
+    'project_logo'   => '<img width="140px" src="/img/logo-black.png">',
 
     // Show / hide breadcrumbs on admin panel pages.
     'breadcrumbs' => true,

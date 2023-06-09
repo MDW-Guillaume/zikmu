@@ -81,7 +81,26 @@
                 }
             }
 
+            @media screen and (max-width : 768px) {
+                text-align: center;
+                margin-left: 0;
 
+                p {
+                    margin: 5px 0 12px 0;
+                }
+
+                .artist-name {
+                    justify-content: center;
+                }
+
+                button {
+                    margin: auto;
+                }
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            flex-direction: column;
         }
     }
 
@@ -169,6 +188,11 @@
                         line-height: 16px;
                     }
                 }
+
+                @media screen and (max-width: 768px) {
+                    margin-right: 15px;
+                    margin-bottom: 15px;
+                }
             }
         }
     }
@@ -185,6 +209,11 @@
             line-height: 40px;
             text-transform: uppercase;
             margin-bottom: 40px;
+
+            @media screen and (max-width : 768px){
+                justify-content: center;
+                margin-top: 0;
+            }
         }
 
         .artists-list {
@@ -214,7 +243,19 @@
                         max-width: 100%;
 
                     }
+
+                    @media screen and (max-width:768px) {
+                        width: 100px;
+                        height: 100px;
+                    }
+
+                    @media screen and (max-width:576px) {
+                        width: 50px;
+                        height: 50px;
+                    }
+
                 }
+
 
                 .artist-name {
                     margin-top: 5px;
@@ -247,7 +288,30 @@
                         margin-right: 10px;
                     }
                 }
+
+                @media screen and (max-width:768px) {
+                    flex-direction: row;
+                    width: 100%;
+
+                    .artist-details {
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        margin-left: 15px;
+
+                        .artist-follow{
+                            text-align: start;
+                        }
+                    }
+                }
             }
         }
+        @media screen and (max-width: 768px) {
+            margin: 0;
+        }
+    }
+
+    @media screen and (max-width: 768px) {
+        margin: 0;
     }
 }

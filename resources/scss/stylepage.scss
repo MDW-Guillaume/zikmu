@@ -3,33 +3,38 @@
 
     h2 {
         text-transform: uppercase;
-        font-family   : 'Righteous';
-        font-style    : normal;
-        font-weight   : 400;
-        font-size     : 32px;
-        line-height   : 40px;
+        font-family: 'Righteous';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 32px;
+        line-height: 40px;
         text-transform: uppercase;
-        margin-bottom : 40px;
+        margin-bottom: 40px;
+
+        @media screen and (max-width: 768px) {
+            justify-content: center;
+            margin-top: 0;
+        }
     }
 
 
 
     .albums-list {
-        display       : flex;
+        display: flex;
         flex-direction: row;
-        overflow      : scroll;
+        overflow: scroll;
 
         .album-element {
-            display        : flex;
-            flex-direction : column;
+            display: flex;
+            flex-direction: column;
             justify-content: flex-start;
-            margin-right   : 30px;
-            margin-bottom  : 30px;
-            z-index        : 3;
+            margin-right: 30px;
+            margin-bottom: 30px;
+            z-index: 3;
 
             .album-cover {
-                width   : 180px;
-                height  : 180px;
+                width: 180px;
+                height: 180px;
                 position: relative;
 
                 a {
@@ -37,7 +42,7 @@
 
                     img {
                         max-width: 100%;
-                        height   : 100%;
+                        height: 100%;
                     }
                 }
 
@@ -58,62 +63,106 @@
 
 
             .album-details {
-                margin-top     : 5px;
-                display        : flex;
-                flex-direction : column;
+                margin-top: 5px;
+                display: flex;
+                flex-direction: column;
                 text-decoration: none;
-                color          : #FFFFFF;
+                color: #FFFFFF;
 
                 h3 {
-                    margin     : 0;
+                    margin: 0;
                     font-family: 'Roboto';
-                    font-style : normal;
+                    font-style: normal;
                     font-weight: 500;
-                    font-size  : 14px;
+                    font-size: 14px;
                     line-height: 16px;
-                    width      : fit-content;
+                    width: fit-content;
                 }
 
                 span {
                     font-family: 'Roboto';
-                    font-style : normal;
+                    font-style: normal;
                     font-weight: 300;
-                    font-size  : 14px;
+                    font-size: 14px;
                     line-height: 16px;
                 }
             }
+
+            @media screen and (max-width : 768px) {
+                width: calc(33% - 30px);
+            }
+
+            @media screen and (max-width : 620px) {
+                width: calc(50% - 30px);
+                .album-cover{
+                    width: 150px;
+                    height: 150px;
+                }
+            }
+        }
+
+        @media screen and (max-width : 768px) {
+            flex-wrap: wrap;
         }
     }
 
-    &.page-index{
-        margin : 60px 0 0 60px ;
+    &.page-index {
+        margin: 60px 0 0 60px;
+
         .styles-list {
-            flex-direction : row;
+            flex-direction: row;
             justify-content: flex-start;
-            flex-wrap      : wrap;
+            flex-wrap: wrap;
 
             .styles-element {
-                position        : relative;
-                width           : calc(25% - 30px);
-                height          : 102px;
+                position: relative;
+                width: calc(25% - 30px);
+                height: 102px;
                 background-image: url('/public/img/style-bg.png');
-                margin          : 0 12px 8px 0;
+                margin: 0 12px 8px 0;
                 color: white;
                 text-decoration: none;
 
                 h3 {
                     position: absolute;
-                    top     : 0;
-                    margin  : 5px;
+                    top: 0;
+                    margin: 5px;
 
-                    font-family   : 'Righteous';
-                    font-style    : normal;
-                    font-weight   : 400;
-                    font-size     : 12px;
-                    line-height   : 15px;
+                    font-family: 'Righteous';
+                    font-style: normal;
+                    font-weight: 400;
+                    font-size: 12px;
+                    line-height: 15px;
                     text-transform: uppercase;
                 }
+
             }
+
+            @media screen and (max-width: 1200px) {
+                .styles-element {
+                    width: calc(33% - 15px);
+                }
+
+                // justify-content: start;
+                // margin: 0 auto;
+            }
+
+            @media screen and (max-width: 768px) {
+                .styles-element {
+                    width: calc(50% - 15px);
+                }
+
+                justify-content: start;
+                margin: 0 auto;
+            }
+        }
+    }
+
+    @media screen and (max-width : 768px) {
+        margin: 0;
+
+        &.page-index {
+            margin: 0;
         }
     }
 }

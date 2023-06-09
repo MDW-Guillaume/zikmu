@@ -37,7 +37,6 @@ class AlbumController extends Controller
         foreach ($album_titles as $album_title) {
             $album_title->favorite = false;
             foreach ($favorites as $favorite) {
-                // dd($album_title->id, $favorite->song_id);
                 if ($album_title->id == $favorite->song_id) {
                     $album_title->favorite = true;
                 }
