@@ -28,6 +28,8 @@
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
+        <x-text-input type="hidden" name="creation" value="null" />
+
         <div class="d-flex flex-column connect-button center">
             <p class="register-checkbox"><input type="checkbox" name="newsletter"> <span>m’envoyer des suggestions</span>
             </p>
