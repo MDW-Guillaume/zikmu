@@ -157,7 +157,6 @@ class SongSeeder extends Seeder
             }
 
             foreach ($artist_content['albums'] as $album => $album_content) {
-
                 $current_album = Album::firstOrCreate(
                     [
                         'name' => $album,

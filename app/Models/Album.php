@@ -56,10 +56,9 @@ class Album extends Model
                     $filename = Str::slug(pathinfo($filename, PATHINFO_FILENAME)) . '.' . pathinfo($filename, PATHINFO_EXTENSION);
                     $query->cover->move($destinationPath, $filename);
                     $query->cover = $filename;
+                    $query->length = 0;
                 }
-
             }
-            $query->length = 0;
         });
 
         static::updating(function ($query) {
