@@ -22,7 +22,7 @@
     .albums-list {
         display: flex;
         flex-direction: row;
-        overflow: scroll;
+        overflow-x: scroll;
 
         .album-element {
             display: flex;
