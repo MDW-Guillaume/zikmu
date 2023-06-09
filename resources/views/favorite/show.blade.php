@@ -61,7 +61,7 @@
             $i = 1;
         @endphp
         @foreach ($songs as $song)
-            <form action="{{ route('song.uniqueplay') }}" method="post" class="favorite-unique-song-form"
+            <form action="" method="post" class="favorite-unique-song-form"
                 data-id="{{ $song->id }}">
                 @csrf
                 <div class="favorite-element">

@@ -392,8 +392,9 @@ let playerSongName = document.getElementById('playerInfoName');
 let playerArtistName = document.getElementById('playerInfoArtist');
 let playerAlbumName = document.getElementById('playerInfoAlbum');
 const bottomSidebar = document.querySelector('.bottom-sidebar');
-let pauseBtn = document.getElementById('playerPause')
-let resumeBtn = document.getElementById('playerPlay')
+let mobileMinPlayer = document.getElementById('mobileMinPlayer')
+let pauseBtn = document.querySelectorAll('.playerPause')
+let resumeBtn = document.querySelectorAll('.playerPlay')
 let randomBtn = document.getElementById('randomBtn')
 let randomPlaylistAction = document.getElementById('randomPlaylistAction')
 let lastPage;
@@ -443,19 +444,19 @@ function showSongQueue(status = null) {
                         }
                     })
                 } else {
-
                     let playerPosition = player.getAttribute('position')
                     let request = response.request
+                    console.log(request)
 
                     // Modification de l'affichage du titre en cours de lecture
                     let coverSongPlayed = document.getElementById('coverSongPlayed')
                     let NameSongPlayed = document.getElementById('NameSongPlayed')
                     let NameAlbumPlayed = document.getElementById('NameAlbumPlayed')
                     let NameArtistPlayed = document.getElementById('NameArtistPlayed')
-                    NameAlbumPlayed.innerHTML = request[0].album_name
-                    NameArtistPlayed.innerHTML = request[0].artist_name
-                    NameSongPlayed.innerHTML = request[0].song_name
-                    coverSongPlayed.src = request[0].cover_url;
+                    NameAlbumPlayed.innerHTML = request[playerPosition - 1].album_name
+                    NameArtistPlayed.innerHTML = request[playerPosition - 1].artist_name
+                    NameSongPlayed.innerHTML = request[playerPosition - 1].song_name
+                    coverSongPlayed.src = request[playerPosition - 1].cover_url;
 
                     // Modifications du nombre de titres et du temps total de la file d'attente
                     let songQueueTitles = document.getElementById('songQueueTitles')
@@ -500,7 +501,7 @@ function showSongQueue(status = null) {
 
                     } else {
                         // Boucle pour générer la liste
-                        for (let i = 1; i <= request.length - 1; i++) {
+                        for (let i = 0; i <= request.length - 1; i++) {
 
                             // Création d'un formulaire avec les informations de chaque titre
                             let formContainer = document.createElement('div')
@@ -526,7 +527,8 @@ function showSongQueue(status = null) {
                             let titlePositionSpan = document.createElement('span');
                             titlePositionSpan.classList.add('title-position-span');
                             titlePositionSpan.style.color = 'white';
-                            titlePositionSpan.innerText = parseInt(playerPosition) + i;
+                            // titlePositionSpan.innerText = parseInt(playerPosition) + i;
+                            titlePositionSpan.innerText = request[i].song_position;
                             titlePosition.appendChild(titlePositionSpan);
                             titleElement.appendChild(titlePosition);
 
@@ -684,6 +686,8 @@ function randomFromWaitingPage() {
 }
 
 function playSentSong(url, position, informations) {
+    mobileMinPlayer.classList.add('active')
+
     if (bottomSidebar.classList.contains('reduce')) {
         bottomSidebar.classList.remove('reduce')
     }
@@ -761,12 +765,29 @@ function playNextQueuedSong() {
                         player.setAttribute('position', 0)
                         playNextQueuedSong();
                     } else if (!player.hasAttribute('replay')) {
-                        player.addEventListener('ended', function () {
-                            if (player.paused) {
-                                pauseBtn.style.display = 'none'
-                                resumeBtn.style.display = 'block';
-                            }
-                        })
+                        if(player.duration == player.currentTime){
+
+                            pauseBtn.forEach(pause => {
+                                pause.style.display = 'none'
+                            })
+                            resumeBtn.forEach(resume => {
+                                resume.style.display = 'block';
+                            })
+                            mobileMinPlayer.classList.remove('active')
+                        }
+
+
+                        // player.addEventListener('ended', function () {
+                        //     if (player.duration == player.currentTime) {
+                        //         console.log('je termine')
+                        //     } else {
+                        //         console.log('tac')
+                        //     }
+                        //     if (player.paused) {
+                        //         pauseBtn.style.display = 'none'
+                        //         resumeBtn.style.display = 'block';
+                        //     }
+                        // })
                     }
                 }
             }
@@ -1263,14 +1284,18 @@ function playerEvent() {
     let reducePlayerIcon = document.getElementById('reducePlayer');
     let showPlayerIcon = document.getElementById('showPlayer');
     let sidebarMenu = document.getElementById('sidebarMenu');
-    let pauseBtn = document.getElementById('playerPause')
-    let resumeBtn = document.getElementById('playerPlay')
+    // let pauseBtn = document.getElementsByClassName('playerPause')
+    // let resumeBtn = document.getElementById('playerPlay')
     // Créer une instance de MutationObserver avec une fonction de rappel
     const observer = new MutationObserver((mutationsList) => {
         for (const mutation of mutationsList) {
             if (mutation.type === 'attributes' && mutation.attributeName === 'src' && player.getAttribute('src')) {
-                pauseBtn.style.display = 'block'
-                resumeBtn.style.display = 'none'
+                pauseBtn.forEach(pause => {
+                    pause.style.display = 'block'
+                });
+                resumeBtn.forEach(resume => {
+                    resume.style.display = 'none'
+                });
 
                 bottomSidebar.classList.add('active')
                 sidebarMenu.classList.add('hide')
@@ -1344,17 +1369,26 @@ function playerEvent() {
     observer.observe(player, { attributes: true });
 }
 function playerPauseAndResume() {
+    console.log(pauseBtn)
+    pauseBtn.forEach(pause => {
 
-    pauseBtn.addEventListener('click', function () {
-        player.pause()
-        pauseBtn.style.display = 'none'
-        resumeBtn.style.display = 'block'
+        pause.addEventListener('click', function () {
+            player.pause()
+            pause.style.display = 'none'
+            resumeBtn.forEach(resume => {
+                resume.style.display = 'block'
+            })
+        })
     })
 
-    resumeBtn.addEventListener('click', function () {
-        player.play()
-        pauseBtn.style.display = 'block'
-        resumeBtn.style.display = 'none'
+    resumeBtn.forEach(resume => {
+        resume.addEventListener('click', function () {
+            player.play()
+            pauseBtn.forEach(pause => {
+                pause.style.display = 'block'
+                resume.style.display = 'none'
+            })
+        })
     })
 }
 function playerNext() {
@@ -1466,7 +1500,7 @@ function searchTogglePhone() {
     let searchBarForm = document.getElementById('searchbarMobileContainer')
     let searchBarInput = document.getElementsByClassName('mobile-sidebar-search')[0]
 
-    document.addEventListener('click', function(e){
+    document.addEventListener('click', function (e) {
         console.log(e.target);
         if (e.target !== searchMobile && e.target !== searchBarInput) {
             (searchBarForm.classList.contains('show')) ? searchBarForm.classList.remove('show') : null;

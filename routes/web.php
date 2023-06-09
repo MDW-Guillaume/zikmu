@@ -72,7 +72,7 @@ Route::middleware('auth')->group(function () {
     // Route::get('/test2', [TestController::class, 'show'])->name('test.show');
 
     Route::post('/play-song', [SongController::class, 'listenAlbum'])->name('song.play');
-    Route::post('/play-unique-song', [SongController::class, 'listenSong'])->name('song.uniqueplay');
+    // Route::post('/play-unique-song', [SongController::class, 'listenSong'])->name('song.uniqueplay');
     Route::post('/play-album', [SongController::class, 'listenAlbumFormCover'])->name('play.album');
     Route::post('/play-form-favorite', [SongController::class, 'listenUniqueFavorite'])->name('play.songfavorite');
 

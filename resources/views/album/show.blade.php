@@ -64,7 +64,7 @@
             <div class="titles-list">
                 @foreach ($titles as $title)
                     <div class="title-list-element">
-                        <form action="{{ route('song.uniqueplay') }}" method="post" class="unique-song-form">
+                        <form action="" method="post" class="unique-song-form">
                             @csrf
                             <div class="title-element">
                                 <div class="title-position"><span class="title-position-span"
