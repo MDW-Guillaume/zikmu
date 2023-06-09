@@ -34,22 +34,28 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         $request->validate([
             'firstname' => ['string'],
             'lastname' => ['string'],
             'username' => ['string'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', Rules\Password::defaults()],
+            // 'creation' => ['boolean']
         ]);
 
         $username = 'user' . mt_rand(100000, 999999);
         while (User::where('username', $username)->exists()) {
             $username = 'user' . mt_rand(100000, 999999);
         }
-
-        // dd($username);
-
+        $creation = '';
+        if ($request->creation != false) {
+            $creation = true;
+        } else {
+            $creation = false;
+        }
         $user = User::create([
+            'creation' => $creation,
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
             'username' => $username,

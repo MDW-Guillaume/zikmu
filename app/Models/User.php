@@ -28,6 +28,7 @@ class User extends Authenticatable
         'firstname',
         'lastname',
         'is_admin',
+        'creation',
         'created_at',
         'updated_at',
     ];
@@ -41,9 +42,10 @@ class User extends Authenticatable
             $email = $user->email;
 
             // Génération d'un mot de passe aléatoire
-
+            // Si la requete vient du seeder
             if (isset($user->seeder) && $user->seeder) {
                 $password = $user->password;
+                // dd($password);
                 // Envoi de l'e-mail avec les informations d'identification
                 Mail::send('emails.user_created', ['email' => $email, 'password' => $password], function ($message) use ($user) {
                     $message->to($user->email)
@@ -55,6 +57,20 @@ class User extends Authenticatable
                 });
                 $user->username = 'user' . rand(100000, 999999);
                 unset($user->seeder);
+            } elseif (isset($user->creation) && $user->creation) {
+                $password = $user->password;
+                // dd($password);
+                // Envoi de l'e-mail avec les informations d'identification
+                Mail::send('emails.user_created', ['email' => $email, 'password' => $password], function ($message) use ($user) {
+                    $message->to($user->email)
+                        ->subject('Compte utilisateur créé')
+                        ->attach('img/logo.png', [
+                            'as' => 'logo.png',
+                            'mime' => 'image/png',
+                        ]);
+                });
+                $user->username = 'user' . rand(100000, 999999);
+                unset($user->creation);
             } else {
                 $password = Str::random(8);
                 //Envoi de l'e-mail avec les informations d'identification
