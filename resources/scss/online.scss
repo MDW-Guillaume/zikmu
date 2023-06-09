@@ -58,11 +58,14 @@ body {
                 .searchbar {
                     overflow: hidden;
 
-                    #searchBarForm{
+                    .searchbar-form {
                         transform: translateY(-50px);
                         transition: transform 0.3s ease-in;
 
-                        &.show {
+                    }
+
+                    &.show {
+                        .searchbar-form {
                             transform: translateY(0);
                             transition: transform 0.3s ease-in;
                         }

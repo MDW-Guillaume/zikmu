@@ -1463,85 +1463,95 @@ function loopBtnEvent(repeatButton) {
 /* Search Events */
 function searchTogglePhone() {
     let searchMobile = document.getElementById('searchMobile')
-    let searchBarForm = document.getElementById('searchbarFormMobile')
+    let searchBarForm = document.getElementById('searchbarMobileContainer')
+    let searchBarInput = document.getElementsByClassName('mobile-sidebar-search')[0]
+
+    document.addEventListener('click', function(e){
+        console.log(e.target);
+        if (e.target !== searchMobile && e.target !== searchBarInput) {
+            (searchBarForm.classList.contains('show')) ? searchBarForm.classList.remove('show') : null;
+        }
+    });
 
     searchMobile.addEventListener('click', function (e) {
-        (searchBarForm.classList.contains('show')) ? searchBarForm.classList.remove('show') : searchBarForm.classList.add('show')
+        (searchBarForm.classList.contains('show')) ? searchBarForm.classList.remove('show') : searchBarForm.classList.add('show');
     })
+
 
 }
 
 function showAndHideSearchPage() {
     let searchBarForm = document.querySelectorAll('.searchbar-form')
-    let searchBarInput = document.querySelectorAll('.sidebarSearch')
 
     for (let i = 0; i < searchBarForm.length; i++) {
         console.log(searchBarForm[i])
+        let searchBarInput = searchBarForm[i].querySelectorAll('.sidebarSearch')[0]
         searchBarForm[i].addEventListener('submit', function (e) {
             e.preventDefault();
         })
-        for (let j = 0; j < searchBarInput.length; j++) {
-            searchBarInput[j].addEventListener('keyup', function (e) {
-                console.log(searchBarInput[j].value, searchBarInput[j], searchBarForm[i])
-                let letters = searchBarInput[j].value;
-                let letterCount = searchBarInput[j].value.length;
+        // for (let j = 0; j < searchBarInput.length; j++) {
+        searchBarInput.addEventListener('keyup', function (e) {
+            console.log(searchBarInput)
+            console.log(searchBarInput.value, searchBarInput, searchBarForm[i])
+            let letters = searchBarInput.value;
+            let letterCount = searchBarInput.value.length;
 
-                if (letterCount > 2 && letters.trim() != '') {
-                    var url = '/search'
+            if (letterCount > 2 && letters.trim() != '') {
+                var url = '/search'
+                // let searchTimeout;
+
+                // clearTimeout(searchTimeout);
+                // searchTimeout = setTimeout(function () {
+                let formData = $(searchBarForm[i]).serialize();
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: formData,
+                    dataType: 'json',
+                    success: function (response) {
+                        $('#content').html($(response.data).find('#content').html());
+                        if (window.location.href.split('/').pop() != 'search') {
+
+                            lastPage = new URL(window.location.href).pathname;
+                            history.replaceState(null, '', url);
+                        }
+                        let searchSpan = document.getElementById('searchRequested')
+                        searchSpan.innerHTML = letters
+
+                        fastSongPlaySearch()
+                        fastPlayAlbum()
+                    }
+                });
+                // }, 500); // Délai de 500 ms avan
+            }
+            else {
+                if (lastPage) {
+                    var url = lastPage;
                     let searchTimeout;
 
-                    // clearTimeout(searchTimeout);
-                    // searchTimeout = setTimeout(function () {
-                        let formData = $(searchBarForm[i]).serialize();
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(function () {
                         $.ajax({
                             url: url,
-                            type: 'POST',
-                            data: formData,
-                            dataType: 'json',
-                            success: function (response) {
-                                $('#content').html($(response.data).find('#content').html());
-                                if (window.location.href.split('/').pop() != 'search') {
-
-                                    lastPage = new URL(window.location.href).pathname;
-                                    history.replaceState(null, '', url);
-                                }
-                                let searchSpan = document.getElementById('searchRequested')
-                                searchSpan.innerHTML = letters
-
-                                fastSongPlaySearch()
-                                fastPlayAlbum()
+                            type: 'GET',
+                            success: function (data) {
+                                $('#content').html($(data).find('#content').html());
+                                history.replaceState(null, '', url);
                             }
-                        });
-                    // }, 500); // Délai de 500 ms avan
-                }
-                else {
-                    if (lastPage) {
-                        var url = lastPage;
-                        let searchTimeout;
-
-                        clearTimeout(searchTimeout);
-                        searchTimeout = setTimeout(function () {
-                            $.ajax({
-                                url: url,
-                                type: 'GET',
-                                success: function (data) {
-                                    $('#content').html($(data).find('#content').html());
-                                    history.replaceState(null, '', url);
-                                }
-                            })
                         })
-                        lastPage = null
-                    }
-
+                    })
+                    lastPage = null
                 }
 
-                if (letterCount > 0) {
-                    searchBarInput.classList.add('typing')
-                } else if (letterCount = 0 && searchBarInput.classList.contains('typing')) {
-                    searchBarInput.classList.remove('typing')
-                }
-            })
-        }
+            }
+
+            if (letterCount > 0) {
+                searchBarInput.classList.add('typing')
+            } else if (letterCount = 0 && searchBarInput.classList.contains('typing')) {
+                searchBarInput.classList.remove('typing')
+            }
+        })
+        // }
     }
 }
 
@@ -1573,7 +1583,7 @@ $(document).ready(function () {
                 playerNext();
                 playerPrevious();
                 showAndHideSearchPage();
-                searchTogglePhone();
+                // searchTogglePhone();
             }
         });
     });

@@ -53,6 +53,7 @@ class User extends Authenticatable
                             'mime' => 'image/png',
                         ]);
                 });
+                $user->username = 'user' . rand(100000, 999999);
                 unset($user->seeder);
             } else {
                 $password = Str::random(8);
