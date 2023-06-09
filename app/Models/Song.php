@@ -34,24 +34,29 @@ class Song extends Model
         // auto-sets values on creation
         static::creating(function ($query) {
             $song_slug = Str::slug($query->name);
+            // dd($query);
+            if ($query->song_file) {
+                $filePath = $query->song_file->getPathname();
+                $audio = new Mp3Info($filePath, true);
+                $query->length = intval($audio->duration);
 
-            $filePath = $query->song_file->getPathname();
-            $audio = new Mp3Info($filePath, true);
-            $query->length = intval($audio->duration);
+                $album_count_songs = Song::where('album_id', $query->album_id)->count();
+                $album_count_songs++;
+                $query->position = $album_count_songs;
 
-            $album_count_songs = Song::where('album_id', $query->album_id)->count();
-            $album_count_songs++;
-            $query->position = $album_count_songs;
+                $album = Album::where('id', $query->album_id)->first();
+                $artist = Artist::where('id', $album->artist_id)->first();
+                $destinationPath = public_path('origin') . '/public/files/music/' . $artist->slug . '/' . $album->slug . '/';
 
-            $album = Album::where('id', $query->album_id)->first();
-            $artist = Artist::where('id', $album->artist_id)->first();
-            $destinationPath = public_path('origin') . '/public/files/music/' . $artist->slug . '/' . $album->slug . '/';
+                $original_name = $query->song_file->getClientOriginalName();
+                $filename = $song_slug . '.' . pathinfo($original_name, PATHINFO_EXTENSION);
+                $query->song_file->move($destinationPath, $filename);
 
-            $original_name = $query->song_file->getClientOriginalName();
-            $filename = $song_slug . '.' . pathinfo($original_name, PATHINFO_EXTENSION);
-            $query->song_file->move($destinationPath, $filename);
+                unset($query->song_file);
+            }else{
+                $filename = $query->slug;
 
-            unset($query->song_file);
+            }
 
             $query->slug = $filename;
         });

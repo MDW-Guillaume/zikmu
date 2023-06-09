@@ -50,12 +50,14 @@ class Album extends Model
                 $artist = Artist::where('id', $query->artist_id)->first();
 
                 $destinationPath = public_path('origin') . '/public/files/music/' . $artist->slug . '/' . $query->slug;
-                $filename = $query->cover->getClientOriginalName();
+                // dd($query->cover);
+                if(gettype($query->cover) != 'string'){
+                    $filename = $query->cover->getClientOriginalName();
+                    $filename = Str::slug(pathinfo($filename, PATHINFO_FILENAME)) . '.' . pathinfo($filename, PATHINFO_EXTENSION);
+                    $query->cover->move($destinationPath, $filename);
+                    $query->cover = $filename;
+                }
 
-                $filename = Str::slug(pathinfo($filename, PATHINFO_FILENAME)) . '.' . pathinfo($filename, PATHINFO_EXTENSION);
-                $query->cover->move($destinationPath, $filename);
-
-                $query->cover = $filename;
             }
             $query->length = 0;
         });

@@ -58,16 +58,19 @@ class Artist extends Model
 
             $oldArtist = Artist::where('id', $query->id)->first();
             $destinationPath = public_path('origin') . '/public/files/music/' . $oldArtist->slug . '/';
-
+            // dd($query);
             if ($query->cover) {
 
                 // Supprimer l'ancienne couverture
                 File::delete($destinationPath . $oldArtist->cover);
-
-                // Déplacer le fichier vers le nouvel emplacement
-                $filename = $query->cover->getClientOriginalName();
-                $filename = Str::slug(pathinfo($filename, PATHINFO_FILENAME)) . '.' . pathinfo($filename, PATHINFO_EXTENSION);
-                $query->cover->move($destinationPath, $filename);
+                if (gettype($query->cover) != 'string') {
+                    // Déplacer le fichier vers le nouvel emplacement
+                    $filename = $query->cover->getClientOriginalName();
+                    $filename = Str::slug(pathinfo($filename, PATHINFO_FILENAME)) . '.' . pathinfo($filename, PATHINFO_EXTENSION);
+                    $query->cover->move($destinationPath, $filename);
+                } else {
+                    $filename = $query->cover;
+                }
 
                 // Mettre à jour la valeur de la colonne 'cover'
                 $query->cover = $filename;
