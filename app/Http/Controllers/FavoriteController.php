@@ -25,7 +25,6 @@ class FavoriteController extends Controller
             $user_favorite_array[$i] = $song_table;
 
             $album = DB::table('albums')->where('id', $song_table->album_id)->first();
-            // dd($album);
 
             $user_favorite_array[$i]->album_name = $album->name;
             $user_favorite_array[$i]->album_slug = $album->slug;
@@ -52,8 +51,6 @@ class FavoriteController extends Controller
         $seconds = $length % 60; // Calcul du nombre de secondes restantes
 
         $show_length = $minutes . " min " . $seconds . " sec"; // Stockage dans la variable $show_length
-
-        // dd($user_favorite_array);
 
         return view('favorite.show')->with([
             'user' => $user,

@@ -20,7 +20,7 @@ class ArtistRandFollowSeeder extends Seeder
 
         foreach ($all_artists as $artist) {
             $rand_follow = rand(0, 99999);
-            // dd($rand_follow);
+
             DB::table('artists')->where('id', $artist->id)->update(['follow' => $rand_follow]);
         }
 

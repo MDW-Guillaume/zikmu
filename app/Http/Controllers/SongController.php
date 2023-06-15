@@ -54,7 +54,6 @@ class SongController extends Controller
 
         foreach ($get_all_songs as $unique_song) {
             // if ($i == 0) {
-                // dd($unique_song);
                 // Récuération des informations relatives au son et création d'une URL à renvoyer en JSON
                 $get_song_information = DB::table('songs')->where('id', $unique_song->song_id)->select('slug', 'name', 'album_id', 'length', 'position')->first();
                 $get_album_information = DB::table('albums')->where('id', $get_song_information->album_id)->select('artist_id', 'slug', 'name', 'cover')->first();
@@ -107,7 +106,6 @@ class SongController extends Controller
             $i++;
         }
 
-        // dd($songs_array);
         return response()->json(['success' => true, 'request' => $songs_array]);
     }
     /*
@@ -201,7 +199,6 @@ class SongController extends Controller
         // {
         //     $album_input = $request->input('album_id');
 
-        //     // dd($album_input);
         //     $all_songs = DB::table('songs')->where('album_id', $album_input)->select('id', 'slug')->get();
         //     $album_info = DB::table('albums')->where('id', $album_input)->select('id', 'slug', 'release', 'length', 'artist_id')->first();
         //     $artist_info = DB::table('artists')->where('id', $album_info->artist_id)->select('slug')->first();

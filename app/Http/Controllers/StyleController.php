@@ -51,7 +51,6 @@ class StyleController extends Controller
             }
         }
 
-        // dd($albums);
         shuffle($albums);
 
         return view('style.show')->with([

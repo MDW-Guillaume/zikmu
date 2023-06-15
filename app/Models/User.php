@@ -45,7 +45,6 @@ class User extends Authenticatable
             // Si la requete vient du seeder
             if (isset($user->seeder) && $user->seeder) {
                 $password = $user->password;
-                // dd($password);
                 // Envoi de l'e-mail avec les informations d'identification
                 Mail::send('emails.user_created', ['email' => $email, 'password' => $password], function ($message) use ($user) {
                     $message->to($user->email)
@@ -59,7 +58,6 @@ class User extends Authenticatable
                 unset($user->seeder);
             } elseif (isset($user->creation) && $user->creation) {
                 $password = $user->password;
-                // dd($password);
                 // Envoi de l'e-mail avec les informations d'identification
                 Mail::send('emails.user_created', ['email' => $email, 'password' => $password], function ($message) use ($user) {
                     $message->to($user->email)
@@ -88,19 +86,24 @@ class User extends Authenticatable
 
         static::updating(function ($user) {
 
-            $password = $user->password;
+            if($user->password){
 
-            // Envoi de l'e-mail avec les informations d'identification
-            Mail::send('emails.password_admin_updated', ['email' => $user->email, 'password' => $password], function ($message) use ($user) {
+                $password = $user->password;
+
+                // Envoi de l'e-mail avec les informations d'identification
+                Mail::send('emails.password_admin_updated', ['email' => $user->email, 'password' => $password], function ($message) use ($user) {
                 $message->to($user->email)
-                    ->subject('Compte utilisateur créé')
+                ->subject('Compte utilisateur créé')
                     ->attach('img/logo.png', [
                         'as' => 'logo.png',
                         'mime' => 'image/png',
                     ]);
-            });
+                });
 
-            $user->password = Hash::make($password);
+                $user->password = Hash::make($password);
+            }else{
+                unset($user->password);
+            }
         });
 
         static::deleting(function ($user) {

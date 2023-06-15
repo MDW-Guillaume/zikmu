@@ -1,12 +1,15 @@
 footer {
     width           : calc(100% - 270px);
-    height          : 70px;
     background-color: #5D3194;
     position        : fixed;
     bottom          : 0;
     left            : 0;
     margin-left     : 270px;
     z-index         : 5;
+
+    .mobile-player {
+        display: none;
+    }
 
     .footer-container {
         display        : flex;
@@ -43,5 +46,13 @@ footer {
     @media screen and (max-width : 768px){
         width: 100%;
         margin: 0;
+
+        .mobile-player{
+            display : none;
+            &.active{
+                display: flex;
+                flex-direction: row;
+            }
+        }
     }
 }

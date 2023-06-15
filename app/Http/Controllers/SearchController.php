@@ -111,8 +111,6 @@ class SearchController extends Controller
             return response()->json(['success' => true, 'data' => $view]);
         } else {
             var_dump('je rentre pas');
-        } // return response()->json(['data' => view('search.index', compact('search_array'))]);
-        // return response()->json(['data' => view('search.index'), 'search_array' => $search_array]);
-        // dd($search_array);
+        }
     }
 }

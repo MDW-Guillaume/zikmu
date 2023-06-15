@@ -14,7 +14,7 @@
             <form action="/search" method="post" class="searchbar-form relative" id="searchBarForm">
                 {{ csrf_field() }}
                 <input type="search" name="search" class="sidebarSearch mobile-sidebar-search" placeholder="Artistes, titres, albums...">
-                <img src="{{ URL::to('/img/search.svg') }}" class="search-icon absolute" alt="">
+                <img src="{{ URL::to('/img/search.svg') }}" class="search-icon absolute" id="searchIconMobile" alt="">
             </form>
         </div>
     </div>

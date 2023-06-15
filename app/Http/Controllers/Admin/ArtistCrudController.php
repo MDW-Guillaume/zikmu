@@ -49,7 +49,6 @@ class ArtistCrudController extends CrudController
             'orderable' => true,
             'escaped'   => false,
             'function'  => function($entry) {
-                // dd($entry); die;
                 $style = \App\Models\Style::find($entry->style_id);
                 return ($entry->style_id) ? '<a href="' . backpack_url('style', $entry->style_id) . '/show">' . $style->name. '</a>' : '<small>N/A</small>';
             },

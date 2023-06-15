@@ -34,7 +34,6 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
         $request->validate([
             'firstname' => ['string'],
             'lastname' => ['string'],

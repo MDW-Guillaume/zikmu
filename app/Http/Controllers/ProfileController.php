@@ -76,12 +76,6 @@ class ProfileController extends Controller
 
         $request->user()->fill($request->validated());
 
-        // dd($request);
-
-        // if ($request->user()->isDirty('email')) {
-        //     $request->user()->email_verified_at = null;
-        // }
-
         $request->user()->save();
 
         return Redirect::route('profile.show')->with('status', 'profile-updated');

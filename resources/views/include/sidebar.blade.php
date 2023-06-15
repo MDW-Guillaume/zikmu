@@ -12,7 +12,7 @@
                     {{ csrf_field() }}
                     <input type="search" name="search" class="sidebarSearch"
                         placeholder="Artistes, titres, albums...">
-                    <img src="{{ URL::to('/img/search.svg') }}" class="search-icon absolute" alt="">
+                    <img src="{{ URL::to('/img/search.svg') }}" class="search-icon absolute" id="searchIcon" alt="">
                 </form>
             </div>
         </div>
@@ -42,12 +42,12 @@
         <audio id="audioplayer" controls></audio>
         <div class="music-player">
             <div class="music-player-cover-container">
-                <img src="" class="music-player-cover-image" id="coverSong" alt="">
+                <img src="" class="music-player-cover-image coverSong" id="coverSong" alt="">
                 <img src="{{ URL::to('/img') }}/arrow-down.png" alt="" id="reducePlayer">
             </div>
 
             <div class="music-player-command-container c-white">
-                <img src="{{ URL::to('/img') }}/arrow-up.png" alt="" id="showPlayer">
+                <img src="{{ URL::to('/img') }}/arrow-up.png" alt="" class="showPlayer" id="showPlayer">
                 <div class="music-player-command-slide">
                     <div class="music-player-command-slide-time">
                         <div class="music-player-command-slide-time-direct">
@@ -62,12 +62,12 @@
                     </div>
                 </div>
                 <div class="music-player-command-title">
-                    <span class="music-player-command-title-song" id="playerInfoName">Space Oddity (2015
+                    <span class="music-player-command-title-song playerInfoName" id="playerInfoName">Space Oddity (2015
                         Remaster){{-- Variable song.name --}}</span><br>
-                    <span class="music-player-command-title-album"
+                    <span class="music-player-command-title-album playerInfoAlbum"
                         id="playerInfoAlbum">ChangesOneBowie{{-- Variable album.name --}}</span>
                     <span class="music-player-command-title-separator">• </span>
-                    <span class="music-player-command-title-artist" id="playerInfoArtist">David
+                    <span class="music-player-command-title-artist playerInfoArtist" id="playerInfoArtist">David
                         Bowie{{-- Variable artist.name --}}</span>
                 </div>
                 <div class="music-player-command-controllers">
@@ -77,11 +77,11 @@
                         <img src="{{ URL::to('/img/repeat.svg') }}" class="repeat-icon" id="repeat" data-status="initial" alt="">
                     </div>
                     <div class="music-player-command-controllers-player">
-                        <img src="{{ URL::to('/img/previous.svg') }}" class="repeat-icon" id="playerPrevious"
+                        <img src="{{ URL::to('/img/previous.svg') }}" class="repeat-icon playerPrevious" id="playerPrevious"
                             alt="">
-                        <img src="{{ URL::to('/img/pause.svg') }}" class="repeat-icon" id="playerPause" alt="">
-                        <img src="{{ URL::to('/img/play.svg') }}" class="repeat-icon" id="playerPlay" alt="">
-                        <img src="{{ URL::to('/img/next.svg') }}" class="repeat-icon" id="playerNext" alt="">
+                        <img src="{{ URL::to('/img/pause.svg') }}" class="repeat-icon playerPause" id="playerPause" alt="">
+                        <img src="{{ URL::to('/img/play.svg') }}" class="repeat-icon playerPlay" id="playerPlay" alt="">
+                        <img src="{{ URL::to('/img/next.svg') }}" class="repeat-icon playerNext" id="playerNext" alt="">
                     </div>
                     <div class="music-player-command-controllers-randomizer">
                         <img src="{{ URL::to('/img/randomizer.svg') }}" class="repeat-icon" id="randomBtn"

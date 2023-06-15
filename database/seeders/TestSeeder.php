@@ -17,7 +17,6 @@ class TestSeeder extends Seeder
     {
         if(!file_exists(storage_path() . '/app/files/artists')){
             File::makeDirectory(storage_path() . '/app/files/artistes/');
-            dd(!file_exists(storage_path() . '/app/files/artistes/'));
         }
     }
 }

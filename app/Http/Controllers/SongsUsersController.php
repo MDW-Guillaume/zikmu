@@ -10,7 +10,6 @@ class SongsUsersController extends Controller
 {
     public function store(Request $request){
         $id_song = $request->input('title') ;
-        // dd(Auth::User()->id);
 
         $song_search = DB::table('songs_users')->where(['user_id' => Auth::User()->id, 'song_id' => $id_song])->get();
 
@@ -21,8 +20,6 @@ class SongsUsersController extends Controller
             $song_insert = DB::table('songs_users')->insert(['user_id' => Auth::User()->id, 'song_id' => $id_song]);
             $action = 'add';
         }
-
-        // dd($song_search);
 
         return response()->json(['success' => true, 'action' => $action]);
 

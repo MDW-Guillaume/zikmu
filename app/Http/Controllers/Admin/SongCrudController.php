@@ -50,7 +50,6 @@ class SongCrudController extends CrudController
             'orderable' => true,
             'escaped'   => false,
             'function'  => function ($entry) {
-                // dd($entry); die;
                 $album = \App\Models\Album::find($entry->album_id);
                 return ($entry->album_id) ? '<a href="' . backpack_url('album', $entry->album_id) . '/show">' . $album->name . '</a>' : '<small>N/A</small>';
             },

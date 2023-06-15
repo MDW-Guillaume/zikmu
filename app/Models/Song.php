@@ -34,7 +34,6 @@ class Song extends Model
         // auto-sets values on creation
         static::creating(function ($query) {
             $song_slug = Str::slug($query->name);
-            // dd($query);
             if ($query->song_file) {
                 $filePath = $query->song_file->getPathname();
                 $audio = new Mp3Info($filePath, true);

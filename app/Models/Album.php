@@ -50,7 +50,6 @@ class Album extends Model
                 $artist = Artist::where('id', $query->artist_id)->first();
 
                 $destinationPath = public_path('origin') . '/public/files/music/' . $artist->slug . '/' . $query->slug;
-                // dd($query->cover);
                 if(gettype($query->cover) != 'string'){
                     $filename = $query->cover->getClientOriginalName();
                     $filename = Str::slug(pathinfo($filename, PATHINFO_FILENAME)) . '.' . pathinfo($filename, PATHINFO_EXTENSION);
@@ -67,7 +66,6 @@ class Album extends Model
             $album = Album::where('id', $query->id)->first();
             $artist = Artist::where('id', $album->artist_id)->first();
             $destinationPath = public_path('origin') . '/public/files/music/' . $artist->slug . '/' . $album->slug . '/';
-            // dd();
 
             // Vérification si la cover est modifiée
             if ($query->cover) {

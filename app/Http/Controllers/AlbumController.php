@@ -19,7 +19,6 @@ class AlbumController extends Controller
         $album = DB::table('albums')->where('slug', $slug)->first();
         $artist = DB::table('artists')->select('name', 'slug', 'style_id')->where('id', $album->artist_id)->first();
         $style = DB::table('styles')->select('name', 'slug')->where('id', $artist->style_id)->first();
-        // dd($album, $titles, $artist, $style);
         if ($album->length > 60) {
             $length = intdiv($album->length, 60) . 'h ' . ($album->length % 60) . 'min';
         } else {
@@ -59,12 +58,6 @@ class AlbumController extends Controller
             $album->cover = 'undefined.jpg';
         }
 
-
-
-        // dd($artist, $album_titles, $style);
-        // die;
-
-        // dd($album_titles, $favorites);
         return view('album.show', [
             'album' => $album,
             'titles' => $album_titles,

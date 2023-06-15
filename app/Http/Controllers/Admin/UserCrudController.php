@@ -86,6 +86,11 @@ class UserCrudController extends CrudController
             'label' => 'Définir en tant qu\'administrateur ?',
             'type' => 'checkbox',
         ]);
+        // CRUD::addField([
+        //     'name' => 'creation',
+        //     'label' => '',
+        //     'type' => 'hidden',
+        // ]);
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:

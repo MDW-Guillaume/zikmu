@@ -58,7 +58,7 @@ class Artist extends Model
 
             $oldArtist = Artist::where('id', $query->id)->first();
             $destinationPath = public_path('origin') . '/public/files/music/' . $oldArtist->slug . '/';
-            // dd($query);
+
             if ($query->cover) {
 
                 // Supprimer l'ancienne couverture

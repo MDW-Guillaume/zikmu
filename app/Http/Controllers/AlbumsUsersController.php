@@ -32,7 +32,6 @@ class AlbumsUsersController extends Controller
                 $my_user_favorite_albums[$i] = $album_db;
                 $i++;
             }
-            // dd($my_user_favorite_albums);
 
         return view('album.myalbums')->with([
             'albums' => $my_user_favorite_albums

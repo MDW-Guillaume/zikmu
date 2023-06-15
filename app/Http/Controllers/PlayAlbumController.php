@@ -16,10 +16,11 @@ class PlayAlbumController extends Controller
 
         $position = $request->position;
 
-        if($request->status == 'random'){
+
+        if ($request->status == 'random') {
             // Récupération du son en fontion de la position de la file d'attente
             $song_position_id = DB::table('songs_queues')->where(['user_id' => $user_id->id, 'random_position' => $position])->select('song_id')->first();
-        }else{
+        } else {
             // Récupération du son en fontion de la position de la file d'attente
             $song_position_id = DB::table('songs_queues')->where(['user_id' => $user_id->id, 'position' => $position])->select('song_id')->first();
         }
@@ -61,10 +62,10 @@ class PlayAlbumController extends Controller
 
         $position = $request->position;
 
-        if($request->status == 'random'){
+        if ($request->status == 'random') {
             // Récupération du son en fontion de la position de la file d'attente
             $song_position_id = DB::table('songs_queues')->where(['user_id' => $user_id->id, 'random_position' => $position])->select('song_id')->first();
-        }else{
+        } else {
             // Récupération du son en fontion de la position de la file d'attente
             $song_position_id = DB::table('songs_queues')->where(['user_id' => $user_id->id, 'position' => $position])->select('song_id')->first();
         }
@@ -172,11 +173,13 @@ class PlayAlbumController extends Controller
 
     public function randomizeQueuedSongs(Request $request)
     {
-
         if ($request->status == 'random') {
-
-            // Récupération de la position actuelle
-            $player_position = $request->position;
+            if (isset($request->position)) {
+                // Récupération de la position actuelle
+                $player_position = $request->position;
+            } else {
+                $player_position = 1;
+            }
 
             // Récupération des informations de l'utilisateur
             $user_id = Auth::user()->id;
@@ -226,8 +229,12 @@ class PlayAlbumController extends Controller
 
             $position = 1;
         } else {
-            // Récupération de la position actuelle
-            $player_position = $request->position;
+            if (isset($request->position)) {
+                // Récupération de la position actuelle
+                $player_position = $request->position;
+            } else {
+                $player_position = 1;
+            }
 
             // Récupération des informations de l'utilisateur
             $user_id = Auth::user()->id;
@@ -474,6 +481,68 @@ class PlayAlbumController extends Controller
         return response()->json(['success' => true, 'position' => $position, 'song_url' => $song_url, 'cover_url' => $cover_url, 'song_name' => $song_name, 'album_name' => $album_name, 'artist_name' => $artist_name]);
     }
 
+    // public function randomPlayFavorite(Request $request)
+    // {
+    //     // Récupération des informations de l'utilisateur
+    //     $user = Auth::user();
+
+    //     // Récupération de tous les favoris de l'utilisateur
+    //     $all_favorite_songs = DB::table('songs_users')->where('user_id', $user->id)->get();
+
+    //     // Mélange du tableau pour appliquer le format aléatoire
+    //     $all_favorite_songs = $all_favorite_songs->shuffle();
+
+    //     // On clear les sons déja en file d'attente pour l'utilisateur
+    //     SongsQueue::where('user_id', $user->id)->delete();
+
+    //     // Ajout des titres dans la table file d'attente song_queue
+    //     $table_song_position = 1;
+    //     foreach ($all_favorite_songs as $favorite_song) {
+    //         SongsQueue::firstOrCreate(
+    //             [
+    //                 'user_id' => $user->id,
+    //                 'song_id' => $favorite_song->song_id,
+    //                 'position' => $table_song_position,
+    //             ]
+    //         );
+    //         $table_song_position++;
+    //     }
+
+    //     $position = 1;
+
+    //     // Récupération de l'id du premier son à jouer en fonction de la position
+    //     $first_song_to_play = DB::table('songs_queues')->where(['user_id' => $user->id, 'position' => $position])->first();
+
+    //     // Récupération des informations nécessaires du son (position, slug, album_id)
+    //     $song_info = DB::table('songs')->where('id', $first_song_to_play->song_id)->select('album_id', 'slug', 'name')->first();
+
+    //     // Récupération des informations nécessaires de l'album à partir du son
+    //     $album_info = DB::table('albums')->where('id', $song_info->album_id)->select('artist_id', 'slug', 'length', 'release', 'name', 'cover')->first();
+
+    //     // Récupération des informations nécessaires de l'artiste à partir de l'album
+    //     $artist_info = DB::table('artists')->where('id', $album_info->artist_id)->select('slug', 'name')->first();
+
+    //     $release = $album_info->release;
+    //     $length = $album_info->length;
+    //     $artist_slug = $artist_info->slug;
+    //     $artist_name = $artist_info->name;
+    //     $album_slug = $album_info->slug;
+    //     $album_name = $album_info->name;
+    //     $album_cover = $album_info->cover;
+    //     $song_slug = $song_info->slug;
+    //     $song_name = $song_info->name;
+
+    //     if ($album_cover) {
+    //         $cover_url = '/origin/public/files/music/' . $artist_slug . '/' . $album_slug . '/' . $album_cover;
+    //     } else {
+    //         $cover_url = '/img/unknown_cover.png';
+    //     }
+    //     $song_url = '/origin/public/files/music/' . $artist_slug . '/' . $album_slug . '/' . $song_slug;
+
+    //     return response()->json(['success' => true, 'position' => $position, 'song_url' => $song_url, 'cover_url' => $cover_url, 'song_name' => $song_name, 'album_name' => $album_name, 'artist_name' => $artist_name]);
+    // }
+
+
     public function randomPlayFavorite(Request $request)
     {
         // Récupération des informations de l'utilisateur
@@ -481,9 +550,6 @@ class PlayAlbumController extends Controller
 
         // Récupération de tous les favoris de l'utilisateur
         $all_favorite_songs = DB::table('songs_users')->where('user_id', $user->id)->get();
-
-        // Mélange du tableau pour appliquer le format aléatoire
-        $all_favorite_songs = $all_favorite_songs->shuffle();
 
         // On clear les sons déja en file d'attente pour l'utilisateur
         SongsQueue::where('user_id', $user->id)->delete();
@@ -542,10 +608,10 @@ class PlayAlbumController extends Controller
         $position = $request->position;
 
 
-        if($request->status == 'random'){
+        if ($request->status == 'random') {
             // Récupération du son en fontion de la position de la file d'attente
             $song_position_id = DB::table('songs_queues')->where(['user_id' => $user_id->id, 'random_position' => $position])->select('song_id')->first();
-        }else{
+        } else {
             // Récupération du son en fontion de la position de la file d'attente
             $song_position_id = DB::table('songs_queues')->where(['user_id' => $user_id->id, 'position' => $position])->select('song_id')->first();
         }
