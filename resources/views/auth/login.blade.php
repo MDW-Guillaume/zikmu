@@ -37,7 +37,7 @@
                 </a>
             @endif
 
-            <x-primary-button class="m-auto btn-primary border-none ">
+            <x-primary-button class="m-auto btn-primary border-none pointer">
                 {{ __('Se connecter') }}
             </x-primary-button>
         </div>

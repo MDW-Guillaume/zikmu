@@ -62,18 +62,14 @@
                     </div>
                 </div>
                 <div class="music-player-command-title">
-                    <span class="music-player-command-title-song playerInfoName" id="playerInfoName">Space Oddity (2015
-                        Remaster){{-- Variable song.name --}}</span><br>
-                    <span class="music-player-command-title-album playerInfoAlbum"
-                        id="playerInfoAlbum">ChangesOneBowie{{-- Variable album.name --}}</span>
+                    <span class="music-player-command-title-song playerInfoName" id="playerInfoName"></span><br>
+                    <a href="" id="playerInfoAlbumSlug"><span class="music-player-command-title-album playerInfoAlbum"
+                        id="playerInfoAlbum"></span></a>
                     <span class="music-player-command-title-separator">• </span>
-                    <span class="music-player-command-title-artist playerInfoArtist" id="playerInfoArtist">David
-                        Bowie{{-- Variable artist.name --}}</span>
+                    <a href="" id="playerInfoArtistSlug"><span class="music-player-command-title-artist playerInfoArtist" id="playerInfoArtist"></span></a>
                 </div>
                 <div class="music-player-command-controllers">
                     <div class="music-player-command-controllers-rewind">
-                        {{-- <img src="{{ URL::to('/img/repeatOnce.svg') }}" class="repeat-icon" id="repeatOnce" alt="">
-                        <img src="{{ URL::to('/img/repeat.svg') }}" class="repeat-icon" id="repeat" alt=""> --}}
                         <img src="{{ URL::to('/img/repeat.svg') }}" class="repeat-icon" id="repeat" data-status="initial" alt="">
                     </div>
                     <div class="music-player-command-controllers-player">

@@ -86,6 +86,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/random-play-favorite', [PlayAlbumController::class, 'randomPlayFavorite'])->name('play.randomplayfavorite');
     Route::post('/play-queued-element', [PlayAlbumController::class, 'playQueuedElement'])->name('play.playqueuedelement');
     Route::post('/fast-play-song-search', [PlayAlbumController::class, 'fastPlaySongSearch'])->name('play.fastplaysongsearch');
+    Route::post('/get-queue-length', [PlayAlbumController::class, 'getQueueLength'])->name('play.getqueuelength');
 
 });
 

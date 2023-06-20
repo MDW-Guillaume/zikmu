@@ -4,7 +4,7 @@
     .favorite-card {
         display: flex;
         flex-direction: row;
-        align-items: start;
+        align-items: flex-start;
         margin-bottom: 60px;
 
         .favorite-cover {
@@ -199,7 +199,12 @@
                     margin: 0;
 
                     a {
-                        color: white;
+                        z-index : 20;
+                        position: relative;
+                        color: #fff;
+                        &:hover{
+                            text-decoration: underline;
+                        }
                     }
                 }
             }

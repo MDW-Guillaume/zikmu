@@ -85,7 +85,7 @@ h1 {
                     flex-wrap: nowrap;
                     align-items: center;
                     justify-content: flex-start;
-                    color: white;
+                    color: #fff;
                     text-decoration: none;
 
                     &:hover {
@@ -297,6 +297,10 @@ audio {
             font-size: 14px;
             line-height: 16px;
             text-align: center;
+        }
+
+        a{
+            color : #fff;
         }
 
         .music-player-command-title-song {

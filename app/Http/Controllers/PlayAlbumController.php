@@ -50,7 +50,7 @@ class PlayAlbumController extends Controller
 
             $song_url = '/origin/public/files/music/' . $artist_slug . '/' . $album_slug . '/' . $song_slug;
 
-            return response()->json(['success' => true, 'position' => $position, 'song_url' => $song_url, 'cover_url' => $cover_url,  'song_name' => $song_name, 'album_name' => $album_name, 'artist_name' => $artist_name]);
+            return response()->json(['success' => true, 'position' => $position, 'song_url' => $song_url, 'cover_url' => $cover_url,  'song_name' => $song_name, 'album_name' => $album_name, 'artist_name' => $artist_name, 'album_slug' => $album_slug, 'artist_slug' => $artist_slug]);
         } else {
             return response()->json(['success' => false]);
         }
@@ -95,7 +95,7 @@ class PlayAlbumController extends Controller
 
             $song_url = '/origin/public/files/music/' . $artist_slug . '/' . $album_slug . '/' . $song_slug;
 
-            return response()->json(['success' => true, 'position' => $position, 'song_url' => $song_url, 'cover_url' => $cover_url,  'song_name' => $song_name, 'album_name' => $album_name, 'artist_name' => $artist_name]);
+            return response()->json(['success' => true, 'position' => $position, 'song_url' => $song_url, 'cover_url' => $cover_url,  'song_name' => $song_name, 'album_name' => $album_name, 'artist_name' => $artist_name, 'album_slug' => $album_slug, 'artist_slug' => $artist_slug]);
         } else {
             $allQueue = DB::table('songs_queues')->where(['user_id' => $user_id->id])->get();
             $last_played_song = count($allQueue);
@@ -308,7 +308,7 @@ class PlayAlbumController extends Controller
 
         $song_url = '/origin/public/files/music/' . $artist_slug . '/' . $album_slug . '/' . $song_slug;
 
-        return response()->json(['success' => true, 'position' => $position, 'song_url' => $song_url, 'cover_url' => $cover_url, 'song_name' => $song_name, 'album_name' => $album_name, 'artist_name' => $artist_name]);
+        return response()->json(['success' => true, 'position' => $position, 'song_url' => $song_url, 'cover_url' => $cover_url, 'song_name' => $song_name, 'album_name' => $album_name, 'artist_name' => $artist_name, 'album_slug' => $album_slug, 'artist_slug' => $artist_slug]);
     }
 
     public function playAlbumElement(Request $request)
@@ -361,7 +361,7 @@ class PlayAlbumController extends Controller
         }
         $song_url = '/origin/public/files/music/' . $artist_slug . '/' . $album_slug . '/' . $song_slug;
 
-        return response()->json(['success' => true, 'position' => $song_info->position, 'song_url' => $song_url, 'cover_url' => $cover_url, 'song_name' => $song_name, 'album_name' => $album_name, 'artist_name' => $artist_name]);
+        return response()->json(['success' => true, 'position' => $song_info->position, 'song_url' => $song_url, 'cover_url' => $cover_url, 'song_name' => $song_name, 'album_name' => $album_name, 'artist_name' => $artist_name, 'album_slug' => $album_slug, 'artist_slug' => $artist_slug]);
     }
 
     public function playFavoriteElement(Request $request)
@@ -419,7 +419,7 @@ class PlayAlbumController extends Controller
         }
         $song_url = '/origin/public/files/music/' . $artist_slug . '/' . $album_slug . '/' . $song_slug;
 
-        return response()->json(['success' => true, 'position' => $song_clicked_position->position, 'song_url' => $song_url, 'cover_url' => $cover_url, 'song_name' => $song_name, 'album_name' => $album_name, 'artist_name' => $artist_name]);
+        return response()->json(['success' => true, 'position' => $song_clicked_position->position, 'song_url' => $song_url, 'cover_url' => $cover_url, 'song_name' => $song_name, 'album_name' => $album_name, 'artist_name' => $artist_name, 'album_slug' => $album_slug, 'artist_slug' => $artist_slug]);
     }
 
     public function fastPlayFavorite(Request $request)
@@ -478,7 +478,7 @@ class PlayAlbumController extends Controller
         }
         $song_url = '/origin/public/files/music/' . $artist_slug . '/' . $album_slug . '/' . $song_slug;
 
-        return response()->json(['success' => true, 'position' => $position, 'song_url' => $song_url, 'cover_url' => $cover_url, 'song_name' => $song_name, 'album_name' => $album_name, 'artist_name' => $artist_name]);
+        return response()->json(['success' => true, 'position' => $position, 'song_url' => $song_url, 'cover_url' => $cover_url, 'song_name' => $song_name, 'album_name' => $album_name, 'artist_name' => $artist_name, 'album_slug' => $album_slug, 'artist_slug' => $artist_slug]);
     }
 
     // public function randomPlayFavorite(Request $request)
@@ -598,7 +598,7 @@ class PlayAlbumController extends Controller
         }
         $song_url = '/origin/public/files/music/' . $artist_slug . '/' . $album_slug . '/' . $song_slug;
 
-        return response()->json(['success' => true, 'position' => $position, 'song_url' => $song_url, 'cover_url' => $cover_url, 'song_name' => $song_name, 'album_name' => $album_name, 'artist_name' => $artist_name]);
+        return response()->json(['success' => true, 'position' => $position, 'song_url' => $song_url, 'cover_url' => $cover_url, 'song_name' => $song_name, 'album_name' => $album_name, 'artist_name' => $artist_name, 'album_slug' => $album_slug, 'artist_slug' => $artist_slug]);
     }
 
     public function playQueuedElement(Request $request)
@@ -641,7 +641,7 @@ class PlayAlbumController extends Controller
 
             $song_url = '/origin/public/files/music/' . $artist_slug . '/' . $album_slug . '/' . $song_slug;
 
-            return response()->json(['success' => true, 'position' => $position, 'song_url' => $song_url, 'cover_url' => $cover_url,  'song_name' => $song_name, 'album_name' => $album_name, 'artist_name' => $artist_name]);
+            return response()->json(['success' => true, 'position' => $position, 'song_url' => $song_url, 'cover_url' => $cover_url,  'song_name' => $song_name, 'album_name' => $album_name, 'artist_name' => $artist_name, 'album_slug' => $album_slug, 'artist_slug' => $artist_slug]);
         }
     }
 
@@ -692,6 +692,15 @@ class PlayAlbumController extends Controller
         }
         $song_url = '/origin/public/files/music/' . $artist_slug . '/' . $album_slug . '/' . $song_slug;
 
-        return response()->json(['success' => true, 'position' => $position, 'song_url' => $song_url, 'cover_url' => $cover_url, 'song_name' => $song_name, 'album_name' => $album_name, 'artist_name' => $artist_name]);
+        return response()->json(['success' => true, 'position' => $position, 'song_url' => $song_url, 'cover_url' => $cover_url, 'song_name' => $song_name, 'album_name' => $album_name, 'artist_name' => $artist_name, 'album_slug' => $album_slug, 'artist_slug' => $artist_slug]);
+    }
+
+    public function getQueueLength(Request $request){
+        $user = Auth::user();
+
+        $queue_length = DB::table('songs_queues')->where('user_id', $user->id)->count();
+
+        return response()->json(['success' => true, 'length' => $queue_length]);
     }
 }
+

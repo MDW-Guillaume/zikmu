@@ -67,8 +67,7 @@
                         <form action="" method="post" class="unique-song-form">
                             @csrf
                             <div class="title-element">
-                                <div class="title-position"><span class="title-position-span"
-                                        style="color : white;">{{ $title->position }}</span></div>
+                                <div class="title-position"><span class="title-position-span c-white">{{ $title->position }}</span></div>
                                 <div class="title-name">{{ $title->name }}</div>
                                 <div class="title-favorite">
                                 </div>

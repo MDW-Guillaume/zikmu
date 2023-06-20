@@ -4,7 +4,7 @@
 //             // Empêchez la navigation par défaut
 //             event.preventDefault();
 //             // Chargez la nouvelle page en arrière-plan
-//             var url = $(this).attr('href');
+//             let url = $(this).attr('href');
 //             $.ajax({
 //                 url: url,
 //                 type: 'GET',
@@ -19,20 +19,20 @@
 // $( "#content" ).bind("DOMNodeInserted DOMNodeRemoved", function( objEvent ) {
 // function affichePlayer() {
 //     if ($('.unique-song-form')[0] != 'undefined') {
-//         var playSongForm = $('.unique-song-form')
+//         let playSongForm = $('.unique-song-form')
 //     }
 //     if (typeof (playSongForm) != 'undefined') {
 //         for (let i = 0; i < playSongForm.length; i++) {
 //             playSongForm[i].addEventListener('submit', function (e) {
 //                 e.preventDefault();
-//                 var formData = $(playSongForm[i]).serialize();
+//                 let formData = $(playSongForm[i]).serialize();
 
 //                 if (playSongForm[i].classList.contains('favorite-unique-song-form')) {
 //                     // SI le clic vient de la page Favoris
-//                     var url = '/play-form-favorite'
+//                     let url = '/play-form-favorite'
 //                 } else {
 //                     // SI le clic vient d'ailleurs
-//                     var url = '/play-unique-song'
+//                     let url = '/play-unique-song'
 //                 }
 
 //                 $.ajax({
@@ -43,17 +43,17 @@
 //                     dataType: 'json',
 //                     success: function (response) {
 //                         // LECTURE DU SON
-//                         var songsArray = response.songs
+//                         let songsArray = response.songs
 
 //                         if (response.songs.hasOwnProperty('clickedSong')) {
-//                             var clickedSong = response.songs['clickedSong']
-//                             var selection = null;
+//                             let clickedSong = response.songs['clickedSong']
+//                             let selection = null;
 //                         }
 
 //
-//                         var lastSong = null;
-//                         var playlist = []; // List of songs
-//                         var clickedSongPath = '';
+//                         let lastSong = null;
+//                         let playlist = []; // List of songs
+//                         let clickedSongPath = '';
 //                         let currentStep = null
 
 //                         let coverSongArray = response.songs
@@ -104,7 +104,7 @@
 //                         });
 
 
-//                         var player = document.getElementById("audioplayer"); // Get audio element
+//                         let player = document.getElementById("audioplayer"); // Get audio element
 //                         player.autoplay = true;
 
 //                         player.addEventListener("ended", playSong);
@@ -137,13 +137,13 @@
 
 //                         // Pour jouer un son qui est cliqué:
 //                         // On va récupérer la clé du son correspondant dans le tableau playlist
-//                         // On enregistre et envoie cette variable en appelant la fonction playSong
+//                         // On enregistre et envoie cette letiable en appelant la fonction playSong
 //                         // avec un paramètre qui sera la posoition du son
 
 
 //                         // let i = 0
 
-//                         // Je chercher a récupérer la clé de la playlist à partir de la valeur de la variable clickedSongPath
+//                         // Je chercher a récupérer la clé de la playlist à partir de la valeur de la letiable clickedSongPath
 
 //                         let clickedSongIndex = playlist.indexOf(clickedSongPath);
 
@@ -325,7 +325,7 @@
 //                                 clickedSongIndex = stepSong
 //                                 selection = stepSong
 //                             }
-//                             // On reinitialise la variable stepSong pour continuer la lecture de la playlist
+//                             // On reinitialise la letiable stepSong pour continuer la lecture de la playlist
 //                             stepSong = null
 //
 //
@@ -391,7 +391,9 @@ let playerCover = document.getElementById('coverSong');
 let playerSongName = document.getElementById('playerInfoName');
 let playerArtistName = document.getElementById('playerInfoArtist');
 let playerAlbumName = document.getElementById('playerInfoAlbum');
-const bottomSidebar = document.querySelector('.bottom-sidebar');
+let playerArtistSlug = document.getElementById('playerInfoArtistSlug');
+let playerAlbumSlug = document.getElementById('playerInfoAlbumSlug');
+let bottomSidebar = document.querySelector('.bottom-sidebar');
 let mobileMinPlayer = document.getElementById('mobileMinPlayer')
 let pauseBtn = document.querySelectorAll('.playerPause')
 let resumeBtn = document.querySelectorAll('.playerPlay')
@@ -410,14 +412,14 @@ function showSongQueue(status = null) {
         let playerPosition = player.getAttribute('position')
 
         // crée un objet avec le tableau de données
-        var jsonData = {
+        let jsonData = {
             position: playerPosition,
             csrf_token: token,
             status: status
         };
 
         // convertit l'objet en chaîne JSON
-        var jsonString = JSON.stringify(jsonData);
+        let jsonString = JSON.stringify(jsonData);
 
         // envoie les données en ajax
         $.ajax({
@@ -432,7 +434,7 @@ function showSongQueue(status = null) {
             success: function (response) {
                 if (1 == response.redirect) {
 
-                    var url = response.url;
+                    let url = response.url;
 
                     $.ajax({
                         url: url,
@@ -465,13 +467,13 @@ function showSongQueue(status = null) {
                     songQueueTitles.innerHTML = parseInt(request.length)
 
                     for (let i = 0; i < request.length; i++) {
-                        const element = request[i];
+                        let element = request[i];
 
                         waitingLength = waitingLength + parseInt(element.song_length)
                     }
 
-                    const minutes = Math.floor(waitingLength / 60); // On divise par 60 et on arrondit à l'entier inférieur
-                    const remainingSeconds = waitingLength % 60;
+                    let minutes = Math.floor(waitingLength / 60); // On divise par 60 et on arrondit à l'entier inférieur
+                    let remainingSeconds = waitingLength % 60;
 
                     if (minutes >= 1) {
                         songQueueLength.innerHTML = minutes + ' min ' + remainingSeconds + ' sec'
@@ -524,7 +526,7 @@ function showSongQueue(status = null) {
                             titlePosition.classList.add('title-position');
                             let titlePositionSpan = document.createElement('span');
                             titlePositionSpan.classList.add('title-position-span');
-                            titlePositionSpan.style.color = 'white';
+                            titlePositionSpan.style.color = '#fff';
                             // titlePositionSpan.innerText = parseInt(playerPosition) + i;
                             titlePositionSpan.innerText = request[i].song_position;
                             titlePosition.appendChild(titlePositionSpan);
@@ -647,6 +649,8 @@ function playWaitingSong() {
                         playerInformations['cover'] = response.cover_url
                         playerInformations['artist'] = response.artist_name
                         playerInformations['album'] = response.album_name
+                        playerInformations['artist_slug'] = response.artist_slug
+                        playerInformations['album_slug'] = response.album_slug
                         playerInformations['song'] = response.song_name
                         // Je lance la lecture du premier titre.
                         playSentSong(response.song_url, response.position, playerInformations);
@@ -685,7 +689,8 @@ function randomFromWaitingPage() {
 
 function playSentSong(url, position, informations) {
     mobileMinPlayer.classList.add('active')
-
+    controlsDisplay()
+    console.log(informations)
     if (bottomSidebar.classList.contains('reduce')) {
         bottomSidebar.classList.remove('reduce')
     }
@@ -696,6 +701,8 @@ function playSentSong(url, position, informations) {
     playerSongName.innerHTML = informations['song']
     playerArtistName.innerHTML = informations['artist']
     playerAlbumName.innerHTML = informations['album']
+    playerArtistSlug.href = "/artist/" + informations['artist_slug']
+    playerAlbumSlug.href = "/album/" + informations['album_slug']
     player.play();
     player.setAttribute("position", position)
 
@@ -724,10 +731,6 @@ function playNextQueuedSong() {
             playerrandom = 'normal'
         }
 
-
-        // Je me sers du cookie XSRF-TOKEN pour eviter d'obtenir une erreur 419
-        const csrfToken = Cookies.get('XSRF-TOKEN');
-
         let formData = {
             _token: $('meta[name="csrf-token"]').attr('content'),
             position: nextSong,
@@ -754,6 +757,8 @@ function playNextQueuedSong() {
                     playerInformations['cover'] = response.cover_url
                     playerInformations['artist'] = response.artist_name
                     playerInformations['album'] = response.album_name
+                    playerInformations['artist_slug'] = response.artist_slug
+                    playerInformations['album_slug'] = response.album_slug
                     playerInformations['song'] = response.song_name
                     // Je lance la lecture du premier titre.
                     playSentSong(response.song_url, response.position, playerInformations);
@@ -775,19 +780,6 @@ function playNextQueuedSong() {
                             })
                             mobileMinPlayer.classList.remove('active')
                         }
-
-
-                        // player.addEventListener('ended', function () {
-                        //     if (player.duration == player.currentTime) {
-                        //         console.log('je termine')
-                        //     } else {
-                        //         console.log('tac')
-                        //     }
-                        //     if (player.paused) {
-                        //         pauseBtn.style.display = 'none'
-                        //         resumeBtn.style.display = 'block';
-                        //     }
-                        // })
                     }
                 }
             }
@@ -815,7 +807,7 @@ function playPreviousQueuedSong() {
         }
 
         // Je me sers du cookie XSRF-TOKEN pour eviter d'obtenir une erreur 419
-        const csrfToken = Cookies.get('XSRF-TOKEN');
+        let csrfToken = Cookies.get('XSRF-TOKEN');
 
         let formData = {
             _token: $('meta[name="csrf-token"]').attr('content'),
@@ -842,6 +834,8 @@ function playPreviousQueuedSong() {
                     playerInformations['cover'] = response.cover_url
                     playerInformations['artist'] = response.artist_name
                     playerInformations['album'] = response.album_name
+                    playerInformations['artist_slug'] = response.artist_slug
+                    playerInformations['album_slug'] = response.album_slug
                     playerInformations['song'] = response.song_name
                     // Je lance la lecture du premier titre.
                     playSentSong(response.song_url, response.position, playerInformations);
@@ -862,7 +856,7 @@ function randomizeQueuedSong(status = null) {
     let url = '/randomize-queued-songs'
 
     // Je me sers du cookie XSRF-TOKEN pour eviter d'obtenir une erreur 419
-    const csrfToken = Cookies.get('XSRF-TOKEN');
+    let csrfToken = Cookies.get('XSRF-TOKEN');
 
     let formData = {
         _token: $('meta[name="csrf-token"]').attr('content'),
@@ -906,7 +900,7 @@ function playAlbumFromTitle() {
             clickedSong.addEventListener('submit', function (e) {
                 e.preventDefault()
 
-                var formData = $(clickedSong).serialize();
+                let formData = $(clickedSong).serialize();
                 let url = '/play-album-element'
 
                 $.ajax({
@@ -921,6 +915,8 @@ function playAlbumFromTitle() {
                         playerInformations['cover'] = response.cover_url
                         playerInformations['artist'] = response.artist_name
                         playerInformations['album'] = response.album_name
+                        playerInformations['artist_slug'] = response.artist_slug
+                        playerInformations['album_slug'] = response.album_slug
                         playerInformations['song'] = response.song_name
                         // Je lance la lecture du premier titre.
                         playSentSong(response.song_url, response.position, playerInformations)
@@ -940,7 +936,7 @@ function fastPlayAlbum() {
             fastPlayAlbumElement.addEventListener('submit', function (e) {
                 e.preventDefault()
 
-                var formData = $(fastPlayAlbumElement).serialize();
+                let formData = $(fastPlayAlbumElement).serialize();
                 let url = '/fast-play-album'
 
 
@@ -956,6 +952,8 @@ function fastPlayAlbum() {
                         playerInformations['cover'] = response.cover_url
                         playerInformations['artist'] = response.artist_name
                         playerInformations['album'] = response.album_name
+                        playerInformations['artist_slug'] = response.artist_slug
+                        playerInformations['album_slug'] = response.album_slug
                         playerInformations['song'] = response.song_name
                         // Je lance la lecture du premier titre.
                         playSentSong(response.song_url, response.position, playerInformations)
@@ -976,7 +974,7 @@ function playFavoriteFromTitle() {
             clickedSong.addEventListener('submit', function (e) {
                 e.preventDefault()
 
-                var formData = $(clickedSong).serialize();
+                let formData = $(clickedSong).serialize();
                 let url = '/play-favorite-element'
 
                 $.ajax({
@@ -991,6 +989,8 @@ function playFavoriteFromTitle() {
                         playerInformations['cover'] = response.cover_url
                         playerInformations['artist'] = response.artist_name
                         playerInformations['album'] = response.album_name
+                        playerInformations['artist_slug'] = response.artist_slug
+                        playerInformations['album_slug'] = response.album_slug
                         playerInformations['song'] = response.song_name
                         // Je lance la lecture du premier titre.
                         playSentSong(response.song_url, response.position, playerInformations)
@@ -1008,7 +1008,7 @@ function fastPlayFavorite() {
         playFavoriteForm.addEventListener('submit', function (e) {
             e.preventDefault()
 
-            var formData = $(playFavoriteForm).serialize();
+            let formData = $(playFavoriteForm).serialize();
             let url = '/fast-play-favorite'
 
 
@@ -1024,6 +1024,8 @@ function fastPlayFavorite() {
                     playerInformations['cover'] = response.cover_url
                     playerInformations['artist'] = response.artist_name
                     playerInformations['album'] = response.album_name
+                    playerInformations['artist_slug'] = response.artist_slug
+                    playerInformations['album_slug'] = response.album_slug
                     playerInformations['song'] = response.song_name
                     // Je lance la lecture du premier titre.
                     playSentSong(response.song_url, response.position, playerInformations)
@@ -1040,7 +1042,7 @@ function randomPlayFavorite() {
         playRandomFavorite.addEventListener('submit', function (e) {
             e.preventDefault()
 
-            var formData = $(playRandomFavorite).serialize();
+            let formData = $(playRandomFavorite).serialize();
             let url = '/random-play-favorite'
 
 
@@ -1057,6 +1059,8 @@ function randomPlayFavorite() {
                     playerInformations['cover'] = response.cover_url
                     playerInformations['artist'] = response.artist_name
                     playerInformations['album'] = response.album_name
+                    playerInformations['artist_slug'] = response.artist_slug
+                    playerInformations['album_slug'] = response.album_slug
                     playerInformations['song'] = response.song_name
                     // Je lance la lecture du premier titre.
                     playSentSong(response.song_url, response.position, playerInformations)
@@ -1067,14 +1071,14 @@ function randomPlayFavorite() {
     }
 }
 function afficheAlbumAvecFavoris() {
-    var form = $('.actionFavorite')
+    let form = $('.actionFavorite')
     if (form) {
         for (let i = 0; i < form.length - 1; i++) {
             $(document).ready(function () {
                 form[i].addEventListener('submit', function (e) {
 
                     e.preventDefault(); // Empêcher l'envoi par défaut du formulaire
-                    var formData = $(form[i]).serialize(); // Récupérer les données du formulaire
+                    let formData = $(form[i]).serialize(); // Récupérer les données du formulaire
                     $.ajax({
                         url: '/favorite',
                         type: 'POST',
@@ -1111,7 +1115,7 @@ function fastSongPlaySearch() {
         songPlay.addEventListener('submit', function (e) {
             e.preventDefault();
 
-            var formData = $(songPlay).serialize();
+            let formData = $(songPlay).serialize();
             let url = '/fast-play-song-search'
 
             $.ajax({
@@ -1126,6 +1130,8 @@ function fastSongPlaySearch() {
                     playerInformations['cover'] = response.cover_url
                     playerInformations['artist'] = response.artist_name
                     playerInformations['album'] = response.album_name
+                    playerInformations['artist_slug'] = response.artist_slug
+                    playerInformations['album_slug'] = response.album_slug
                     playerInformations['song'] = response.song_name
                     // Je lance la lecture du premier titre.
                     playSentSong(response.song_url, response.position, playerInformations)
@@ -1135,17 +1141,17 @@ function fastSongPlaySearch() {
     });
 }
 function favoriteDelete() {
-    var deleteDiv = document.querySelectorAll('.favorite-delete')
-    // var form = $('.actionFavorite')
+    let deleteDiv = document.querySelectorAll('.favorite-delete')
+    // let form = $('.actionFavorite')
 
     for (let i = 0; i < deleteDiv.length; i++) {
-        var lebtn = $(deleteDiv[i]).find('.favorite-button')[0];
-        //  var csrf = $(this).siblings('input[name="csrf"]').val();
-        var csrf = $('input[name="csrf"]').val();
+        let lebtn = $(deleteDiv[i]).find('.favorite-button')[0];
+        //  let csrf = $(this).siblings('input[name="csrf"]').val();
+        let csrf = $('input[name="csrf"]').val();
         $(deleteDiv[i]).on('click', '.favorite-button', function (e) {
             e.preventDefault(); // Empêcher l'envoi par défaut du formulaire
 
-            var formData = {
+            let formData = {
                 title: e.target.closest('button').getAttribute('data-id')
             } // Récupérer les données du formulaire
 
@@ -1175,8 +1181,8 @@ function favoriteDelete() {
                                 setTimeout(function () { document.getElementById('displayMessageContainer').classList.remove('show') }, 4000);
                             }
                         } else {
-                            var formId = e.target.closest('button').getAttribute('data-id')
-                            var form = $('form[data-id="' + formId + '"]');
+                            let formId = e.target.closest('button').getAttribute('data-id')
+                            let form = $('form[data-id="' + formId + '"]');
                             form.css('display', 'none');
                             document.getElementById('displayMessage').innerHTML = 'La titre a été supprimé de vos Coups de coeur';
                             document.getElementById('displayMessageContainer').classList.add('show');
@@ -1200,7 +1206,7 @@ function favoriteArtistAddAndDelete() {
             addArtistForm.addEventListener('submit', function (e) {
                 e.preventDefault(); // Empêcher l'envoi par défaut du formulaire
 
-                var formData = $(addArtistForm).serialize();
+                let formData = $(addArtistForm).serialize();
 
                 let favButton = document.getElementById('favButton')
                 $.ajax({
@@ -1240,7 +1246,7 @@ function favoriteAlbumAddAndDelete() {
             addAlbumForm.addEventListener('submit', function (e) {
                 e.preventDefault(); // Empêcher l'envoi par défaut du formulaire
 
-                var formData = $(addAlbumForm).serialize();
+                let formData = $(addAlbumForm).serialize();
 
                 let favButton = document.getElementById('favButton')
                 $.ajax({
@@ -1285,8 +1291,8 @@ function playerEvent() {
     // let pauseBtn = document.getElementsByClassName('playerPause')
     // let resumeBtn = document.getElementById('playerPlay')
     // Créer une instance de MutationObserver avec une fonction de rappel
-    const observer = new MutationObserver((mutationsList) => {
-        for (const mutation of mutationsList) {
+    let observer = new MutationObserver((mutationsList) => {
+        for (let mutation of mutationsList) {
             if (mutation.type === 'attributes' && mutation.attributeName === 'src' && player.getAttribute('src')) {
                 pauseBtn.forEach(pause => {
                     pause.style.display = 'block'
@@ -1386,6 +1392,43 @@ function playerPauseAndResume() {
                 resume.style.display = 'none'
             })
         })
+    })
+}
+function controlsDisplay() {
+    let playerPrevious = document.querySelectorAll('.playerPrevious')
+    let playerNext = document.querySelectorAll('.playerNext')
+
+    let url = '/get-queue-length'
+    let formData = {
+        _token: $('meta[name="csrf-token"]').attr('content'),
+    }
+
+    $.ajax({
+        url: url,
+        type: 'post',
+        data: formData,
+        dataType: 'json',
+        cache: false,
+        success: function (response) {
+            playerPrevious.forEach(previous => {
+                if (player.getAttribute('position') == 1) {
+                    previous.style.filter = "brightness(0.5)";
+                    previous.style.cursor = "default"
+                } else {
+                    previous.style.filter = "brightness(1)";
+                    previous.style.cursor = "pointer"
+                }
+            })
+            playerNext.forEach(next => {
+                if (player.getAttribute('position') == response.length) {
+                    next.style.filter = "brightness(0.5)";
+                    next.style.cursor = "default"
+                } else {
+                    next.style.filter = "brightness(1)";
+                    next.style.cursor = "pointer"
+                }
+            })
+        }
     })
 }
 function playerNext() {
@@ -1531,13 +1574,13 @@ function showAndHideSearchPage() {
             if (letterCount > 0) {
                 searchIcon.style.display = "none"
                 searchIconMobile.style.display = "none"
-            }else{
+            } else {
                 searchIcon.style.display = "block"
                 searchIconMobile.style.display = "block"
             }
 
             if (letterCount > 2 && letters.trim() != '') {
-                var url = '/search'
+                let url = '/search'
                 // let searchTimeout;
 
                 // clearTimeout(searchTimeout);
@@ -1566,7 +1609,7 @@ function showAndHideSearchPage() {
             }
             else {
                 if (lastPage) {
-                    var url = lastPage;
+                    let url = lastPage;
                     let searchTimeout;
 
                     clearTimeout(searchTimeout);
@@ -1599,7 +1642,7 @@ function showAndHideSearchPage() {
 $(document).ready(function () {
     $(document).on('click', 'a', function reloadOnPageChange(event) {
         event.preventDefault();
-        var url = $(this).attr('href');
+        let url = $(this).attr('href');
         $.ajax({
             url: url,
             type: 'GET',
@@ -1656,17 +1699,17 @@ $(document).ready(function () {
 1ERE IDEE DE RECHARGEMENT DE FICHIERS JS AU CHANGEMENT DE PAGE
 
 
-var scripts = ['unique-song-play.js', 'multiple-song-play.js', 'favorite.js', 'play-album.js', 'audio-event.js', 'song-controller.js', 'waitinglistshow.js'];
-var index = 0;
-var endScript = 0;
+let scripts = ['unique-song-play.js', 'multiple-song-play.js', 'favorite.js', 'play-album.js', 'audio-event.js', 'song-controller.js', 'waitinglistshow.js'];
+let index = 0;
+let endScript = 0;
 
 // Supprimez l'ancien élément script et ajoutez un nouvel élément avec le même src
 function reloadScript() {
     // Incrémentez l'index et rechargez le script suivant (de manière récursive)
     index++;
     if (index - 1 < scripts.length) {
-        var oldScript = document.querySelector('head script[src="http://[::1]:5174/resources/js/' + scripts[index - 1] + '"]');
-        var newScript = document.createElement('script');
+        let oldScript = document.querySelector('head script[src="http://[::1]:5174/resources/js/' + scripts[index - 1] + '"]');
+        let newScript = document.createElement('script');
         newScript.src = 'http://[::1]:5174/resources/js/' + scripts[index - 1];
         oldScript.parentNode.replaceChild(newScript, oldScript);
 
