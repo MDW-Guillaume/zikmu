@@ -41,7 +41,7 @@
                     envoyer des actualités et des conseils sur les produits et services Ziq&Mu. </p>
             </div>
 
-            <x-primary-button class="m-auto btn-primary border-none ">
+            <x-primary-button class="m-auto btn-primary border-none cursor-pointer">
                 {{ __('S\'inscrire') }}
             </x-primary-button>
         </div>
