@@ -37,16 +37,11 @@ class RegisteredUserController extends Controller
         $request->validate([
             'firstname' => ['string'],
             'lastname' => ['string'],
-            'username' => ['string'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', Rules\Password::defaults()],
             // 'creation' => ['boolean']
         ]);
 
-        $username = 'user' . mt_rand(100000, 999999);
-        while (User::where('username', $username)->exists()) {
-            $username = 'user' . mt_rand(100000, 999999);
-        }
         $creation = '';
         if ($request->creation != false) {
             $creation = true;
@@ -57,7 +52,6 @@ class RegisteredUserController extends Controller
             'creation' => $creation,
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
-            'username' => $username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);

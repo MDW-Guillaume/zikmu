@@ -23,9 +23,9 @@
                 <img src="" alt="" class="song-playing-cover" id="coverSongPlayed">
                 <div class="song-playing-container-info">
                     <p class="music-player-command-title-song" id="NameSongPlayed"></p>
-                    <span class="music-player-command-title-album" id="NameAlbumPlayed"></span>
+                    <a href="" class="music-player-command-title-album" id="NameAlbumPlayed"></a>
                     <span class="music-player-command-title-separator"> • </span>
-                    <span class="music-player-command-title-artist" id="NameArtistPlayed"></span>
+                    <a href="" class="music-player-command-title-artist" id="NameArtistPlayed"></a>
                 </div>
             </div>
 

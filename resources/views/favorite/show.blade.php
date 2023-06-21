@@ -18,15 +18,12 @@
                 <div class="favorite-details">
                     <div class="favorite-specs">
                         <h2 class="favorite-name">Coups de coeur</h2>
-                        <p>par
-                            @if (!is_null($user->firstname))
+                        @if (!is_null($user->firstname))
+                            <p>par
                                 {{ $user->firstname }} {{ $user->lastname }}
-                            @else
-                                {{ $user->username }}
-                            @endif
 
-                            {{-- Nom prénom / ou / nom d'utilisateur --}}
-                        </p>
+                            </p>
+                        @endif
                         @if (count($songs) == 0)
                     </div>
                 </div>
@@ -61,8 +58,7 @@
             $i = 1;
         @endphp
         @foreach ($songs as $song)
-            <form action="" method="post" class="favorite-unique-song-form"
-                data-id="{{ $song->id }}">
+            <form action="" method="post" class="favorite-unique-song-form" data-id="{{ $song->id }}">
                 @csrf
                 <div class="favorite-element">
                     <div class="favorite-cover">

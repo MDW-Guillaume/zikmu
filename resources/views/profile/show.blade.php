@@ -4,7 +4,13 @@
     <div id="content">
         <div class="page-edit-profile page-profile">
             <div class="profile-username-title">
-                <h2>{{ $username }}</h2>
+                <h2>
+                    @if ($username != null)
+                    {{ $username }}
+                    @else
+                    Mon compte
+                    @endif
+                </h2>
                 <span>Membre depuis le : {{ $user_regitered }}</span>
             </div>
 

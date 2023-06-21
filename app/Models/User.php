@@ -24,7 +24,6 @@ class User extends Authenticatable
     protected $fillable = [
         'email',
         'password',
-        'username',
         'firstname',
         'lastname',
         'is_admin',
@@ -54,7 +53,6 @@ class User extends Authenticatable
                             'mime' => 'image/png',
                         ]);
                 });
-                $user->username = 'user' . rand(100000, 999999);
                 unset($user->seeder);
             } elseif (isset($user->creation) && $user->creation) {
                 $password = $user->password;
@@ -67,7 +65,6 @@ class User extends Authenticatable
                             'mime' => 'image/png',
                         ]);
                 });
-                $user->username = 'user' . rand(100000, 999999);
                 unset($user->creation);
             } else {
                 $password = Str::random(8);

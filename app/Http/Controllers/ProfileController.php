@@ -21,7 +21,7 @@ class ProfileController extends Controller
             if (isset($user->firstname)) {
                 $username = $user_info->firstname . ' ' . $user_info->lastname;
             } else {
-                $username = $user_info->username;
+                $username = null;
             }
         }
         return view('profile.index')->with(['username' => $username]);
@@ -37,7 +37,7 @@ class ProfileController extends Controller
             if (isset($user->firstname)) {
                 $username = $user_info->firstname . ' ' . $user_info->lastname;
             } else {
-                $username = $user_info->username;
+                $username = null;
             }
         }
 

@@ -63,7 +63,9 @@ class SongController extends Controller
                 $songs_array[$i]['song_name'] = $get_song_information->name;
                 $songs_array[$i]['song_length'] = $get_song_information->length;
                 $songs_array[$i]['album_name'] = $get_album_information->name;
+                $songs_array[$i]['album_slug'] = $get_album_information->slug;
                 $songs_array[$i]['artist_name'] = $get_artist_information->name;
+                $songs_array[$i]['artist_slug'] = $get_artist_information->slug;
                 if ($request->status == 'random') {
                     $get_song_queue_position = DB::table('songs_queues')->where(['song_id' => $unique_song->song_id, 'user_id' => $user->id])->select('random_position')->first();
                     $songs_array[$i]['song_position'] = $get_song_queue_position->random_position;

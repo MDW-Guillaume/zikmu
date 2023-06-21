@@ -42,7 +42,6 @@ class UserCrudController extends CrudController
     protected function setupListOperation()
     {
         CRUD::column('email');
-        CRUD::column('username');
         CRUD::column('firstname');
         CRUD::column('lastname');
         CRUD::column('created_at');
@@ -73,12 +72,6 @@ class UserCrudController extends CrudController
             ]
 
         ]);
-        CRUD::addField([
-            'name' => 'username',
-            'label' => 'Nom d\'utilisateur',
-            'type' => 'text',
-            'default' => 'user' . rand(100000, 999999),
-        ]);
         CRUD::field('firstname');
         CRUD::field('lastname');
         CRUD::addField([
@@ -107,12 +100,6 @@ class UserCrudController extends CrudController
      */
     protected function setupUpdateOperation()
     {
-        CRUD::addField([
-            'name' => 'username',
-            'label' => 'Nom d\'utilisateur',
-            'type' => 'text',
-            'default' => 'user' . rand(100000, 999999),
-        ]);
         CRUD::addField([
             'name' => 'password',
             'label' => 'Mot de passe',

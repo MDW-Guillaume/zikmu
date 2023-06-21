@@ -454,7 +454,9 @@ function showSongQueue(status = null) {
                     let NameAlbumPlayed = document.getElementById('NameAlbumPlayed')
                     let NameArtistPlayed = document.getElementById('NameArtistPlayed')
                     NameAlbumPlayed.innerHTML = request[playerPosition - 1].album_name
+                    NameAlbumPlayed.href = '/album/' + request[playerPosition - 1].album_slug
                     NameArtistPlayed.innerHTML = request[playerPosition - 1].artist_name
+                    NameArtistPlayed.href = 'artist/' + request[playerPosition - 1].artist_slug
                     NameSongPlayed.innerHTML = request[playerPosition - 1].song_name
                     coverSongPlayed.src = request[playerPosition - 1].cover_url;
 

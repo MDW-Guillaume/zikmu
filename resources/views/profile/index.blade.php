@@ -4,11 +4,12 @@
     <div id="content">
         <div class="page-album page-index page-artist page-profile">
             <h2>Mon compte</h2>
-
+            @if ($username != null)
             <div class="user-container">
                 <img src="{{ URL::to('img') }}/user.svg" alt="">
                 <p>{{ $username }}</p>
             </div>
+            @endif
 
             <div class="user-navigation">
                 <ul>
