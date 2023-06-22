@@ -388,9 +388,13 @@
 let player = document.getElementById("audioplayer");
 let playerPosition = null;
 let playerCover = document.getElementById('coverSong');
+let playerCoverMobile = document.getElementById('coverSongMobile');
 let playerSongName = document.getElementById('playerInfoName');
+let playerSongNameMobile = document.getElementById('playerInfoNameMobile');
 let playerArtistName = document.getElementById('playerInfoArtist');
+let playerArtistNameMobile = document.getElementById('playerInfoArtistMobile');
 let playerAlbumName = document.getElementById('playerInfoAlbum');
+let playerAlbumNameMobile = document.getElementById('playerInfoAlbumMobile');
 let playerArtistSlug = document.getElementById('playerInfoArtistSlug');
 let playerAlbumSlug = document.getElementById('playerInfoAlbumSlug');
 let bottomSidebar = document.querySelector('.bottom-sidebar');
@@ -700,11 +704,14 @@ function playSentSong(url, position, informations) {
     player.src = url;
     player.load();
     playerCover.src = informations['cover']
+    playerCoverMobile.src = informations['cover']
     playerSongName.innerHTML = informations['song']
+    playerSongNameMobile.innerHTML = informations['song']
     playerArtistName.innerHTML = informations['artist']
-    playerAlbumName.innerHTML = informations['album']
+    playerArtistNameMobile.innerHTML = informations['artist']
     playerArtistSlug.href = "/artist/" + informations['artist_slug']
     playerAlbumSlug.href = "/album/" + informations['album_slug']
+    showMobilePlayer()
     player.play();
     player.setAttribute("position", position)
 
@@ -1612,19 +1619,16 @@ function showAndHideSearchPage() {
             else {
                 if (lastPage) {
                     let url = lastPage;
-                    let searchTimeout;
 
-                    clearTimeout(searchTimeout);
-                    searchTimeout = setTimeout(function () {
-                        $.ajax({
-                            url: url,
-                            type: 'GET',
-                            success: function (data) {
-                                $('#content').html($(data).find('#content').html());
-                                history.replaceState(null, '', url);
-                            }
-                        })
+                    $.ajax({
+                        url: url,
+                        type: 'GET',
+                        success: function (data) {
+                            $('#content').html($(data).find('#content').html());
+                            history.replaceState(null, '', url);
+                        }
                     })
+
                     lastPage = null
                 }
 
@@ -1640,38 +1644,113 @@ function showAndHideSearchPage() {
     }
 }
 
+/* Mobile show player */
 
-$(document).ready(function () {
-    $(document).on('click', 'a', function reloadOnPageChange(event) {
-        event.preventDefault();
-        let url = $(this).attr('href');
+function showMobilePlayer() {
+    console.log('je suis dans la fonction')
+    if (mobileMinPlayer.classList.contains('active')) {
+        console.log('je suis dans le if')
+        mobileMinPlayer.addEventListener('click', function (e) {
+            let breakElementsClass = ['playerPause', 'playerPlay', 'playerNext']
+            let showPlayerAllowed = true
+            breakElementsClass.forEach(elementClass => {
+                if (e.target.classList.contains(elementClass)) {
+                    showPlayerAllowed = false
+                }
+            });
+
+            if (showPlayerAllowed) {
+                let formData = {
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                }
+                lastPage = new URL(window.location.href).pathname;
+                $.ajax({
+                    url: '/mobile-player',
+                    type: 'POST',
+                    data: formData,
+                    dataType: 'json',
+                    success: function (response) {
+                        history.replaceState(null, '', '/player');
+                        $('#content').html($(response.data).find('#content').html());
+
+                        displayLastPage(lastPage)
+                        lastPageAction(lastPage)
+                    }
+                });
+            }
+        })
+    }
+}
+
+function displayLastPage(lastPage = null) {
+    let lastPageButton = document.getElementById('lastPageButton')
+    let lastPageLink = document.getElementById('lastPageLink')
+
+    if (window.location.pathname === '/player') {
+        lastPageButton.style.display = "block"
+        lastPageLink.href = lastPage
+
+    } else {
+        lastPageButton.style.display = "none"
+    }
+}
+
+function lastPageAction(lastPage) {
+    let lastPageButton = document.getElementById('lastPageButton')
+
+    lastPageButton.addEventListener('click', function () {
+        let url = lastPage;
+
         $.ajax({
             url: url,
             type: 'GET',
             success: function (data) {
                 $('#content').html($(data).find('#content').html());
                 history.replaceState(null, '', url);
-                showSongQueue(randomBtn.classList.contains('active') ? 'random' : 'normal');
-                randomFromWaitingPageEvent();
-                randomFromWaitingPage();
-                afficheAlbumAvecFavoris();
-                favoriteDelete();
-                playAlbumFromTitle();
-                fastPlayAlbum();
-                playFavoriteFromTitle();
-                fastPlayFavorite();
-                randomPlayFavorite();
-                favoriteArtistAddAndDelete();
-                favoriteAlbumAddAndDelete();
-                playerEvent();
-                playerPauseAndResume();
-                playerNext();
-                playerPrevious();
-                showAndHideSearchPage();
-                // searchTogglePhone();
             }
-        });
+        })
+    })
+}
+
+
+$(document).ready(function () {
+    $(document).on('click', 'a', function reloadOnPageChange(event) {
+        var excludedLinks = ['facebookLink', 'instagramLink', 'pinterestLink'];
+
+        if (!excludedLinks.includes($(this).attr('id'))) {
+            event.preventDefault();
+            let url = $(this).attr('href');
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (data) {
+
+                    $('#content').html($(data).find('#content').html());
+                    history.replaceState(null, '', url);
+                    showSongQueue(randomBtn.classList.contains('active') ? 'random' : 'normal');
+                    displayLastPage()
+                    randomFromWaitingPageEvent();
+                    randomFromWaitingPage();
+                    afficheAlbumAvecFavoris();
+                    favoriteDelete();
+                    playAlbumFromTitle();
+                    fastPlayAlbum();
+                    playFavoriteFromTitle();
+                    fastPlayFavorite();
+                    randomPlayFavorite();
+                    favoriteArtistAddAndDelete();
+                    favoriteAlbumAddAndDelete();
+                    playerEvent();
+                    playerPauseAndResume();
+                    playerNext();
+                    playerPrevious();
+                    showAndHideSearchPage();
+                    // searchTogglePhone();
+                }
+            });
+        }
     });
+    displayLastPage()
     showSongQueue();
     randomFromWaitingPageEvent();
     randomFromWaitingPage();

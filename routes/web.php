@@ -16,6 +16,7 @@ use App\Http\Controllers\TestController;
 use App\Http\Controllers\PlayAlbumController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PlayerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,6 +68,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/search', [SearchController::class, 'index'])->name('search.index');
     Route::post('/search', [SearchController::class, 'show'])->name('search.show');
+
+    Route::post('/mobile-player', [PlayerController::class, 'show'])->name('search.show');
 
     // Route::get('/test', [TestController::class, 'index'])->name('test.index');
     // Route::get('/test2', [TestController::class, 'show'])->name('test.show');
