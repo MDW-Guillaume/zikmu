@@ -50,4 +50,12 @@ class HomeController extends Controller
             'artists' => $artists
         ]);
     }
+
+    public function cgv(){
+        return view('cgv');
+    }
+
+    public function ml(){
+        return view('mentions-legales');
+    }
 }

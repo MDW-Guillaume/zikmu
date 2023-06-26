@@ -61,6 +61,11 @@
     }
 }
 
+.search-result-songs .search-result-songs-show-element,
+.search-result-songs .album-element{
+    width : 180px;
+}
+
 @media screen and (max-width : 500px){
     .page-search{
 

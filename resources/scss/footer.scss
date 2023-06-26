@@ -5,7 +5,7 @@ footer {
     bottom: 0;
     left: 0;
     margin-left: 270px;
-    z-index: 5;
+    z-index: 9999;
 
     .mobile-player {
         display: none;
@@ -61,8 +61,15 @@ footer {
             background-color: #2f1059;
             padding: 5px;
 
+
             &.active {
                 display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
+            .mobile-player-informations{
+                display : flex;
                 flex-direction: row;
             }
 
@@ -91,6 +98,7 @@ footer {
             justify-content: space-evenly;
             font-size: 14px;
             width: 60%;
+            margin-left: 20px;
 
             p {
                 margin: 0;

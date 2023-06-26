@@ -86,7 +86,7 @@
                     </div>
                 </div>
             </div>
-            <div class="music-player-waiting-list">
+            <div class="music-player-waiting-list" id="waitingListButton">
                 <a href="{{ route('waiting.index') }}" class="c-white">
                     <span class="waiting-icon-span"><img src="{{ URL::to('/img/queue.svg') }}" class="waiting-icon"
                             alt=""></span>

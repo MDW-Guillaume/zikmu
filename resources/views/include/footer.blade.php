@@ -1,5 +1,6 @@
 <footer>
     <div class="mobile-player" id="mobileMinPlayer">
+        <div class="mobile-player-informations">
         <div class="mobile-player-cover">
             <img src="" class="music-player-cover-image coverSong" id="coverSongMobile" alt="">
         </div>
@@ -8,7 +9,7 @@
             <span class="music-player-command-title-song playerInfoName" id="playerInfoNameMobile"></span>
             <span class="music-player-command-title-artist playerInfoArtist" id="playerInfoArtistMobile"></span>
         </div>
-
+    </div>
         <div class="mobile-player-commands">
             <img src="{{ URL::to('/img/pause.svg') }}" class="repeat-icon playerPause" id="playerPause" alt="">
             <img src="{{ URL::to('/img/play.svg') }}" class="repeat-icon playerPlay" id="playerPlay" alt="">
@@ -19,8 +20,8 @@
 
     <div class="footer-container">
         <ul class="footer-links">
-            <li><a href="#">Mentions légales</a></li>
-            <li><a href="#">CGV</a></li>
+            <li><a href="{{ route('ml') }}">Mentions légales</a></li>
+            <li><a href="{{ route('cgv') }}">CGV</a></li>
             <li><a href="#">Contact</a></li>
         </ul>
         <ul class="social-links">

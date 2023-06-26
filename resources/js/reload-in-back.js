@@ -712,6 +712,7 @@ function playSentSong(url, position, informations) {
     playerArtistSlug.href = "/artist/" + informations['artist_slug']
     playerAlbumSlug.href = "/album/" + informations['album_slug']
     showMobilePlayer()
+    sidebarEventWaitingList();
     player.play();
     player.setAttribute("position", position)
 
@@ -1687,11 +1688,12 @@ function displayLastPage(lastPage = null) {
     let lastPageLink = document.getElementById('lastPageLink')
 
     if (window.location.pathname === '/player') {
-        lastPageButton.style.display = "block"
+        lastPageLink.style.display = "block"
         lastPageLink.href = lastPage
 
     } else {
-        lastPageButton.style.display = "none"
+        // lastPageButton.style.display = "none"
+        lastPageLink.style.display = "none"
     }
 }
 
@@ -1712,6 +1714,18 @@ function lastPageAction(lastPage) {
     })
 }
 
+
+function sidebarEventWaitingList() {
+    let waitingListButton = document.getElementById('waitingListButton')
+
+    if (waitingListButton) {
+        waitingListButton.addEventListener('click', function (e) {
+            sidebarMenu.classList.remove('hide')
+            bottomSidebar.classList.remove('active')
+            bottomSidebar.classList.add('reduce')
+        })
+    }
+}
 
 $(document).ready(function () {
     $(document).on('click', 'a', function reloadOnPageChange(event) {

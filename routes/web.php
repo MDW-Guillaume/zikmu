@@ -71,6 +71,9 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/mobile-player', [PlayerController::class, 'show'])->name('search.show');
 
+    Route::get('/condition-generales-de-vente', [HomeController::class, 'cgv'])->name('cgv');
+    Route::get('/mentions-legales', [HomeController::class, 'ml'])->name('ml');
+
     // Route::get('/test', [TestController::class, 'index'])->name('test.index');
     // Route::get('/test2', [TestController::class, 'show'])->name('test.show');
 

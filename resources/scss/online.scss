@@ -32,11 +32,22 @@ body {
             display: flex;
             justify-content: space-between;
 
-            .lastPage{
-                // display : none;
-                width: 16px;
-                height: 16px;
-                margin: 8px 0 0 8px;
+            .header-first-elements {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+            }
+
+            a#lastPageLink {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+
+                .lastPage {
+                    width: 16px;
+                    height: 16px;
+                    margin: 8px 0 0 8px;
+                }
             }
 
             h1 {
@@ -46,6 +57,7 @@ body {
             h1 img {
                 width: 108px;
                 height: 40px;
+                overflow: visible;
             }
 
             .icons {
@@ -122,6 +134,12 @@ body {
     @media screen and (max-width : 768px) {
         padding: 10px;
         margin-bottom: 70px;
+    }
+
+    .page-ml{
+        h3 {
+            font-size: 18px;
+        }
     }
 }
 
@@ -370,6 +388,12 @@ body {
     }
 }
 
+.page-ml {
+    h3 {
+        font-size: 18px;
+    }
+}
+
 @keyframes showMessage {
     0% {
         top: -100px;
@@ -387,3 +411,4 @@ body {
         top: -100px;
     }
 }
+
