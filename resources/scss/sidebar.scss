@@ -195,11 +195,12 @@ audio {
         width: 100%;
 
         img {
-            &.music-player-cover-image{
+            &.music-player-cover-image {
                 width: 100%;
                 height: 270px;
                 object-fit: cover;
             }
+
             max-width: 100%;
         }
 
@@ -299,8 +300,8 @@ audio {
             text-align: center;
         }
 
-        a{
-            color : #fff;
+        a {
+            color: #fff;
         }
 
         .music-player-command-title-song {
@@ -314,22 +315,20 @@ audio {
         justify-content: space-between;
         align-items: flex-end;
 
-        #repeatOnce,
-        #repeat,
-        #randomBtn,
-        #playerPrevious,
-        #playerNext {
+        .repeatBtn,
+        .randomBtn,
+        .playerPrevious,
+        .playerNext {
             width: 20px;
             cursor: pointer;
         }
 
-        #repeatOnce,
-        #repeat,
-        #randomBtn {
+        .repeatBtn,
+        .randomBtn {
             height: 20px;
         }
 
-        #randomBtn {
+        .randomBtn {
             filter: brightness(0.50);
 
             &.active {
@@ -341,28 +340,20 @@ audio {
             }
         }
 
-        #repeat {
+        .repeatBtn {
             filter: brightness(0.5);
 
             &[data-status=loop] {
                 filter: brightness(1);
             }
 
-            &[data-status=loopOnce]{
+            &[data-status=loopOnce] {
                 filter: brightness(1);
             }
         }
 
         .music-player-command-controllers-rewind {
             height: 20px;
-
-            #repeatOnce {
-                display: none;
-
-                &.active {
-                    display: block;
-                }
-            }
         }
 
         .music-player-command-controllers-player {
@@ -371,22 +362,16 @@ audio {
             justify-content: space-between;
             align-items: center;
 
-            #playerPlay {
+            .playerPlay {
                 display: none;
             }
 
-            #playerPlay,
-            #playerPause {
+            .playerPlay,
+            .playerPause {
                 cursor: pointer;
                 height: 30px;
                 width: 26px;
                 margin: 0 30px;
-            }
-        }
-
-        .music-player-command-controllers-randomizer {
-            #randomInactive {
-                display: none;
             }
         }
     }

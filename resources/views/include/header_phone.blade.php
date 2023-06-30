@@ -2,7 +2,7 @@
     <div class="header-first-elements">
         <a href="" id="lastPageLink"><img src="{{ URL::to('/') }}/img/lastPage.png" class="lastPage"
                 id="lastPageButton"></a>
-        <h1>
+        <h1 id="headerMobileLogo">
             <a href="{{ route('home') }}">
                 <img src="{{ URL::to('/') }}/img/logo.png" alt="Zik&Mu">
             </a>

@@ -88,16 +88,10 @@
                 }
             }
 
-            @media screen and (max-width : 768px) {
-                width: calc(33% - 30px);
-            }
-
-            @media screen and (max-width : 620px) {
-                width: calc(50% - 30px);
-                .album-cover{
-                    width: 150px;
-                    height: 150px;
-                }
+            @media screen and (max-width: 768px) {
+                margin-right: 15px;
+                margin-bottom: 15px;
+                width : 180px;
             }
         }
 

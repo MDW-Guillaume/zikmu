@@ -11,8 +11,8 @@
         </div>
     </div>
         <div class="mobile-player-commands">
-            <img src="{{ URL::to('/img/pause.svg') }}" class="repeat-icon playerPause" id="playerPause" alt="">
-            <img src="{{ URL::to('/img/play.svg') }}" class="repeat-icon playerPlay" id="playerPlay" alt="">
+            <img src="{{ URL::to('/img/pause.svg') }}" class="repeat-icon playerPause playerPauseMobile" id="playerPause" alt="">
+            <img src="{{ URL::to('/img/play.svg') }}" class="repeat-icon playerPlay playerPlayMobile" id="playerPlay" alt="">
             <img src="{{ URL::to('/img/next.svg') }}" class="repeat-icon playerNext" id="playerNext" alt="">
         </div>
 

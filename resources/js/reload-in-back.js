@@ -26,7 +26,6 @@
 //             playSongForm[i].addEventListener('submit', function (e) {
 //                 e.preventDefault();
 //                 let formData = $(playSongForm[i]).serialize();
-
 //                 if (playSongForm[i].classList.contains('favorite-unique-song-form')) {
 //                     // SI le clic vient de la page Favoris
 //                     let url = '/play-form-favorite'
@@ -395,8 +394,8 @@ let playerArtistName = document.getElementById('playerInfoArtist');
 let playerArtistNameMobile = document.getElementById('playerInfoArtistMobile');
 let playerAlbumName = document.getElementById('playerInfoAlbum');
 let playerAlbumNameMobile = document.getElementById('playerInfoAlbumMobile');
-let playerArtistSlug = document.getElementById('playerInfoArtistSlug');
-let playerAlbumSlug = document.getElementById('playerInfoAlbumSlug');
+let playerArtistSlugs = document.querySelectorAll('.playerInfoArtistSlug');
+let playerAlbumSlugs = document.querySelectorAll('.playerInfoAlbumSlug');
 let bottomSidebar = document.querySelector('.bottom-sidebar');
 let mobileMinPlayer = document.getElementById('mobileMinPlayer')
 let pauseBtn = document.querySelectorAll('.playerPause')
@@ -696,22 +695,28 @@ function randomFromWaitingPage() {
 function playSentSong(url, position, informations) {
     mobileMinPlayer.classList.add('active')
     controlsDisplay()
-    console.log(informations)
+    // // console.log(informations)
     if (bottomSidebar.classList.contains('reduce')) {
         bottomSidebar.classList.remove('reduce')
     }
     player.pause();
     player.src = url;
     player.load();
+    // // console.log()
     playerCover.src = informations['cover']
     playerCoverMobile.src = informations['cover']
     playerSongName.innerHTML = informations['song']
     playerSongNameMobile.innerHTML = informations['song']
     playerArtistName.innerHTML = informations['artist']
     playerArtistNameMobile.innerHTML = informations['artist']
-    playerArtistSlug.href = "/artist/" + informations['artist_slug']
-    playerAlbumSlug.href = "/album/" + informations['album_slug']
-    showMobilePlayer()
+    playerArtistSlugs.forEach(playerArtistSlug => {
+        playerArtistSlug.href = "/artist/" + informations['artist_slug']
+    })
+    playerAlbumName.innerHTML = informations['album']
+    playerAlbumSlugs.forEach(playerAlbumSlug => {
+        playerAlbumSlug.href = "/album/" + informations['album_slug']
+    })
+    // showMobilePlayer()
     sidebarEventWaitingList();
     player.play();
     player.setAttribute("position", position)
@@ -740,6 +745,7 @@ function playNextQueuedSong() {
         } else {
             playerrandom = 'normal'
         }
+
 
         let formData = {
             _token: $('meta[name="csrf-token"]').attr('content'),
@@ -773,6 +779,7 @@ function playNextQueuedSong() {
                     // Je lance la lecture du premier titre.
                     playSentSong(response.song_url, response.position, playerInformations);
                     showSongQueue(playerrandom)
+                    displayPlayerInformations(response)
                 } else {
                     if (player.hasAttribute('replay') && player.getAttribute('replay') == 'all') {
                         // On met la position à 0 pour relancer la fonction et passer la position de 0 à 1
@@ -781,6 +788,8 @@ function playNextQueuedSong() {
                         playNextQueuedSong();
                     } else if (!player.hasAttribute('replay')) {
                         if (player.duration == player.currentTime) {
+                            let pauseBtn = querySelectorAll('.playerPause')
+                            let resumeBtn = querySelectorAll('.playerPLAY')
 
                             pauseBtn.forEach(pause => {
                                 pause.style.display = 'none'
@@ -850,6 +859,7 @@ function playPreviousQueuedSong() {
                     // Je lance la lecture du premier titre.
                     playSentSong(response.song_url, response.position, playerInformations);
                     showSongQueue(playerrandom)
+                    displayPlayerInformations(response)
                 } else {
                     if (player.hasAttribute('replay') && player.getAttribute('replay') == 'all') {
                         // On récupère la position du titre précédent + 1 grâce à response.position pour relancer la fonction et passer la position de x à x-1
@@ -1082,39 +1092,72 @@ function randomPlayFavorite() {
 }
 function afficheAlbumAvecFavoris() {
     let form = $('.actionFavorite')
+    // // console.log(form)
     if (form) {
-        for (let i = 0; i < form.length - 1; i++) {
-            $(document).ready(function () {
-                form[i].addEventListener('submit', function (e) {
+        // // console.log(form.length)
+        if (form.length === 1) {
+            form[0].addEventListener('submit', function (e) {
 
-                    e.preventDefault(); // Empêcher l'envoi par défaut du formulaire
-                    let formData = $(form[i]).serialize(); // Récupérer les données du formulaire
-                    $.ajax({
-                        url: '/favorite',
-                        type: 'POST',
-                        data: formData,
-                        dataType: 'json',
-                        success: function (response) {
-                            if (response.success) {
-                                // Mettre à jour la page sans la recharger
-                                if (form[i][2].classList.contains('is-favorite')) {
-                                    $(form[i][2]).removeClass('is-favorite')
-                                    document.getElementById('displayMessage').innerHTML = 'La titre a été supprimé de vos Coups de coeur';
-                                    document.getElementById('displayMessageContainer').classList.add('show');
-                                    setTimeout(function () { document.getElementById('displayMessageContainer').classList.remove('show') }, 4000);
-                                } else {
-                                    $(form[i][2]).addClass('is-favorite')
-                                    document.getElementById('displayMessage').innerHTML = 'La titre a été ajouté de vos Coups de coeur';
-                                    document.getElementById('displayMessageContainer').classList.add('show');
-                                    setTimeout(function () { document.getElementById('displayMessageContainer').classList.remove('show') }, 4000);
-                                }
+                e.preventDefault(); // Empêcher l'envoi par défaut du formulaire
+                let formData = $(form[0]).serialize(); // Récupérer les données du formulaire
+                // console.log(formData)
+                $.ajax({
+                    url: '/favorite',
+                    type: 'POST',
+                    data: formData,
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.success) {
+                            // console.log('Ouaiiiiiis la respoinse est successssss')
+                            let favoriteButton = document.querySelector('.favorite-album')
+                            let notFavoriteButton = document.querySelector('.not-favorite-album')
+                            // console.log(favoriteButton)
+                            if (response.action == 'add') {
+                                favoriteButton.style.display = 'block'
+                                notFavoriteButton.style.display = 'none'
                             } else {
-                                alert('Une erreur est survenue : ' + response.error);
+                                favoriteButton.style.display = 'none'
+                                notFavoriteButton.style.display = 'block'
                             }
                         }
+                    }
+                })
+            })
+        } else {
+            for (let i = 0; i < form.length - 1; i++) {
+                $(document).ready(function () {
+                    form[i].addEventListener('submit', function (e) {
+
+                        e.preventDefault(); // Empêcher l'envoi par défaut du formulaire
+                        let formData = $(form[i]).serialize(); // Récupérer les données du formulaire
+                        $.ajax({
+                            url: '/favorite',
+                            type: 'POST',
+                            data: formData,
+                            dataType: 'json',
+                            success: function (response) {
+                                if (response.success) {
+                                    // console.log('Ouaiiiiiis la respoinse est successssss')
+                                    // Mettre à jour la page sans la recharger
+                                    if (form[i][2].classList.contains('is-favorite')) {
+                                        $(form[i][2]).removeClass('is-favorite')
+                                        document.getElementById('displayMessage').innerHTML = 'La titre a été supprimé de vos Coups de coeur';
+                                        document.getElementById('displayMessageContainer').classList.add('show');
+                                        setTimeout(function () { document.getElementById('displayMessageContainer').classList.remove('show') }, 4000);
+                                    } else {
+                                        $(form[i][2]).addClass('is-favorite')
+                                        document.getElementById('displayMessage').innerHTML = 'La titre a été ajouté de vos Coups de coeur';
+                                        document.getElementById('displayMessageContainer').classList.add('show');
+                                        setTimeout(function () { document.getElementById('displayMessageContainer').classList.remove('show') }, 4000);
+                                    }
+                                } else {
+                                    alert('Une erreur est survenue : ' + response.error);
+                                }
+                            }
+                        });
                     });
                 });
-            });
+            }
         }
     }
 }
@@ -1290,104 +1333,154 @@ function favoriteAlbumAddAndDelete() {
     }
 }
 
-/* Player Controls */
-function playerEvent() {
-    let trackTime = document.getElementById('musicDuration');
-    let timeSlider = document.getElementById('timeSlider');
-    let trackCurrentTime = document.getElementById('musicCurrentTime');
-    let reducePlayerIcon = document.getElementById('reducePlayer');
-    let showPlayerIcon = document.getElementById('showPlayer');
-    let sidebarMenu = document.getElementById('sidebarMenu');
-    // let pauseBtn = document.getElementsByClassName('playerPause')
-    // let resumeBtn = document.getElementById('playerPlay')
-    // Créer une instance de MutationObserver avec une fonction de rappel
+function showSidePlayerEvent(a = null) {
+    // let allowAccess = null
+    // console.log(a)
     let observer = new MutationObserver((mutationsList) => {
         for (let mutation of mutationsList) {
             if (mutation.type === 'attributes' && mutation.attributeName === 'src' && player.getAttribute('src')) {
-                pauseBtn.forEach(pause => {
-                    pause.style.display = 'block'
-                });
-                resumeBtn.forEach(resume => {
-                    resume.style.display = 'none'
-                });
-
-                bottomSidebar.classList.add('active')
-                sidebarMenu.classList.add('hide')
-
-                reducePlayerIcon.addEventListener('click', function () {
-                    sidebarMenu.classList.remove('hide')
-                    bottomSidebar.classList.remove('active')
-                    bottomSidebar.classList.add('reduce')
-                })
-
-                showPlayerIcon.addEventListener('click', function () {
-                    sidebarMenu.classList.add('hide')
-                    bottomSidebar.classList.add('active')
-                    bottomSidebar.classList.remove('reduce')
-                })
-
-                // Crée un format de retour avec minutes et secondes.
-                function buildDuration(duration) {
-                    let minutes = Math.floor(duration / 60)
-                    let reste = duration % 60
-                    let secondes = Math.floor(reste)
-                    secondes = String(secondes).padStart(2, "0")
-                    return minutes + ":" + secondes
-                }
-
-                // Définit la position exacte de la lecture
-                function setTrackCurrentTime() {
-                    let trackMaxTime = buildDuration(player.currentTime)
-                    trackCurrentTime.textContent = trackMaxTime
-                }
-
-                // Définit l'attribut max dans le slider du lecteur
-                function setTrackMaxTime() {
-                    trackTime.textContent = buildDuration(player.duration)
-                    timeSlider.setAttribute('max', player.duration)
-                }
-
-                // Permet de faire glisser le slider du temps de la musique
-                function updateSlider() {
-                    let actualTime = player.currentTime
-                    timeSlider.value = actualTime
-                }
-
-                // Joue le son à partir du temps séléctionné dans le slider
-                function setSelectedTime() {
-                    let selectedTime = parseFloat(timeSlider.value)
-                    player.currentTime = selectedTime
-                }
-
-                player.addEventListener('loadeddata', function () {
-                    setTrackMaxTime()
-                    setInterval(updateSlider, 50);
-
-                })
-
-                player.addEventListener('timeupdate', function () {
-                    setTrackCurrentTime()
-                })
-
-                timeSlider.addEventListener('change', function () {
-                    player.pause()
-                    setSelectedTime()
-                    player.play()
-                    player.addEventListener('timeupdate', function () {
-                        setTrackCurrentTime()
-                    })
-                })
+                // allowAccess = true
+                playerEvent(a)
             }
         }
     });
     observer.observe(player, { attributes: true });
+
+    if (a) {
+        // allowAccess = true
+        playerEvent(a)
+    }
+    // if(allowAccess){
+    // }
+}
+
+/* Player Controls */
+function playerEvent(allowAccess = null) {
+    // console.log(allowAccess)
+    let trackTimes = document.querySelectorAll('.musicDuration');
+    // let trackTime = document.getElementById('musicDuration');
+    // let timeSlider = document.getElementById('timeSlider');
+    let timeSliders = document.querySelectorAll('.timeSlider');
+    // let trackCurrentTime = document.getElementById('musicCurrentTime');
+    let trackCurrentTimes = document.querySelectorAll('.musicCurrentTime');
+    let reducePlayerIcon = document.getElementById('reducePlayer');
+    let showPlayerIcon = document.getElementById('showPlayer');
+    let sidebarMenu = document.getElementById('sidebarMenu');
+    let pauseBtn = document.querySelectorAll('.playerPause')
+    let resumeBtn = document.querySelectorAll('.playerPlay')
+    // Créer une instance de MutationObserver avec une fonction de rappel
+
+    // let observer = new MutationObserver((mutationsList) => {
+    //     for (let mutation of mutationsList) {
+    //         if (mutation.type === 'attributes' && mutation.attributeName === 'src' && player.getAttribute('src')) {
+    //             allowAccess = true
+    //         }
+    //     }
+    // });
+    // observer.observe(player, { attributes: true });
+    // // console.log(allowAccess)
+    // // console.log(trackTimes)
+    // if (allowAccess) {
+    pauseBtn.forEach(pause => {
+        pause.style.display = 'block'
+    });
+    resumeBtn.forEach(resume => {
+        resume.style.display = 'none'
+    });
+
+    bottomSidebar.classList.add('active')
+    sidebarMenu.classList.add('hide')
+
+    reducePlayerIcon.addEventListener('click', function () {
+        sidebarMenu.classList.remove('hide')
+        bottomSidebar.classList.remove('active')
+        bottomSidebar.classList.add('reduce')
+    })
+
+    showPlayerIcon.addEventListener('click', function () {
+        sidebarMenu.classList.add('hide')
+        bottomSidebar.classList.add('active')
+        bottomSidebar.classList.remove('reduce')
+    })
+
+    // Crée un format de retour avec minutes et secondes.
+    function buildDuration(duration) {
+        let minutes = Math.floor(duration / 60)
+        let reste = duration % 60
+        let secondes = Math.floor(reste)
+        secondes = String(secondes).padStart(2, "0")
+        return minutes + ":" + secondes
+    }
+
+    // Définit la position exacte de la lecture
+    function setTrackCurrentTime() {
+        let trackMaxTime = buildDuration(player.currentTime)
+        trackCurrentTimes.forEach(trackCurrentTime => {
+            trackCurrentTime.textContent = trackMaxTime
+        })
+    }
+
+    // Définit l'attribut max dans le slider du lecteur
+    function setTrackMaxTime() {
+        trackTimes.forEach(trackTime => {
+            trackTime.textContent = buildDuration(player.duration)
+        })
+        timeSliders.forEach(timeSlider => {
+            timeSlider.setAttribute('max', player.duration)
+        })
+    }
+
+    // Permet de faire glisser le slider du temps de la musique
+    function updateSlider() {
+        let actualTime = player.currentTime
+        timeSliders.forEach(timeSlider => {
+            timeSlider.value = actualTime
+        })
+    }
+
+    // Joue le son à partir du temps séléctionné dans le slider
+    function setSelectedTime(slider) {
+        let selectedTime = parseFloat(slider.value)
+        player.currentTime = selectedTime
+    }
+
+    if (allowAccess === 'mobile') {
+        setTrackMaxTime()
+        setInterval(updateSlider, 50);
+    } else {
+        player.addEventListener('loadeddata', function () {
+            setTrackMaxTime()
+            setInterval(updateSlider, 50);
+        })
+    }
+
+    player.addEventListener('timeupdate', function () {
+        setTrackCurrentTime()
+    })
+
+    timeSliders.forEach(timeSlider => {
+
+        timeSlider.addEventListener('change', function () {
+            player.pause()
+            setSelectedTime(this)
+            player.play()
+            player.addEventListener('timeupdate', function () {
+                setTrackCurrentTime()
+            })
+        })
+    })
+    // }
 }
 function playerPauseAndResume() {
+    let pauseBtn = document.querySelectorAll('.playerPause')
+    let resumeBtn = document.querySelectorAll('.playerPlay')
     pauseBtn.forEach(pause => {
 
         pause.addEventListener('click', function () {
             player.pause()
-            pause.style.display = 'none'
+            pauseBtn.forEach(eachPause => {
+                eachPause.style.display = 'none'
+            })
             resumeBtn.forEach(resume => {
                 resume.style.display = 'block'
             })
@@ -1399,7 +1492,9 @@ function playerPauseAndResume() {
             player.play()
             pauseBtn.forEach(pause => {
                 pause.style.display = 'block'
-                resume.style.display = 'none'
+            })
+            resumeBtn.forEach(eachResume => {
+                eachResume.style.display = 'none'
             })
         })
     })
@@ -1420,19 +1515,31 @@ function controlsDisplay() {
         dataType: 'json',
         cache: false,
         success: function (response) {
+            // let repeatButton = document.getElementById('repeat')
+            let repeatButtonStatus = document.querySelector('.repeatBtn').dataset.status
             playerPrevious.forEach(previous => {
-                if (player.getAttribute('position') == 1) {
-                    previous.style.filter = "brightness(0.5)";
-                    previous.style.cursor = "default"
+                if (repeatButtonStatus == 'initial') {
+                    if (player.getAttribute('position') == 1) {
+                        previous.style.filter = "brightness(0.5)";
+                        previous.style.cursor = "default"
+                    } else {
+                        previous.style.filter = "brightness(1)";
+                        previous.style.cursor = "pointer"
+                    }
                 } else {
                     previous.style.filter = "brightness(1)";
                     previous.style.cursor = "pointer"
                 }
             })
             playerNext.forEach(next => {
-                if (player.getAttribute('position') == response.length) {
-                    next.style.filter = "brightness(0.5)";
-                    next.style.cursor = "default"
+                if (repeatButtonStatus == 'initial') {
+                    if (player.getAttribute('position') == response.length) {
+                        next.style.filter = "brightness(0.5)";
+                        next.style.cursor = "default"
+                    } else {
+                        next.style.filter = "brightness(1)";
+                        next.style.cursor = "pointer"
+                    }
                 } else {
                     next.style.filter = "brightness(1)";
                     next.style.cursor = "pointer"
@@ -1464,32 +1571,40 @@ function playerPrevious() {
     }
 }
 function playerRandom() {
-    if (randomBtn) {
-        randomBtn.addEventListener('click', function () {
-            randomBtnEvent()
+    let randomBtns = document.querySelectorAll('.randomBtn')
+    if (randomBtns) {
+        randomBtns.forEach(randomBtn => {
+            randomBtn.addEventListener('click', function () {
+                randomBtnEvent()
+            })
         })
     }
 }
 function randomBtnEvent() {
+    // console.log('randomBtnEvent')
+    let status
+    let randomBtns = document.querySelectorAll('.randomBtn')
+    if (randomBtns) {
+        randomBtns.forEach(randomBtn => {
 
-    if (randomBtn.classList.contains('active')) {
-        randomBtn.classList.remove('active')
-        if (randomPlaylistAction && randomPlaylistAction.classList.contains('active')) {
-            randomPlaylistAction.classList.remove('active')
-        }
-
-        randomFromWaitingPageEvent()
-        randomizeQueuedSong('normal')
-    } else {
-        randomBtn.classList.add('active')
-        if (randomPlaylistAction && randomPlaylistAction.classList.contains('active')) {
-            randomPlaylistAction.classList.add('active')
-        }
-
-        randomFromWaitingPageEvent()
-        randomizeQueuedSong('random')
-
+            if (randomBtn.classList.contains('active')) {
+                randomBtn.classList.remove('active')
+                if (randomPlaylistAction && randomPlaylistAction.classList.contains('active')) {
+                    randomPlaylistAction.classList.remove('active')
+                }
+                status = 'normal'
+            } else {
+                randomBtn.classList.add('active')
+                if (randomPlaylistAction && randomPlaylistAction.classList.contains('active')) {
+                    randomPlaylistAction.classList.add('active')
+                }
+                status = 'random'
+            }
+        })
     }
+    randomFromWaitingPageEvent()
+    randomizeQueuedSong(status)
+    controlsDisplay()
 }
 
 // function playerLoop() {
@@ -1516,34 +1631,43 @@ function randomBtnEvent() {
 // }
 
 function playerLoop() {
-    let repeatButton = document.getElementById('repeat')
+    let repeatButtons = document.querySelectorAll('.repeatBtn')
 
-    if (repeatButton) {
-        repeatButton.addEventListener('click', function () {
-            loopBtnEvent(repeatButton)
+    if (repeatButtons) {
+        repeatButtons.forEach(repeatBtn => {
+            repeatBtn.addEventListener('click', function () {
+                loopBtnEvent(repeatBtn, repeatButtons)
+            })
         })
     }
 }
 
-function loopBtnEvent(repeatButton) {
+function loopBtnEvent(repeatButton, repeatButtons) {
     let repeatButtonStatus = repeatButton.dataset.status
 
     switch (repeatButtonStatus) {
         case 'initial':
-            repeatButton.dataset.status = 'loop'
-            repeatButton.src = "/img/repeat.svg"
+            repeatButtons.forEach(repeatBtn => {
+                repeatBtn.dataset.status = 'loop'
+                repeatBtn.src = "/img/repeat.svg"
+            })
             break;
         case 'loop':
-            repeatButton.dataset.status = 'loopOnce'
-            repeatButton.src = "/img/repeatOnce.svg"
+            repeatButtons.forEach(repeatBtn => {
+                repeatBtn.dataset.status = 'loopOnce'
+                repeatBtn.src = "/img/repeatOnce.svg"
+            })
             break;
         case 'loopOnce':
-            repeatButton.dataset.status = 'initial'
-            repeatButton.src = "/img/repeat.svg"
+            repeatButtons.forEach(repeatBtn => {
+                repeatBtn.dataset.status = 'initial'
+                repeatBtn.src = "/img/repeat.svg"
+            })
             break;
         default:
             break;
     }
+    controlsDisplay()
     loopQueuedSong(repeatButton.dataset.status)
 
 }
@@ -1647,52 +1771,143 @@ function showAndHideSearchPage() {
 
 /* Mobile show player */
 
-function showMobilePlayer() {
-    console.log('je suis dans la fonction')
-    if (mobileMinPlayer.classList.contains('active')) {
-        console.log('je suis dans le if')
-        mobileMinPlayer.addEventListener('click', function (e) {
-            let breakElementsClass = ['playerPause', 'playerPlay', 'playerNext']
-            let showPlayerAllowed = true
-            breakElementsClass.forEach(elementClass => {
-                if (e.target.classList.contains(elementClass)) {
-                    showPlayerAllowed = false
-                }
-            });
+function showMobilePlayerEvent() {
+    // console.log('showMobileplayer')
+    mobileMinPlayer.addEventListener('click', function (e) {
+        // console.log('showMobileplayer click')
+        let breakElementsClass = ['playerPause', 'playerPlay', 'playerNext']
+        // Récupérer les classes de l'élément cliqué
+        let clickedElementClasses = Array.from(e.target.classList);
 
-            if (showPlayerAllowed) {
-                let formData = {
-                    _token: $('meta[name="csrf-token"]').attr('content')
-                }
-                lastPage = new URL(window.location.href).pathname;
-                $.ajax({
-                    url: '/mobile-player',
-                    type: 'POST',
-                    data: formData,
-                    dataType: 'json',
-                    success: function (response) {
-                        history.replaceState(null, '', '/player');
-                        $('#content').html($(response.data).find('#content').html());
+        // Vérifier si l'élément cliqué possède une classe présente dans breakElementsClass
+        let hasBreakClass = breakElementsClass.some(function (breakClass) {
+            return clickedElementClasses.includes(breakClass);
+        });
 
-                        displayLastPage(lastPage)
-                        lastPageAction(lastPage)
-                    }
-                });
+        // Exécuter showPage si l'élément cliqué ne possède aucune classe de breakElementsClass
+        if (!hasBreakClass) {
+            showMobilePlayerPage();
+        }
+    })
+}
+
+function showMobilePlayerPage() {
+    let pos = player.getAttribute('position')
+    let formData = {
+        _token: $('meta[name="csrf-token"]').attr('content'),
+        position: pos
+    }
+    lastPage = new URL(window.location.href).pathname;
+    $.ajax({
+        url: '/mobile-player',
+        type: 'POST',
+        data: formData,
+        dataType: 'json',
+        success: function (response) {
+            history.replaceState(null, '', '/player');
+            $('#content').html($(response.data).find('#content').html());
+            let allowAccess = 'mobile'
+            playerEvent(allowAccess)
+            displayPlayerInformations(response)
+            playerPauseAndResume()
+            controlsDisplay()
+            playerNext()
+            playerPrevious()
+            playerLoop()
+            playerRandom()
+            afficheAlbumAvecFavoris()
+            playerNavigation()
+            displayLastPage(lastPage);
+            lastPageAction(lastPage);
+            mobileMinPlayer.style.display = 'none'
+            let randomBtn = document.querySelector('.randomBtn')
+            let randomBtnMobile = document.querySelector('.randomBtnMobile')
+            if (randomBtn.classList.contains('active')) {
+                randomBtnMobile.classList.add('active')
+            } else {
+                if (randomBtnMobile.classList.contains('active')) {
+                    randomBtnMobile.classList.remove('active')
+                }
             }
+
+            let playerPauseMobiles = document.querySelectorAll('.playerPauseMobile')
+            let playerPlayMobiles = document.querySelectorAll('.playerPlayMobile')
+            if (player.paused) {
+                playerPauseMobiles.forEach(playerPauseMobile => {
+                    playerPauseMobile.style.display = 'none'
+                })
+                playerPlayMobiles.forEach(playerPlayMobile => {
+                    playerPlayMobile.style.display = 'block'
+                })
+            }
+        }
+    })
+}
+
+function displayPlayerInformations(response) {
+    // // console.log(response)
+    let albumTopName = document.getElementById('albumName')
+    let albumName = document.getElementById('playerInfoAlbumMobile')
+    let titleName = document.getElementById('playerInfoNameMobile')
+    let artistName = document.getElementById('playerInfoArtistMobile')
+    let albumCover = document.getElementById('albumCover')
+    let songIdFavorite = document.getElementById('songIdFavorite')
+    let favoriteButton = document.querySelector('.favorite-album')
+    let notFavoriteButton = document.querySelector('.not-favorite-album')
+    let playerArtistSlugs = document.querySelectorAll('.playerInfoArtistSlug')
+    let playerAlbumSlugs = document.querySelectorAll('.playerInfoAlbumSlug')
+    playerArtistSlugs.forEach(playerArtistSlug => {
+        playerArtistSlug.href = "/artist/" + response.artist_slug
+    })
+    playerAlbumSlugs.forEach(playerAlbumSlug => {
+        playerAlbumSlug.href = "/album/" + response.album_slug
+    })
+
+    albumTopName ? albumTopName.innerHTML = response.album_name : null
+    albumName ? albumName.innerHTML = response.album_name : null
+    albumCover ? albumCover.src = response.cover_url : null
+    titleName ? titleName.innerHTML = response.song_name : null
+    artistName ? artistName.innerHTML = response.artist_name : null
+    songIdFavorite ? songIdFavorite.value = response.song_id : null
+    // console.log(response.is_favorite)
+    if (favoriteButton && notFavoriteButton) {
+        if (response.is_favorite === true) {
+            favoriteButton.style.display = 'block'
+            notFavoriteButton.style.display = 'none'
+        } else {
+            favoriteButton.style.display = 'none'
+            notFavoriteButton.style.display = 'block'
+        }
+    }
+}
+
+function playerNavigation() {
+    let playerInfoAlbumSlug = document.querySelector('.playerInfoAlbumSlugMobile')
+    let playerInfoArtistSlug = document.querySelector('.playerInfoArtistSlugMobile')
+    let waitingLinkMobile = document.getElementById('waitingLinkMobile')
+    let lastPageButton = document.getElementById('lastPageButton')
+    let externalLinks = [playerInfoAlbumSlug, playerInfoArtistSlug, waitingLinkMobile, lastPageButton]
+    if (playerInfoAlbumSlug && playerInfoArtistSlug && waitingLinkMobile) {
+        console.log('lfiehzvfbueshfblskjehfbviu')
+        externalLinks.forEach(link => {
+            link.addEventListener('click', function () {
+                mobileMinPlayer.style.display = 'flex'
+            })
         })
     }
 }
 
 function displayLastPage(lastPage = null) {
-    let lastPageButton = document.getElementById('lastPageButton')
     let lastPageLink = document.getElementById('lastPageLink')
+    let logo = document.getElementById('headerMobileLogo')
 
     if (window.location.pathname === '/player') {
+        logo.style.display = 'none'
         lastPageLink.style.display = "block"
         lastPageLink.href = lastPage
 
     } else {
-        // lastPageButton.style.display = "none"
+        logo.style.display = 'block'
         lastPageLink.style.display = "none"
     }
 }
@@ -1741,8 +1956,9 @@ $(document).ready(function () {
 
                     $('#content').html($(data).find('#content').html());
                     history.replaceState(null, '', url);
+                    // showMobilePlayerEvent();
                     showSongQueue(randomBtn.classList.contains('active') ? 'random' : 'normal');
-                    displayLastPage()
+                    displayLastPage();
                     randomFromWaitingPageEvent();
                     randomFromWaitingPage();
                     afficheAlbumAvecFavoris();
@@ -1754,7 +1970,7 @@ $(document).ready(function () {
                     randomPlayFavorite();
                     favoriteArtistAddAndDelete();
                     favoriteAlbumAddAndDelete();
-                    playerEvent();
+                    // playerEvent();
                     playerPauseAndResume();
                     playerNext();
                     playerPrevious();
@@ -1764,12 +1980,15 @@ $(document).ready(function () {
             });
         }
     });
-    displayLastPage()
+
+    showMobilePlayerEvent();
+    displayLastPage();
     showSongQueue();
+    showSidePlayerEvent();
     randomFromWaitingPageEvent();
     randomFromWaitingPage();
     afficheAlbumAvecFavoris();
-    playAlbumFromTitle()
+    playAlbumFromTitle();
     favoriteDelete();
     fastPlayAlbum();
     playFavoriteFromTitle();
@@ -1777,7 +1996,7 @@ $(document).ready(function () {
     randomPlayFavorite();
     favoriteArtistAddAndDelete();
     favoriteAlbumAddAndDelete();
-    playerEvent();
+    // playerEvent();
     playerPauseAndResume();
     playerNext();
     playerPrevious();

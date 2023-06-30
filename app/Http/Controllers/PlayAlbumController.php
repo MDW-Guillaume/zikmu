@@ -32,6 +32,8 @@ class PlayAlbumController extends Controller
             $get_album_information = DB::table('albums')->where('id', $get_song_information->album_id)->select('artist_id', 'slug', 'length', 'release', 'name', 'cover')->first();
             $get_artist_information = DB::table('artists')->where('id', $get_album_information->artist_id)->select('slug', 'name')->first();
 
+            $is_song_favorite = DB::table('songs_users')->where('user_id', $user_id->id)->where('song_id', $song_position_id->song_id)->exists();
+
             $release = $get_album_information->release;
             $length = $get_album_information->length;
             $artist_slug = $get_artist_information->slug;
@@ -50,7 +52,7 @@ class PlayAlbumController extends Controller
 
             $song_url = '/origin/public/files/music/' . $artist_slug . '/' . $album_slug . '/' . $song_slug;
 
-            return response()->json(['success' => true, 'position' => $position, 'song_url' => $song_url, 'cover_url' => $cover_url,  'song_name' => $song_name, 'album_name' => $album_name, 'artist_name' => $artist_name, 'album_slug' => $album_slug, 'artist_slug' => $artist_slug]);
+            return response()->json(['success' => true, 'position' => $position, 'song_id' => $song_position_id->song_id, 'song_url' => $song_url, 'cover_url' => $cover_url,  'song_name' => $song_name, 'is_favorite' => $is_song_favorite, 'album_name' => $album_name, 'artist_name' => $artist_name, 'album_slug' => $album_slug, 'artist_slug' => $artist_slug]);
         } else {
             return response()->json(['success' => false]);
         }
@@ -77,6 +79,9 @@ class PlayAlbumController extends Controller
             $get_album_information = DB::table('albums')->where('id', $get_song_information->album_id)->select('artist_id', 'slug', 'length', 'release', 'name', 'cover')->first();
             $get_artist_information = DB::table('artists')->where('id', $get_album_information->artist_id)->select('slug', 'name')->first();
 
+            $is_song_favorite = DB::table('songs_users')->where('user_id', $user_id->id)->where('song_id', $song_position_id->song_id)->exists();
+
+
             $release = $get_album_information->release;
             $length = $get_album_information->length;
             $artist_slug = $get_artist_information->slug;
@@ -95,7 +100,7 @@ class PlayAlbumController extends Controller
 
             $song_url = '/origin/public/files/music/' . $artist_slug . '/' . $album_slug . '/' . $song_slug;
 
-            return response()->json(['success' => true, 'position' => $position, 'song_url' => $song_url, 'cover_url' => $cover_url,  'song_name' => $song_name, 'album_name' => $album_name, 'artist_name' => $artist_name, 'album_slug' => $album_slug, 'artist_slug' => $artist_slug]);
+            return response()->json(['success' => true, 'position' => $position, 'song_id' => $song_position_id->song_id, 'song_url' => $song_url, 'cover_url' => $cover_url,  'song_name' => $song_name, 'is_favorite' => $is_song_favorite, 'album_name' => $album_name, 'artist_name' => $artist_name, 'album_slug' => $album_slug, 'artist_slug' => $artist_slug]);
         } else {
             $allQueue = DB::table('songs_queues')->where(['user_id' => $user_id->id])->get();
             $last_played_song = count($allQueue);

@@ -51,36 +51,36 @@
                 <div class="music-player-command-slide">
                     <div class="music-player-command-slide-time">
                         <div class="music-player-command-slide-time-direct">
-                            <span id="musicCurrentTime">00:00<span>
+                            <span class="musicCurrentTime">00:00<span>
                         </div>
                         <div class="music-player-command-slide-time-total">
-                            <span id="musicDuration">00:00<span>
+                            <span class="musicDuration">00:00<span>
                         </div>
                     </div>
                     <div class="music-player-command-slide-controller">
-                        <input type="range" id="timeSlider" step="0.01">
+                        <input type="range" class="timeSlider" step="0.01">
                     </div>
                 </div>
                 <div class="music-player-command-title">
                     <span class="music-player-command-title-song playerInfoName" id="playerInfoName"></span><br>
-                    <a href="" id="playerInfoAlbumSlug"><span class="music-player-command-title-album playerInfoAlbum"
+                    <a href="" class="playerInfoAlbumSlug"><span class="music-player-command-title-album playerInfoAlbum"
                         id="playerInfoAlbum"></span></a>
                     <span class="music-player-command-title-separator">• </span>
-                    <a href="" id="playerInfoArtistSlug"><span class="music-player-command-title-artist playerInfoArtist" id="playerInfoArtist"></span></a>
+                    <a href="" class="playerInfoArtistSlug"><span class="music-player-command-title-artist playerInfoArtist" id="playerInfoArtist"></span></a>
                 </div>
                 <div class="music-player-command-controllers">
                     <div class="music-player-command-controllers-rewind">
-                        <img src="{{ URL::to('/img/repeat.svg') }}" class="repeat-icon" id="repeat" data-status="initial" alt="">
+                        <img src="{{ URL::to('/img/repeat.svg') }}" class="repeat-icon repeatBtn" data-status="initial" alt="">
                     </div>
                     <div class="music-player-command-controllers-player">
                         <img src="{{ URL::to('/img/previous.svg') }}" class="repeat-icon playerPrevious" id="playerPrevious"
                             alt="">
-                        <img src="{{ URL::to('/img/pause.svg') }}" class="repeat-icon playerPause" id="playerPause" alt="">
-                        <img src="{{ URL::to('/img/play.svg') }}" class="repeat-icon playerPlay" id="playerPlay" alt="">
+                        <img src="{{ URL::to('/img/pause.svg') }}" class="repeat-icon playerPause"  alt="">
+                        <img src="{{ URL::to('/img/play.svg') }}" class="repeat-icon playerPlay"  alt="">
                         <img src="{{ URL::to('/img/next.svg') }}" class="repeat-icon playerNext" id="playerNext" alt="">
                     </div>
                     <div class="music-player-command-controllers-randomizer">
-                        <img src="{{ URL::to('/img/randomizer.svg') }}" class="repeat-icon" id="randomBtn"
+                        <img src="{{ URL::to('/img/randomizer.svg') }}" class="repeat-icon randomBtn" id="randomBtn"
                             alt="">
 
                     </div>

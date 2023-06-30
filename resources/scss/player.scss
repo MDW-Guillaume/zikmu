@@ -1,0 +1,114 @@
+.page-player {
+    .album-name {
+        justify-content: center;
+        font-size: 24px;
+    }
+
+    .album-cover {
+        margin: 20px;
+        text-align: center;
+        img {
+            max-width: 300px;
+            width: 100%;
+        }
+    }
+
+    .title-favorite {
+        button {
+            padding: 12px 30px;
+            border-radius: 50px;
+
+            font-family: 'Roboto';
+            font-style: normal;
+            font-size: 14px;
+            line-height: 16px;
+            text-transform: uppercase;
+            color: #fff;
+
+            display: flex;
+            align-items: center;
+
+            background: transparent;
+            border-color: #fff;
+            border-width: 1px;
+
+            font-weight: 400;
+            cursor: pointer;
+            margin: 0 auto;
+
+            &.is_favorite {
+                .not-favorite-album {
+                    display: none;
+                }
+
+                .favorite-album {
+                    display: block;
+                }
+            }
+
+            img {
+                margin-right: 10px;
+                width: 16px;
+                height: 16px;
+            }
+
+            .favorite-album {
+                display: none;
+            }
+        }
+    }
+
+    .music-player-command-title {
+        text-align: center;
+    }
+
+    .music-player-command-container {
+        margin-top: 20px;
+
+        .music-player-command-controllers {
+            align-items: center;
+
+            .playerPauseMobile,
+            .playerPlayMobile {
+                cursor: pointer;
+                height: 30px;
+                width: 26px;
+                margin: 0 30px;
+            }
+
+            img {
+                width: 20px;
+                height: 20px;
+            }
+
+            .music-player-command-controllers-player {
+                .playerPlayMobile{display : none;}
+            }
+        }
+    }
+
+    .music-player-waiting-list {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 20px;
+
+        a {
+            background-color: transparent;
+            flex-direction: row-reverse;
+            justify-content: flex-start;
+            padding: 0;
+
+            img {
+                margin-left: 10px;
+            }
+
+            .waiting-icon-span {
+                margin-right: 0;
+            }
+
+            .waiting-text-span {
+                font-size: 14px;
+            }
+        }
+    }
+}

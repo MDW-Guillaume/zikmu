@@ -16,7 +16,17 @@
         <div class="page-songqueue page-album" id="songQueuePage">
             <input name="csrf" type="hidden" value="{{ csrf_token() }}" id="csrfToken">
             <div class="style-name">
-                <h2>A suivre</h2>
+                <h2>A l'écoute</h2>
+                <div class="style-name-info">
+                    <div class="style-name-info-titles">
+                        <span class="style-name-info-titles-number" id="songQueueTitles"></span>
+                        <span class="style-name-info-titles-text">titres</span>
+                    </div>
+                    <div class="separator"> • </div>
+                    <div class="style-name-info-length">
+                        <span class="style-name-info-length-number" id="songQueueLength"></span>
+                    </div>
+                </div>
             </div>
 
             <div class="song-playing-container">
@@ -31,14 +41,7 @@
 
             <div class="playlist-panel">
                 <div class="playlist-panel-info">
-                    <div class="playlist-panel-info-titles">
-                        <span class="playlist-panel-info-titles-number" id="songQueueTitles"></span>
-                        <span class="playlist-panel-info-titles-text">titres</span>
-                    </div>
-                    <div class="separator"> • </div>
-                    <div class="playlist-panel-info-length">
-                        <span class="playlist-panel-info-length-number" id="songQueueLength"></span>
-                    </div>
+                   <span>A suivre</span>
                 </div>
                 <div class="playlist-panel-action" id="randomPlaylistAction">
                     <span class="playlist-panel-action-label">lecture aléatoire</span>
