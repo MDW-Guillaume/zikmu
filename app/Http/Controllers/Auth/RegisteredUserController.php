@@ -39,7 +39,7 @@ class RegisteredUserController extends Controller
             'lastname' => ['string'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', Rules\Password::defaults()],
-            // 'creation' => ['boolean']
+            'cgv'       => 'required'
         ]);
 
         $creation = '';
@@ -48,12 +48,22 @@ class RegisteredUserController extends Controller
         } else {
             $creation = false;
         }
+
+        $newsletter = null;
+        if($request->newsletter == null){
+            $newsletter = false;
+        }else{
+            $newsletter = true;
+        }
+        // dd($newsletter);
         $user = User::create([
             'creation' => $creation,
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'newsletter' => $newsletter,
+
         ]);
 
         event(new Registered($user));

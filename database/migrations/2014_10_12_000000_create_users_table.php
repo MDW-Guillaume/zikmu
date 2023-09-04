@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('password');
             $table->boolean('is_admin')->default(false);
             $table->string('remember_token', 100)->default('');
+            $table->boolean('newsletter')->default(false);
             $table->timestamps();
         });
     }

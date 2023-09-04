@@ -11,6 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Auth\Notifications\ResetPassword;
 
 class User extends Authenticatable
 {
@@ -28,6 +29,7 @@ class User extends Authenticatable
         'lastname',
         'is_admin',
         'creation',
+        'newsletter',
         'created_at',
         'updated_at',
     ];
@@ -83,22 +85,22 @@ class User extends Authenticatable
 
         static::updating(function ($user) {
 
-            if($user->password){
+            if ($user->password) {
 
                 $password = $user->password;
 
                 // Envoi de l'e-mail avec les informations d'identification
                 Mail::send('emails.password_admin_updated', ['email' => $user->email, 'password' => $password], function ($message) use ($user) {
-                $message->to($user->email)
-                ->subject('Compte utilisateur créé')
-                    ->attach('img/logo.png', [
-                        'as' => 'logo.png',
-                        'mime' => 'image/png',
-                    ]);
+                    $message->to($user->email)
+                        ->subject('Compte utilisateur créé')
+                        ->attach('img/logo.png', [
+                            'as' => 'logo.png',
+                            'mime' => 'image/png',
+                        ]);
                 });
 
                 $user->password = Hash::make($password);
-            }else{
+            } else {
                 unset($user->password);
             }
         });
@@ -112,6 +114,19 @@ class User extends Authenticatable
         });
     }
 
+    /**
+     * Register any authentication / authorization services.
+     *
+     * @return void
+     */
+    public function root()
+    {
+        $this->registerPolicies();
+
+        ResetPassword::createUrlUsing(function ($user, string $token) {
+            return 'https://example.com/reset-password?token=' . $token;
+        });
+    }
 
     /**
      * The attributes that should be hidden for serialization.
