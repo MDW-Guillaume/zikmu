@@ -959,28 +959,54 @@ function fastPlayAlbum() {
                 let formData = $(fastPlayAlbumElement).serialize();
                 let url = '/fast-play-album'
 
-
-                $.ajax({
-                    url: url,
-                    type: 'post',
-                    processData: false,
-                    data: formData,
-                    dataType: 'json',
-                    success: function (response) {
-                        // Regroupement des informations visuelles du lecteur
-                        let playerInformations = []
-                        playerInformations['cover'] = response.cover_url
-                        playerInformations['artist'] = response.artist_name
-                        playerInformations['album'] = response.album_name
-                        playerInformations['artist_slug'] = response.artist_slug
-                        playerInformations['album_slug'] = response.album_slug
-                        playerInformations['song'] = response.song_name
-                        // Je lance la lecture du premier titre.
-                        playSentSong(response.song_url, response.position, playerInformations)
-                        randomBtn.classList.remove('active')
+                new Promise((confirm, reject) => {
+                    let csrf = e.target.querySelector('input[name="_token"]').value;
+                    let addToRecentlyInfo = {
+                        type: e.target.getAttribute('data-type'),
+                        id: e.target.querySelector('input[name="album_id"').value
                     }
-                })
 
+                    $.ajax({
+                        url: '/recently-listened',
+                        type: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': csrf
+                        },
+                        data: addToRecentlyInfo,
+                        dataType: 'json',
+                        success: function (response) {
+                            dd('je suis la');
+                        },
+                        error: function (xhr, status, error) {
+                            // gérer les erreurs de la requête
+                        }
+                    })
+                    confirm()
+                }).then(function () {
+                    $.ajax({
+                        url: url,
+                        type: 'post',
+                        processData: false,
+                        data: formData,
+                        dataType: 'json',
+                        success: function (response) {
+                            // Regroupement des informations visuelles du lecteur
+                            let playerInformations = []
+                            playerInformations['cover'] = response.cover_url
+                            playerInformations['artist'] = response.artist_name
+                            playerInformations['album'] = response.album_name
+                            playerInformations['artist_slug'] = response.artist_slug
+                            playerInformations['album_slug'] = response.album_slug
+                            playerInformations['song'] = response.song_name
+                            // Je lance la lecture du premier titre.
+                            playSentSong(response.song_url, response.position, playerInformations)
+                            randomBtn.classList.remove('active')
+                            // confirm()
+                        }
+                    })
+                }), error => {
+                    alert(`Error : ${error}`);
+                }
             })
 
             // Quand le son se termine on crée une fonction qui récupère la position actuelle et ajoute +1
@@ -1205,7 +1231,7 @@ function favoriteDelete() {
             e.preventDefault(); // Empêcher l'envoi par défaut du formulaire
 
             let formData = {
-                title: e.target.closest('button').getAttribute('data-id')
+                title: e.target.closest('button').getAttribute('data-id'),
             } // Récupérer les données du formulaire
 
 

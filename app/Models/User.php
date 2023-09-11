@@ -49,7 +49,7 @@ class User extends Authenticatable
                 // Envoi de l'e-mail avec les informations d'identification
                 Mail::send('emails.user_created', ['email' => $email, 'password' => $password], function ($message) use ($user) {
                     $message->to($user->email)
-                        ->subject('Compte utilisateur créé')
+                        ->subject('Zik&Mu - Compte utilisateur créé')
                         ->attach('public/img/logo.png', [
                             'as' => 'logo.png',
                             'mime' => 'image/png',
@@ -61,7 +61,7 @@ class User extends Authenticatable
                 // Envoi de l'e-mail avec les informations d'identification
                 Mail::send('emails.user_created', ['email' => $email, 'password' => $password], function ($message) use ($user) {
                     $message->to($user->email)
-                        ->subject('Compte utilisateur créé')
+                        ->subject('Zik&Mu - Compte utilisateur créé')
                         ->attach('img/logo.png', [
                             'as' => 'logo.png',
                             'mime' => 'image/png',
@@ -73,7 +73,7 @@ class User extends Authenticatable
                 //Envoi de l'e-mail avec les informations d'identification
                 Mail::send('emails.user_created', ['email' => $email, 'password' => $password], function ($message) use ($user) {
                     $message->to($user->email)
-                        ->subject('Compte utilisateur créé')
+                        ->subject('Zik&Mu - Compte utilisateur créé')
                         ->attach('img/logo.png', [
                             'as' => 'logo.png',
                             'mime' => 'image/png',
@@ -92,7 +92,7 @@ class User extends Authenticatable
                 // Envoi de l'e-mail avec les informations d'identification
                 Mail::send('emails.password_admin_updated', ['email' => $user->email, 'password' => $password], function ($message) use ($user) {
                     $message->to($user->email)
-                        ->subject('Compte utilisateur créé')
+                        ->subject('Zik&Mu - Mise à jour de votre compte')
                         ->attach('img/logo.png', [
                             'as' => 'logo.png',
                             'mime' => 'image/png',

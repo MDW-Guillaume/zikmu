@@ -17,6 +17,7 @@ use App\Http\Controllers\PlayAlbumController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PlayerController;
+use App\Http\Controllers\RecentlyListenedController;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,6 +73,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/mobile-player', [PlayerController::class, 'show'])->name('search.show');
     Route::get('/player', [PlayerController::class, 'index'])->name('search.index');
 
+    Route::post('/recently-listened', [RecentlyListenedController::class, 'store']);
 
     Route::get('/condition-generales-de-vente', [HomeController::class, 'cgv'])->name('cgv');
     Route::get('/mentions-legales', [HomeController::class, 'ml'])->name('ml');
