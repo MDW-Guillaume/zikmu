@@ -124,13 +124,47 @@ h1 {
         #showPlayer {
             display: none;
         }
+        .favorite-button {
+            button {
+                padding: 12px 30px;
+                border-radius: 50px;
+
+                font-family: 'Roboto';
+                font-style: normal;
+                font-size: 14px;
+                line-height: 16px;
+                text-transform: uppercase;
+                color: #fff;
+
+                display: flex;
+                align-items: center;
+
+                background: transparent;
+                border-color: #fff;
+                border-width: 1px;
+
+                font-weight: 400;
+                cursor: pointer;
+
+                &.is_favorite {
+                    .not-favorite-album {
+                        display: none;
+                    }
+
+                    .favorite-album {
+                        display: block;
+                    }
+                }
+            }
+        }
     }
 
     &.reduce {
         height: auto;
 
         .music-player-cover-image,
-        #reducePlayer {
+        #reducePlayer,
+        .favorite-button {
             display: none;
         }
 

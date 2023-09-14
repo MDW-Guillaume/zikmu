@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Style;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
@@ -44,18 +45,43 @@ class HomeController extends Controller
             $artists[$i]['follow'] = $db_artists[$i]->follow;
         }
 
+        // ADD Écoutes Récentes
+
+        $last_listened_data = DB::table('recently_listeneds')->where('user_id', Auth::user()->id)->orderBy('updated_at', 'desc')->get();
+        $last_listened = array();
+        foreach ($last_listened_data as $album) {
+            $album_info = DB::table('albums')
+                ->join('artists', 'albums.artist_id', '=', 'artists.id')
+                ->where('albums.id', $album->album_id)
+                ->select('albums.*', 'artists.name as artist', 'artists.slug as artist_slug')
+                ->first();
+            if ($album_info->cover) {
+                if (file_exists(public_path('origin') . '/public/files/music/' . $album_info->artist_slug . '/' . $album_info->slug . '/' . $album_info->cover)) {
+                    $album_info->cover = '/origin/public/files/music/' . $album_info->artist_slug . '/' . $album_info->slug . '/' . $album_info->cover;
+                } else {
+                    $album_info->cover = 'undefined.jpg';
+                }
+            } else {
+                $album_info->cover = 'undefined.jpg';
+            }
+            array_push($last_listened, $album_info);
+        }
+
         return view('home')->with([
-            'music' => $zikmu,
-            'styles' => $styles,
-            'artists' => $artists
+            'music'         => $zikmu,
+            'styles'        => $styles,
+            'artists'       => $artists,
+            'last_listened' => $last_listened,
         ]);
     }
 
-    public function cgv(){
+    public function cgv()
+    {
         return view('cgv');
     }
 
-    public function ml(){
+    public function ml()
+    {
         return view('mentions-legales');
     }
 }

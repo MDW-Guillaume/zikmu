@@ -17,7 +17,7 @@
             <div class="search-result-informations">
                 <h2 class="search-result-informatation-title">
                     Résultats pour :
-                    <span id="searchRequested"></span>
+                    <span id="searchRequested" style="margin-left: 5px"></span>
                 </h2>
                 <script>
                     var searchArray = @json($search_array);
