@@ -9,36 +9,40 @@ use Illuminate\Support\Facades\DB;
 class RecentlyListenedController extends Controller
 {
     public function store(Request $request) {
-        // dd($request['type']);
-
-        $type = $request['type'];
-        $element_id = $request['id'];
+        $album_id = $request['album_id'];
 
         $user_id = Auth::user()->id;
-        // dd($user_id);
         // On récupère la liste des derniers écoutés
 
-        $recent_list = DB::table('recently_listened')->where('user_id', $user_id)->get();
+        $recent_list = DB::table('recently_listeneds')
+                        ->where('user_id', $user_id)
+                        ->orderBy('updated_at', 'asc')
+                        ->get();
         $is_list_full = count($recent_list) == 10 ? true : false;
+        var_dump($is_list_full);
 
-        if($is_list_full && $recent_list[9]){
-            $tenthItem = $recent_list[9]->id;
+        $foundItem = $recent_list->firstWhere('album_id', $album_id);
 
-            DB::table('recently_listened')->where('id', $tenthItem)->delete();
+        if($foundItem){
+            var_dump('update');
+            DB::table('recently_listeneds')
+            ->where(['user_id' => $user_id, 'album_id' => $album_id])
+            ->update(['updated_at' => now()]);
+        }else{
+            var_dump('add');
+            if($is_list_full){
+                var_dump('delete');
+                $oldest_data = $recent_list[0];
+                DB::table('recently_listeneds')->where('id', $oldest_data->id)->delete();
+            }
+
+            DB::table('recently_listeneds')->insert([
+                'user_id'       => $user_id,
+                'album_id'      => $album_id,
+                'created_at'    => now(),
+                'updated_at'    => now(),
+            ]);
         }
-
-        // On ajoute l'element a la liste en base
-
-        DB::table('recently_listened')->insert([
-            'user_id' => $user_id, // Assurez-vous d'avoir la valeur correcte pour user_id
-            'element_type' => $type,
-            'element_id' => $element_id,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-
         return response()->json(['success' => true]);
-
-        dd($recent_list, $is_list_full);
     }
 }
