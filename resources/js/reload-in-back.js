@@ -919,30 +919,55 @@ function playAlbumFromTitle() {
         cliquedSongForm.forEach(clickedSong => {
             clickedSong.addEventListener('submit', function (e) {
                 e.preventDefault()
-
-                let formData = $(clickedSong).serialize();
-                let url = '/play-album-element'
-
-                $.ajax({
-                    url: url,
-                    type: 'post',
-                    processData: false,
-                    data: formData,
-                    dataType: 'json',
-                    success: function (response) {
-                        // Regroupement des informations visuelles du lecteur
-                        let playerInformations = []
-                        playerInformations['cover'] = response.cover_url
-                        playerInformations['artist'] = response.artist_name
-                        playerInformations['album'] = response.album_name
-                        playerInformations['artist_slug'] = response.artist_slug
-                        playerInformations['album_slug'] = response.album_slug
-                        playerInformations['song'] = response.song_name
-                        // Je lance la lecture du premier titre.
-                        playSentSong(response.song_url, response.position, playerInformations)
-                        randomBtn.classList.remove('active')
+                new Promise((confirm, reject) => {
+                    let csrf = e.target.querySelector('input[name="_token"]').value;
+                    let addToRecentlyInfo = {
+                        album_id: document.querySelector('#playPlaylist').querySelector('input[name="album_id"]').value
                     }
-                })
+                    alert('la')
+
+                    $.ajax({
+                        url: '/recently-listened',
+                        type: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': csrf
+                        },
+                        data: addToRecentlyInfo,
+                        dataType: 'json',
+                        success: function (response) {
+                        },
+                        error: function (xhr, status, error) {
+                            // gérer les erreurs de la requête
+                        }
+                    })
+                    confirm()
+                }).then(function () {
+                    let formData = $(clickedSong).serialize();
+                    let url = '/play-album-element'
+
+                    $.ajax({
+                        url: url,
+                        type: 'post',
+                        processData: false,
+                        data: formData,
+                        dataType: 'json',
+                        success: function (response) {
+                            // Regroupement des informations visuelles du lecteur
+                            let playerInformations = []
+                            playerInformations['cover'] = response.cover_url
+                            playerInformations['artist'] = response.artist_name
+                            playerInformations['album'] = response.album_name
+                            playerInformations['artist_slug'] = response.artist_slug
+                            playerInformations['album_slug'] = response.album_slug
+                            playerInformations['song'] = response.song_name
+                            // Je lance la lecture du premier titre.
+                            playSentSong(response.song_url, response.position, playerInformations)
+                            randomBtn.classList.remove('active')
+                        }
+                    })
+                }), error => {
+                    alert(`Error : ${error}`);
+                }
             })
         })
     }
@@ -962,7 +987,7 @@ function fastPlayAlbum() {
                 new Promise((confirm, reject) => {
                     let csrf = e.target.querySelector('input[name="_token"]').value;
                     let addToRecentlyInfo = {
-                        album_id: e.target.querySelector('input[name="album_id"').value
+                        album_id: e.target.querySelector('input[name="album_id"]').value
                     }
 
                     $.ajax({
@@ -974,7 +999,6 @@ function fastPlayAlbum() {
                         data: addToRecentlyInfo,
                         dataType: 'json',
                         success: function (response) {
-                            console.log('je suis la');
                         },
                         error: function (xhr, status, error) {
                             // gérer les erreurs de la requête
@@ -989,7 +1013,6 @@ function fastPlayAlbum() {
                         data: formData,
                         dataType: 'json',
                         success: function (response) {
-                            console.log('la')
                             // Regroupement des informations visuelles du lecteur
                             let playerInformations = []
                             playerInformations['cover'] = response.cover_url
@@ -1001,7 +1024,6 @@ function fastPlayAlbum() {
                             // Je lance la lecture du premier titre.
                             playSentSong(response.song_url, response.position, playerInformations)
                             randomBtn.classList.remove('active')
-                            // confirm()
                         }
                     })
                 }), error => {
@@ -1078,7 +1100,6 @@ function fastPlayFavorite() {
                     randomBtn.classList.remove('active')
                 }
             })
-
         })
     }
 }
@@ -1087,7 +1108,6 @@ function randomPlayFavorite() {
     if (playRandomFavorite) {
         playRandomFavorite.addEventListener('submit', function (e) {
             e.preventDefault()
-
             let formData = $(playRandomFavorite).serialize();
             let url = '/random-play-favorite'
 
@@ -1193,29 +1213,54 @@ function fastSongPlaySearch() {
     fastSongPlay.forEach(songPlay => {
         songPlay.addEventListener('submit', function (e) {
             e.preventDefault();
-
-            let formData = $(songPlay).serialize();
-            let url = '/fast-play-song-search'
-
-            $.ajax({
-                url: url,
-                type: 'post',
-                processData: false,
-                data: formData,
-                dataType: 'json',
-                success: function (response) {
-                    // Regroupement des informations visuelles du lecteur
-                    let playerInformations = []
-                    playerInformations['cover'] = response.cover_url
-                    playerInformations['artist'] = response.artist_name
-                    playerInformations['album'] = response.album_name
-                    playerInformations['artist_slug'] = response.artist_slug
-                    playerInformations['album_slug'] = response.album_slug
-                    playerInformations['song'] = response.song_name
-                    // Je lance la lecture du premier titre.
-                    playSentSong(response.song_url, response.position, playerInformations)
+            new Promise((confirm, reject) => {
+                let csrf = e.target.querySelector('input[name="_token"]').value;
+                let addToRecentlyInfo = {
+                    album_id: e.target.querySelector('input[name="album_id"]').value
                 }
-            })
+                alert('la')
+
+                $.ajax({
+                    url: '/recently-listened',
+                    type: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': csrf
+                    },
+                    data: addToRecentlyInfo,
+                    dataType: 'json',
+                    success: function (response) {
+                    },
+                    error: function (xhr, status, error) {
+                        // gérer les erreurs de la requête
+                    }
+                })
+                confirm()
+            }).then(function () {
+                let formData = $(songPlay).serialize();
+                let url = '/fast-play-song-search'
+
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    processData: false,
+                    data: formData,
+                    dataType: 'json',
+                    success: function (response) {
+                        // Regroupement des informations visuelles du lecteur
+                        let playerInformations = []
+                        playerInformations['cover'] = response.cover_url
+                        playerInformations['artist'] = response.artist_name
+                        playerInformations['album'] = response.album_name
+                        playerInformations['artist_slug'] = response.artist_slug
+                        playerInformations['album_slug'] = response.album_slug
+                        playerInformations['song'] = response.song_name
+                        // Je lance la lecture du premier titre.
+                        playSentSong(response.song_url, response.position, playerInformations)
+                    }
+                })
+            }), error => {
+                alert(`Error : ${error}`);
+            }
         })
     });
 }
@@ -1914,7 +1959,6 @@ function playerNavigation() {
     let lastPageButton = document.getElementById('lastPageButton')
     let externalLinks = [playerInfoAlbumSlug, playerInfoArtistSlug, waitingLinkMobile, lastPageButton]
     if (playerInfoAlbumSlug && playerInfoArtistSlug && waitingLinkMobile) {
-        console.log('lfiehzvfbueshfblskjehfbviu')
         externalLinks.forEach(link => {
             link.addEventListener('click', function () {
                 mobileMinPlayer.style.display = 'flex'

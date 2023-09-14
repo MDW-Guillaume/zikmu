@@ -53,6 +53,7 @@ class SearchController extends Controller
                 $search_array['songs'][$song_similar->id]['name'] = $song_similar->name;
                 $search_array['songs'][$song_similar->id]['position'] = $song_similar->position;
                 $search_array['songs'][$song_similar->id]['album_slug'] = $album_slug;
+                $search_array['songs'][$song_similar->id]['album_id'] = $song_similar->album_id;
                 $search_array['songs'][$song_similar->id]['cover'] = $cover_url;
                 $search_array['songs'][$song_similar->id]['artist'] = $artist_name;
                 $search_array['songs'][$song_similar->id]['release'] = $album_release;

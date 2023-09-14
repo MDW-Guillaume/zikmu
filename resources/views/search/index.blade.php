@@ -39,6 +39,7 @@
                                                 <input type="hidden" name="_token"
                                                     value="{{ csrf_token() }}">
                                                 <input type="hidden" name="song_id" value="{{ $song['id'] }}">
+                                                <input type="hidden" name="album_id" value="{{ $song['album_id'] }}">
                                                 <input type="hidden" name="position" value="{{ $song['position'] }}">
                                                 <input type="submit"
                                                     style="background-color : transparent; background-image : url(http://127.0.0.1:8000/img/play_song_btn.png); border : 0; cursor : pointer; border-radius : 50%;"

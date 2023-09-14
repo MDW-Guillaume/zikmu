@@ -19,19 +19,15 @@ class RecentlyListenedController extends Controller
                         ->orderBy('updated_at', 'asc')
                         ->get();
         $is_list_full = count($recent_list) == 10 ? true : false;
-        var_dump($is_list_full);
 
         $foundItem = $recent_list->firstWhere('album_id', $album_id);
 
         if($foundItem){
-            var_dump('update');
             DB::table('recently_listeneds')
             ->where(['user_id' => $user_id, 'album_id' => $album_id])
             ->update(['updated_at' => now()]);
         }else{
-            var_dump('add');
             if($is_list_full){
-                var_dump('delete');
                 $oldest_data = $recent_list[0];
                 DB::table('recently_listeneds')->where('id', $oldest_data->id)->delete();
             }
