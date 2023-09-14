@@ -220,6 +220,7 @@ body {
     .artist-albums-list .albums-container {
         flex-wrap: nowrap;
         overflow-x: scroll;
+        overflow-y: hidden;
         padding-bottom: 60px;
     }
 

@@ -924,7 +924,6 @@ function playAlbumFromTitle() {
                     let addToRecentlyInfo = {
                         album_id: document.querySelector('#playPlaylist').querySelector('input[name="album_id"]').value
                     }
-                    alert('la')
 
                     $.ajax({
                         url: '/recently-listened',
@@ -1218,7 +1217,6 @@ function fastSongPlaySearch() {
                 let addToRecentlyInfo = {
                     album_id: e.target.querySelector('input[name="album_id"]').value
                 }
-                alert('la')
 
                 $.ajax({
                     url: '/recently-listened',
@@ -1961,7 +1959,9 @@ function playerNavigation() {
     if (playerInfoAlbumSlug && playerInfoArtistSlug && waitingLinkMobile) {
         externalLinks.forEach(link => {
             link.addEventListener('click', function () {
-                mobileMinPlayer.style.display = 'flex'
+                setTimeout(function () {
+                    mobileMinPlayer.style.display = 'flex'
+                }, 500)
             })
         })
     }
@@ -1984,8 +1984,9 @@ function displayLastPage(lastPage = null) {
 
 function lastPageAction(lastPage) {
     let lastPageButton = document.getElementById('lastPageButton')
-
     lastPageButton.addEventListener('click', function () {
+        setTimeout(function () {
+
         let url = lastPage;
 
         $.ajax({
@@ -1996,6 +1997,7 @@ function lastPageAction(lastPage) {
                 history.replaceState(null, '', url);
             }
         })
+    }, 500);
     })
 }
 
