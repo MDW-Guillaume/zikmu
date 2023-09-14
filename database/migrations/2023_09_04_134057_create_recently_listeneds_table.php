@@ -13,11 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-            Schema::create('recently_listened', function (Blueprint $table) {
+            Schema::create('recently_listeneds', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('element_id');
-            $table->string('element_type');
+            $table->unsignedBigInteger('album_id');
             $table->timestamps();
 
             $table->foreign('user_id')
@@ -26,9 +25,9 @@ return new class extends Migration
                   ->onUpdate('restrict')
                   ->onDelete('restrict');
 
-            $table->foreign('element_id')
+            $table->foreign('album_id')
                   ->references('id')
-                  ->on('songs')
+                  ->on('albums')
                   ->onUpdate('restrict')
                   ->onDelete('restrict');
         });
@@ -41,6 +40,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('recently_listened');
+        Schema::dropIfExists('recently_listeneds');
     }
 };

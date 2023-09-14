@@ -962,8 +962,7 @@ function fastPlayAlbum() {
                 new Promise((confirm, reject) => {
                     let csrf = e.target.querySelector('input[name="_token"]').value;
                     let addToRecentlyInfo = {
-                        type: e.target.getAttribute('data-type'),
-                        id: e.target.querySelector('input[name="album_id"').value
+                        album_id: e.target.querySelector('input[name="album_id"').value
                     }
 
                     $.ajax({
@@ -975,7 +974,7 @@ function fastPlayAlbum() {
                         data: addToRecentlyInfo,
                         dataType: 'json',
                         success: function (response) {
-                            dd('je suis la');
+                            console.log('je suis la');
                         },
                         error: function (xhr, status, error) {
                             // gérer les erreurs de la requête
@@ -990,6 +989,7 @@ function fastPlayAlbum() {
                         data: formData,
                         dataType: 'json',
                         success: function (response) {
+                            console.log('la')
                             // Regroupement des informations visuelles du lecteur
                             let playerInformations = []
                             playerInformations['cover'] = response.cover_url

@@ -44,7 +44,7 @@
                                     <img src="{{$album->cover}}">
                                 </a>
 
-                                <form action="{{ route('play.album') }}" class="play-album fast-play-album" method="post" data-type="album">
+                                <form action="{{ route('play.album') }}" class="play-album fast-play-album" method="post">
                                     @csrf
                                     <input type="hidden" name="album_id" value="{{ $album->id }}">
                                     <input type="hidden" name="position" value="1">
