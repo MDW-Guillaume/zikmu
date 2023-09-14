@@ -22,7 +22,7 @@
         <ul class="footer-links">
             <li><a href="{{ route('ml') }}">Mentions légales</a></li>
             <li><a href="{{ route('cgv') }}">CGV</a></li>
-            <li><a href="#">Contact</a></li>
+            <li><a href="{{ route('contact') }}">Contact</a></li>
         </ul>
         <ul class="social-links">
             <li><a href="https://facebook.com" id="facebookLink" target="_blank"><img

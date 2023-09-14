@@ -7,6 +7,7 @@ use App\Http\Controllers\AlbumsUsersController;
 use App\Http\Controllers\StyleController;
 use App\Http\Controllers\ArtistController;
 use App\Http\Controllers\ArtistsUsersController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
@@ -77,6 +78,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/condition-generales-de-vente', [HomeController::class, 'cgv'])->name('cgv');
     Route::get('/mentions-legales', [HomeController::class, 'ml'])->name('ml');
+
+    Route::get('/contact', [ContactController::class, 'show'])->name('contact');
+    Route::post('/contact', [ContactController::class, 'show'])->name('contact.submit');
 
     // Route::get('/test', [TestController::class, 'index'])->name('test.index');
     // Route::get('/test2', [TestController::class, 'show'])->name('test.show');

@@ -20,6 +20,7 @@
         'resources/scss/search.scss',
         'resources/scss/profile.scss',
         'resources/scss/player.scss',
+        'resources/scss/contact.scss',
         'resources/js/reload-in-back.js',
     ])
     <title>Zik&Mu - @yield('title')</title>
