@@ -6,39 +6,41 @@
 
 @section('content')
     <div id="content">
-        <div class="page-artist home_albums">
-            <div class="artist-albums-list">
-                <h2 class="home-title"><span>Écoutés récemment</span></h2>
-                <div class="albums-container">
-                    @foreach ($last_listened as $last_album)
-                        <div class="album-element">
-
-                            <div class="album-cover" style="border : 2px solid black;">
-                                <div class="album-cover-container">
-                                    <a href="{{ route('album.show', $last_album->slug) }}">
-                                        <img src="{{ $last_album->cover }}">
+        @if(count($last_listened) > 0)
+            <div class="page-artist home_albums">
+                <div class="artist-albums-list">
+                    <h2 class="home-title"><span>Écoutés récemment</span></h2>
+                    <div class="albums-container">
+                        @foreach ($last_listened as $last_album)
+                            <div class="album-element">
+    
+                                <div class="album-cover" style="border : 2px solid black;">
+                                    <div class="album-cover-container">
+                                        <a href="{{ route('album.show', $last_album->slug) }}">
+                                            <img src="{{ $last_album->cover }}">
+                                        </a>
+                                    </div>
+    
+                                    <form action="{{ route('play.album') }}" class="play-album fast-play-album" method="post">
+                                        @csrf
+                                        <input type="hidden" name="album_id" value="{{ $last_album->id }}">
+                                        <input type="hidden" name="position" value="1">
+                                        <input type="submit"
+                                            style="background-color : transparent; background-image : url({{ URL::to('/img') }}/play_song_btn.png); border : 0; cursor : pointer; border-radius : 50%;"
+                                            value="">
+                                    </form>
+                                    <a href="{{ route('album.show', $last_album->slug) }}" class="album-details">
+                                        <h3 class="album-name">{{ $last_album->name }}</h3>
+                                        <span>par {{ $last_album->artist }}</span>
+                                        <span>{{ $last_album->release }}</span>
                                     </a>
                                 </div>
-
-                                <form action="{{ route('play.album') }}" class="play-album fast-play-album" method="post">
-                                    @csrf
-                                    <input type="hidden" name="album_id" value="{{ $last_album->id }}">
-                                    <input type="hidden" name="position" value="1">
-                                    <input type="submit"
-                                        style="background-color : transparent; background-image : url({{ URL::to('/img') }}/play_song_btn.png); border : 0; cursor : pointer; border-radius : 50%;"
-                                        value="">
-                                </form>
-                                <a href="{{ route('album.show', $last_album->slug) }}" class="album-details">
-                                    <h3 class="album-name">{{ $last_album->name }}</h3>
-                                    <span>par {{ $last_album->artist }}</span>
-                                    <span>{{ $last_album->release }}</span>
-                                </a>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    </div>
                 </div>
             </div>
-        </div>
+        @endif
         <div class="styles-container">
             <a href="{{ route('style.index') }}">
                 <h2 class="home-title"><span>Genres</span><span>&rsaquo;</span></h2>
